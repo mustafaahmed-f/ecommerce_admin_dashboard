@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "gen-commit": "ts-node-esm scripts/generate-commit.ts"
+    "gen-commit": "ts-node-esm scripts/generate-commit.ts",
+    "commit": "node --loader ts-node/esm scripts/generate-commit.ts"
   },
   "dependencies": {
     "next": "15.3.3",
