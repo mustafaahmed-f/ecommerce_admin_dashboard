@@ -42,8 +42,8 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 │   ├── models/
 │   ├── validationSchemas/
 │   └── connectDB.ts
-├── types/
-├── hooks/
+├── types/                   # general types
+├── hooks/                   # general hooks
 ├── components/              # Shared UI components
 │   ├── ui/                  # Tailwind + shadcn components
 │   ├── table/               # Table wrappers
@@ -51,15 +51,20 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 ├── icons/
 ├── features/                # Business logic by domain
 │   ├── products/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── types/
 │   ├── users/
 │   └── orders/
 ├── utils/                   # Shared utilities
+│   ├── constants/
+│   ├── helperMethods/
 │   ├── auth.ts
 │   ├── api.ts
 │   ├── validation.ts
 │   └── connectDB.ts
 ├── services/
-├── constants/
 ├── middleware.ts
 ├── tailwind.config.ts
 └── env.d.ts
