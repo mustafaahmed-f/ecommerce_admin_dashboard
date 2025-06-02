@@ -78,6 +78,8 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 - `/view/[module]/new` - Add new record
 - `/view/[module]/edit` - Edit record
 - `/view/[module]/details` - Record details (if showDetails = true)
+- `/messages` - Messages
+- `/transactions` - Transactions
 
 ## How to Use This Template
 
