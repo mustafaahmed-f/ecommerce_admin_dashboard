@@ -1,10 +1,10 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "./_components/ui/sonner";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Providers from "./Providers";
+import "./globals.css";
 import Header from "./Header";
+import Providers from "./Providers";
 
 export const metadata: Metadata = {
   title: {
@@ -30,12 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} max-w-screen grid min-h-screen grid-rows-[auto_1fr] antialiased`}
+        className={`${inter.variable} max-w-screen flex flex-col min-h-screen antialiased`}
       >
         <Providers>
           <ReactQueryDevtools initialIsOpen={false} />
           <Header />
-          <main className="flex flex-grow overflow-hidden overflow-x-auto pb-2 pt-[124px] max-sm:px-2 sm:pt-0">
+          <main className="flex bg-gradient-to-b from-primary-foreground to-white flex-grow overflow-hidden overflow-x-auto pb-2 pt-[124px] max-sm:px-2 sm:pt-0">
             {children}
           </main>
           <Toaster />
