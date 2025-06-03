@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "./_components/ui/sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Providers from "./Providers";
+import Header from "./Header";
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <Providers>
           <ReactQueryDevtools initialIsOpen={false} />
+          <Header />
           <main className="flex flex-grow overflow-hidden overflow-x-auto pb-2 pt-[124px] max-sm:px-2 sm:pt-0">
             {children}
           </main>

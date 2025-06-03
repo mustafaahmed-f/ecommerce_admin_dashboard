@@ -20,7 +20,7 @@
   --popover-foreground: oklch(0.129 0.042 264.695);
 
   /* ✅ Overriding ShadCN colors with Figma tokens */
-  --primary: rgba(254, 170, 9, 1); /* --primari-1 */
+  --primary: rgb(49, 45, 240); /* --primari-1 */
   --primary-foreground: #ffffff;
   --secondary: rgba(254, 92, 115, 1); /* --secondery */
   --secondary-foreground: #ffffff;
