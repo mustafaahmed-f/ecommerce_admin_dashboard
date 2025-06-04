@@ -1,12 +1,14 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { SidebarProvider } from "./_components/ui/sidebar";
 
 interface ProvidersProps {
   children: React.ReactNode;
+  defaultOpen?: boolean;
 }
 
-function Providers({ children }: ProvidersProps) {
+function Providers({ children, defaultOpen }: ProvidersProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -18,7 +20,9 @@ function Providers({ children }: ProvidersProps) {
       })
   );
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </SidebarProvider>
   );
 }
 

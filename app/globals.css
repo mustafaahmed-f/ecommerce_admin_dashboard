@@ -47,11 +47,11 @@
   --chart-5: oklch(0.769 0.188 70.08);
 
   /* Sidebar (ShadCN overrides preserved) */
-  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.129 0.042 264.695);
   --sidebar-primary: #2d60ff; /* --primary-2 */
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(254, 92, 115, 1); /* --secondery */
+  --sidebar-accent: #2d60ff; /* --secondery */
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);

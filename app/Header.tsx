@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./_components/ui/avatar";
 import { Button } from "./_components/ui/button";
+import { SidebarTrigger } from "./_components/ui/sidebar";
 
 interface HeaderProps {}
 
@@ -7,7 +8,8 @@ function Header({}: HeaderProps) {
   return (
     <header>
       <div className="w-full p-5 flex items-center justify-between">
-        <Button>SideBar</Button>
+        {/* <Button>SideBar</Button> */}
+        <SidebarTrigger className="cursor-pointer" />
         <div className="p-2 rounded-3xl flex items-center gap-4">
           <p>
             Welcome, <span className="font-semibold">Mustafa</span>
