@@ -1,0 +1,18 @@
+export const defaultValues = {
+  title: "",
+  image: "",
+  price: 0,
+  description: "",
+  brand: "",
+  model: "",
+  color: null,
+  size: null,
+  ram: null,
+  power: null,
+  fps: null,
+  soundOutput: null,
+  screenSize: null,
+  category: "",
+  discount: 0,
+  stock: 10,
+};
