@@ -6,11 +6,7 @@ import Link from "next/link";
 
 const columnHelper = createColumnHelper<Product>();
 
-export const generalColumns = (
-  hasDetails?: boolean,
-  link?: string,
-  module?: string
-) => {
+export const generalColumns = (hasDetails?: boolean, module?: string) => {
   return [
     columnHelper.accessor((row) => row.productId, {
       id: "productId",
