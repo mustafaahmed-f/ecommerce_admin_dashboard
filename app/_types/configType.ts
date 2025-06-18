@@ -8,4 +8,8 @@ export interface configType<T extends FieldValues> {
   formFields: inputFieldType<T>[];
   formDefaultValues: T;
   formValidations: any;
+  pageSize: number; //// Size of data per page
+  backendPagination?: boolean;
+  hasDetails?: boolean;
+  canAddNewRecord: boolean;
 }

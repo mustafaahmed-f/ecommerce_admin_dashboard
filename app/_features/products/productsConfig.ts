@@ -11,4 +11,8 @@ export const config: configType<InferFormValues<typeof validations>> = {
   formFields: formFields,
   formDefaultValues: defaultValues,
   formValidations: validations,
+  pageSize: 10,
+  canAddNewRecord: true,
+  backendPagination: true,
+  hasDetails: true,
 };
