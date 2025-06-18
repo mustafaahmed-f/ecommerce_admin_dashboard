@@ -42,7 +42,7 @@ export default async function RootLayout({
           <SideBar />
           <div className="flex flex-col flex-grow">
             <Header />
-            <main className="flex bg-gradient-to-b from-primary-foreground to-white flex-grow overflow-hidden overflow-x-auto pb-2 pt-[124px] max-sm:px-2 sm:pt-0">
+            <main className="md:p-12 sm:p-10 p-9  flex bg-gradient-to-b from-primary-foreground to-white flex-grow overflow-hidden overflow-x-auto pb-2  max-sm:px-2 sm:pt-0">
               {children}
             </main>
           </div>

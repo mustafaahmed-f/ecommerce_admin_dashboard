@@ -12,7 +12,7 @@ interface Template1Props {
 function Template1({ data, tableInstance, config }: Template1Props) {
   const { module } = useParams();
   return (
-    <div className="flex items-center justify-center w-full h-full ">
+    <div className="flex items-center justify-center w-full ">
       <table>
         <thead>
           {tableInstance.getHeaderGroups().map((headerGroup) => (
