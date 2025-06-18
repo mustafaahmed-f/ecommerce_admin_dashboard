@@ -5,6 +5,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Product } from "@/app/_features/products/types/productType";
 import { Column } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
+import Spinner from "./Spinner";
 
 interface ClientWrapperProps {
   data: any[];
@@ -50,9 +51,7 @@ export default function ClientWrapper({ data }: ClientWrapperProps) {
   });
 
   if (!TableComponent) {
-    return (
-      <div className="w-full items-center justify-center">Loading table...</div>
-    );
+    return <Spinner />;
   }
 
   return <TableComponent tableInstance={table} config={config} data={data} />;
