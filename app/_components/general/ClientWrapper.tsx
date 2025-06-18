@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Product } from "@/app/_features/products/types/productType";
-import { products } from "@/app/_features/products/utils/fakeData";
 import { Column } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
 
@@ -46,7 +45,7 @@ export default function ClientWrapper({ data }: ClientWrapperProps) {
 
   const table = useReactTable<Product>({
     columns: useMemo(() => columns, [columns]),
-    data: products,
+    data,
     getCoreRowModel: getCoreRowModel(),
   });
 
