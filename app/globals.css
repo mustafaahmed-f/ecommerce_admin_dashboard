@@ -69,11 +69,15 @@
 
   /* ✅ Figma shadows */
   --shadow-1: 4px 4px 18px rgba(231, 228, 232, 0.8);
+
+  /* Table colors */
+  --table-header: #718ebf;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-table-header: var(--table-header);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);

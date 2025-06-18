@@ -32,7 +32,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
           height={50}
           src={info.getValue()}
           alt="Product"
-          className="w-5 h-5 object-cover rounded"
+          className="object-cover rounded mx-auto"
         />
       ),
     }),
