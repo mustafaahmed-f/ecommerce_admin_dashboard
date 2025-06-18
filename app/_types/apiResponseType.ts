@@ -2,5 +2,11 @@ export interface apiResponseType {
   success: boolean;
   message: string;
   result: any;
-  error: string;
+  additionalInfo?: any;
+  error?: string;
+}
+
+export interface crudResponseType {
+  result: any;
+  additionalInfo?: any;
 }

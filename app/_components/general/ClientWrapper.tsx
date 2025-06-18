@@ -56,5 +56,5 @@ export default function ClientWrapper({ data }: ClientWrapperProps) {
     );
   }
 
-  return <TableComponent tableInstance={table} config={config} />;
+  return <TableComponent tableInstance={table} config={config} data={data} />;
 }

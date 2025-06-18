@@ -7,9 +7,10 @@ interface PageProps {
 async function Page({ params }: PageProps) {
   const { module } = await params;
   console.log(module);
-  // const [] = await Promise.all([]);
+  const apis = await import(`@/app/_features/${module}/services/${module}APIs`);
+  const { result: data } = await apis.getAllRecords();
 
-  return <ClientWrapper data={[]} />;
+  return <ClientWrapper data={data} />;
 }
 
 export default Page;

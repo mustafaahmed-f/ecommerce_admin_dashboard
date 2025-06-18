@@ -4,7 +4,7 @@ import type { Table } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
 
 interface Template1Props {
-  data?: any;
+  data: any;
   tableInstance: Table<any>;
   config: any;
 }

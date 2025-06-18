@@ -1,4 +1,4 @@
-import { apiResponseType } from "../_types/apiResponseType";
+import { apiResponseType, crudResponseType } from "../_types/apiResponseType";
 
 const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
@@ -12,7 +12,7 @@ export async function _getAllRecords({
   page?: number;
   pageSize?: number;
   searchTerm?: string;
-}) {
+}): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`
   );
@@ -25,7 +25,10 @@ export async function _getAllRecords({
     throw new Error(jsonResponse.error || "Unknown error from API");
   }
 
-  return jsonResponse.result;
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
 }
 
 export async function _getSingleRecord({
@@ -34,7 +37,7 @@ export async function _getSingleRecord({
 }: {
   _APIEndpointName: string;
   recordId: string;
-}) {
+}): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`
   );
@@ -47,7 +50,10 @@ export async function _getSingleRecord({
     throw new Error(jsonResponse.error || "Unknown error from API");
   }
 
-  return jsonResponse.result;
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
 }
 
 export async function _deleteSingleRecord({
@@ -56,7 +62,7 @@ export async function _deleteSingleRecord({
 }: {
   _APIEndpointName: string;
   recordId: string;
-}) {
+}): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
     {
@@ -72,7 +78,10 @@ export async function _deleteSingleRecord({
     throw new Error(jsonResponse.error || "Unknown error from API");
   }
 
-  return jsonResponse.result;
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
 }
 
 export async function _updateSingleRecord({
@@ -83,7 +92,7 @@ export async function _updateSingleRecord({
   _APIEndpointName: string;
   recordId: string;
   data: any;
-}) {
+}): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
     {
@@ -100,7 +109,10 @@ export async function _updateSingleRecord({
     throw new Error(jsonResponse.error || "Unknown error from API");
   }
 
-  return jsonResponse.result;
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
 }
 
 export async function _createSingleRecord({
@@ -109,7 +121,7 @@ export async function _createSingleRecord({
 }: {
   _APIEndpointName: string;
   data: any;
-}) {
+}): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -123,5 +135,8 @@ export async function _createSingleRecord({
     throw new Error(jsonResponse.error || "Unknown error from API");
   }
 
-  return jsonResponse.result;
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
 }
