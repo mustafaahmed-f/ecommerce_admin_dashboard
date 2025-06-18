@@ -53,13 +53,31 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "Stock",
       cell: (info) => <span>{info.getValue()}</span>,
     }),
-    columnHelper.accessor("price", {
-      header: "Price",
-      cell: (info) => <span>${info.getValue()}</span>,
-    }),
     columnHelper.accessor("discount", {
       header: "Discount (%)",
       cell: (info) => <span>{info.getValue() ?? 0}%</span>,
+    }),
+    columnHelper.accessor("price", {
+      header: "Price",
+      cell: (info) => (
+        <div className="flex w-full flex-col items-center justify-start gap-[2px] sm:gap-3">
+          <p
+            className={`text-sm text-textGrey ${
+              info.row.original.discount !== 0 && "line-through"
+            } sm:text-base`}
+          >
+            $ {info.getValue()}
+          </p>
+
+          {info.row.original.discount !== 0 && (
+            <p className="text-base text-red-600 sm:text-lg">
+              ${" "}
+              {info.getValue() -
+                info.getValue() * ((info.row.original.discount ?? 0) / 100)}
+            </p>
+          )}
+        </div>
+      ),
     }),
 
     columnHelper.display({

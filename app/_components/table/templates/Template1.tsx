@@ -14,11 +14,16 @@ function Template1({ data, tableInstance, config }: Template1Props) {
   const { module } = useParams();
   return (
     <section className="w-full h-full flex flex-col items-center gap-6 sm:gap-8">
-      {config.canAddNewRecord && (
-        <Button variant={"default"} className="ms-auto cursor-pointer">
-          Add New
-        </Button>
-      )}
+      <div className="flex items-center justify-between w-full">
+        <p className="font-bold text-xl sm:text-3xl md:text-4xl">
+          {config.title}
+        </p>
+        {config.canAddNewRecord && (
+          <Button variant={"default"} className="ms-auto cursor-pointer">
+            Add New
+          </Button>
+        )}
+      </div>
 
       <div className="flex items-center justify-center w-full ">
         <div className="overflow-hidden rounded-2xl shadow-lg border-t bg-transparent px-3">

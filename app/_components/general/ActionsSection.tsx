@@ -51,7 +51,7 @@ function ActionsSection({ recordId }: ActionsSectionProps) {
 
   return (
     <div
-      className={`flex items-center justify-center gap-2 ${
+      className={`flex items-center justify-center gap-1 ${
         deleteMutation.isPending ? "opacity-65 pointer-events-none" : ""
       }`}
     >
