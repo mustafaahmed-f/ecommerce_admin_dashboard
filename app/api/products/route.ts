@@ -1,7 +1,7 @@
 import connectDB from "@/app/_mongoDB/connectDB";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { apiFeatures } from "@/app/_services/apiFeatures";
-import { actions } from "@/app/_utils/helperMethods/Actions";
+import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { NextRequest, NextResponse } from "next/server";
 

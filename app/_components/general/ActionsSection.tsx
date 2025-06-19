@@ -94,7 +94,7 @@ function ActionsSection({ recordId }: ActionsSectionProps) {
                 deleteMutation.mutate();
                 setOpen(false);
               }}
-              className="cursor-pointer"
+              className="cursor-pointer text-white"
             >
               Confirm
             </Button>

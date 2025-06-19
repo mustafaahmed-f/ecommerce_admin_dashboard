@@ -15,7 +15,7 @@ function Template1({ data, tableInstance, config }: Template1Props) {
   return (
     <section className="w-full h-full flex flex-col items-center gap-6 sm:gap-8">
       <div className="flex items-center justify-between w-full">
-        <p className="font-bold text-xl sm:text-3xl md:text-4xl">
+        <p className="font-bold text-2xl sm:text-3xl md:text-4xl">
           {config.title}
         </p>
         {config.canAddNewRecord && (
