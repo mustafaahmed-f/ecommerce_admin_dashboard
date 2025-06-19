@@ -13,9 +13,9 @@ interface Template1Props {
 function Template1({ data, tableInstance, config }: Template1Props) {
   const { module } = useParams();
   return (
-    <section className="w-full h-full flex flex-col items-center gap-6 sm:gap-8">
-      <div className="flex items-center justify-between w-full">
-        <p className="font-bold text-2xl sm:text-3xl md:text-4xl">
+    <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
+      <div className="flex w-full items-center justify-between">
+        <p className="text-2xl font-bold sm:text-3xl md:text-4xl">
           {config.title}
         </p>
         {config.canAddNewRecord && (
@@ -25,10 +25,10 @@ function Template1({ data, tableInstance, config }: Template1Props) {
         )}
       </div>
 
-      <div className="flex items-center justify-center w-full ">
-        <div className="overflow-hidden rounded-2xl shadow-lg border-t bg-transparent px-3">
-          <table className="overflow-hidden relative">
-            <thead className="sticky top-0">
+      <div className="flex w-full items-center justify-center">
+        <div className="overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
+          <table className="relative">
+            <thead className="sticky top-0 z-10">
               {tableInstance.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -36,11 +36,11 @@ function Template1({ data, tableInstance, config }: Template1Props) {
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className={`text-sm p-1  sm:p-3 text-nowrap border-b font-medium text-center text-table-header text-[16px]`}
+                        className={`text-table-header border-b p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3`}
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                       </th>
                     );
@@ -54,12 +54,12 @@ function Template1({ data, tableInstance, config }: Template1Props) {
                 <tr key={row.id}>
                   {row.getAllCells().map((cell) => (
                     <td
-                      className="border-b text-center px-1 py-4"
+                      className="border-b px-1 py-4 text-center"
                       key={cell.id}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   ))}
