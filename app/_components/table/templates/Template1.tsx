@@ -1,17 +1,31 @@
 "use client";
 
 import { flexRender, type Table } from "@tanstack/react-table";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "../../ui/button";
+import ShadcnPagination from "../../general/ShadcnPagination";
 
 interface Template1Props {
   data: any;
   tableInstance: Table<any>;
   config: any;
+  additionalInfo?: any;
 }
 
-function Template1({ data, tableInstance, config }: Template1Props) {
-  const { module } = useParams();
+function Template1({
+  data,
+  tableInstance,
+  config,
+  additionalInfo,
+}: Template1Props) {
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const size = parseInt(params.get("pageSize") ?? "10");
+  console.log("additionalInfo : ", additionalInfo);
+  console.log("size : ", size);
+  let count = Math.ceil(additionalInfo / (size ?? 10));
+  console.log("Count : ", count);
+  // const { module } = useParams();
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
       <div className="flex w-full items-center justify-between">
@@ -28,7 +42,7 @@ function Template1({ data, tableInstance, config }: Template1Props) {
       </div>
 
       <div className="flex w-full items-center justify-center">
-        <div className="max-h-[500px] overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
+        <div className="max-h-[600px] overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
           <table className="relative">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
               {tableInstance.getHeaderGroups().map((headerGroup) => (
@@ -71,6 +85,8 @@ function Template1({ data, tableInstance, config }: Template1Props) {
           </table>
         </div>
       </div>
+
+      <ShadcnPagination count={count} showFirstLast={true} siblingCount={2} />
     </section>
   );
 }

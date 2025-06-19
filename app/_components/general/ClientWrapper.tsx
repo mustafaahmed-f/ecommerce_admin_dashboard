@@ -9,9 +9,13 @@ import Spinner from "./Spinner";
 
 interface ClientWrapperProps {
   data: any[];
+  additionalInfo?: any;
 }
 
-export default function ClientWrapper({ data }: ClientWrapperProps) {
+export default function ClientWrapper({
+  data,
+  additionalInfo,
+}: ClientWrapperProps) {
   const { module } = useParams();
   const [TableComponent, setTableComponent] =
     useState<React.ComponentType<any> | null>(null);
@@ -36,7 +40,7 @@ export default function ClientWrapper({ data }: ClientWrapperProps) {
 
       setConfig(configModule.config);
       setColumns(
-        columnsModule.generalColumns(configModule.config.hasDetails, module)
+        columnsModule.generalColumns(configModule.config.hasDetails, module),
       );
       setTableComponent(() => Component);
     };
@@ -54,5 +58,12 @@ export default function ClientWrapper({ data }: ClientWrapperProps) {
     return <Spinner />;
   }
 
-  return <TableComponent tableInstance={table} config={config} data={data} />;
+  return (
+    <TableComponent
+      tableInstance={table}
+      config={config}
+      data={data}
+      additionalInfo={additionalInfo}
+    />
+  );
 }

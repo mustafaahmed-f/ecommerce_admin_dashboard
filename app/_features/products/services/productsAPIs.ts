@@ -8,8 +8,21 @@ import {
 
 const APIendPoint = "products";
 
-export async function getAllRecords() {
-  return _getAllRecords({ _APIEndpointName: APIendPoint });
+export async function getAllRecords({
+  page = 1,
+  pageSize = 10,
+  searchTerm = "",
+}: {
+  page: number;
+  pageSize: number;
+  searchTerm: string;
+}) {
+  return _getAllRecords({
+    _APIEndpointName: APIendPoint,
+    page,
+    pageSize,
+    searchTerm,
+  });
 }
 
 export async function getSingleRecord(recordId: string) {
