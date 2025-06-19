@@ -18,25 +18,27 @@ function Template1({ data, tableInstance, config }: Template1Props) {
         <p className="text-2xl font-bold sm:text-3xl md:text-4xl">
           {config.title}
         </p>
-        {config.canAddNewRecord && (
+        {config.canAddNewRecord ? (
           <Button variant={"default"} className="ms-auto cursor-pointer">
             Add New
           </Button>
+        ) : (
+          <span></span>
         )}
       </div>
 
       <div className="flex w-full items-center justify-center">
-        <div className="overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
+        <div className="max-h-[500px] overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
           <table className="relative">
-            <thead className="sticky top-0 z-10">
+            <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
               {tableInstance.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
+                <tr key={headerGroup.id} className="border-b">
                   {headerGroup.headers.map((header) => {
                     return (
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className={`text-table-header border-b p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3`}
+                        className={`text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3`}
                       >
                         {flexRender(
                           header.column.columnDef.header,

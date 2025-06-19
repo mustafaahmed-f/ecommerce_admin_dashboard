@@ -35,14 +35,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} max-w-screen flex flex-col min-h-screen antialiased`}
+        className={`${inter.variable} flex min-h-screen max-w-screen flex-col antialiased`}
       >
         <Providers defaultOpen={defaultOpen}>
           <ReactQueryDevtools initialIsOpen={false} />
           <SideBar />
-          <div className="flex flex-col flex-grow">
+          <div className="flex flex-grow flex-col">
             <Header />
-            <main className="md:p-12 sm:p-10 p-9  flex bg-gradient-to-b from-primary-foreground to-white flex-grow overflow-hidden overflow-x-auto pb-2  max-sm:px-2 sm:pt-0">
+            <main className="from-primary-foreground flex flex-grow overflow-hidden overflow-x-auto bg-gradient-to-b to-white p-9 sm:p-10 md:p-12">
               {children}
             </main>
           </div>

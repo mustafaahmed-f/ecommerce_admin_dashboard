@@ -17,7 +17,10 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "Title",
       cell: (info) =>
         hasDetails ? (
-          <Link href={`/view/${module}/details/${info.row.original.productId}`}>
+          <Link
+            href={`/view/${module}/details/${info.row.original.productId}`}
+            className="hover:underline"
+          >
             {info.getValue()}
           </Link>
         ) : (
@@ -32,7 +35,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
           height={50}
           src={info.getValue()}
           alt="Product"
-          className="object-cover rounded mx-auto"
+          className="mx-auto rounded object-cover"
         />
       ),
     }),
@@ -62,7 +65,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: (info) => (
         <div className="flex w-full flex-col items-center justify-start gap-[2px] sm:gap-3">
           <p
-            className={`text-sm text-textGrey ${
+            className={`text-textGrey text-sm ${
               info.row.original.discount !== 0 && "line-through"
             } sm:text-base`}
           >
