@@ -4,6 +4,7 @@ import { flexRender, type Table } from "@tanstack/react-table";
 import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "../../ui/button";
 import ShadcnPagination from "../../general/ShadcnPagination";
+import Link from "next/link";
 
 interface Template1Props {
   data: any;
@@ -21,11 +22,9 @@ function Template1({
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const size = parseInt(params.get("pageSize") ?? "10");
-  console.log("additionalInfo : ", additionalInfo);
-  console.log("size : ", size);
   let count = Math.ceil(additionalInfo / (size ?? 10));
-  console.log("Count : ", count);
-  // const { module } = useParams();
+
+  const { module } = useParams();
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
       <div className="flex w-full items-center justify-between">
@@ -34,7 +33,7 @@ function Template1({
         </p>
         {config.canAddNewRecord ? (
           <Button variant={"default"} className="ms-auto cursor-pointer">
-            Add New
+            <Link href={`/view/${module}/new`}>Add New</Link>
           </Button>
         ) : (
           <span></span>
