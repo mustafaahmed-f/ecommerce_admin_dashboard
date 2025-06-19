@@ -10,6 +10,7 @@ import {
 import DropListField from "./formFields/DropListField";
 import PhoneInputField from "./formFields/PhoneInputField";
 import TextInputField from "./formFields/TextInputField";
+import QuantityControl from "./formFields/QuantityControl";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -37,6 +38,19 @@ function FormRenderer<T extends FieldValues>({
           case "dropdown":
             return (
               <DropListField<T>
+                {...field}
+                key={field.name}
+                watch={watch}
+                setValue={setValue}
+                trigger={trigger}
+                register={register}
+                errors={errors}
+              />
+            );
+
+          case "quantity":
+            return (
+              <QuantityControl<T>
                 {...field}
                 key={field.name}
                 watch={watch}

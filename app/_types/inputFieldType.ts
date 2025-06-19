@@ -1,7 +1,14 @@
 import { FieldValues, Path } from "react-hook-form";
 
 export interface inputFieldType<T extends FieldValues> {
-  type: "email" | "text" | "phone" | "dropdown" | "password";
+  type:
+    | "email"
+    | "text"
+    | "phone"
+    | "dropdown"
+    | "password"
+    | "quantity"
+    | "number";
   name: Path<T>;
   lable: string;
   fullWidth: boolean;
