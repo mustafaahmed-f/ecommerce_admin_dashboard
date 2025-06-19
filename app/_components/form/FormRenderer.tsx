@@ -2,15 +2,14 @@ import { inputFieldType } from "@/app/_types/inputFieldType";
 import {
   Control,
   FieldValues,
-  Path,
   UseFormRegister,
   UseFormSetValue,
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import TextInputField from "./formFields/TextInputField";
 import DropListField from "./formFields/DropListField";
 import PhoneInputField from "./formFields/PhoneInputField";
+import TextInputField from "./formFields/TextInputField";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -32,7 +31,7 @@ function FormRenderer<T extends FieldValues>({
   control,
 }: FormRendererProps<T>) {
   return (
-    <div className="grid w-full grid-cols-2 gap-x-2 gap-y-3">
+    <div className="grid w-full grid-cols-2 gap-x-4 gap-y-3">
       {fields.map((field: inputFieldType<T>) => {
         switch (field.type) {
           case "dropdown":

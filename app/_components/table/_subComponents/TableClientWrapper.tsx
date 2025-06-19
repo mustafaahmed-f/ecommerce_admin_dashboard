@@ -5,17 +5,17 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Product } from "@/app/_features/products/types/productType";
 import { Column } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
-import Spinner from "./Spinner";
+import Spinner from "../../general/Spinner";
 
-interface ClientWrapperProps {
+interface TableClientWrapperProps {
   data: any[];
   additionalInfo?: any;
 }
 
-export default function ClientWrapper({
+export default function TableClientWrapper({
   data,
   additionalInfo,
-}: ClientWrapperProps) {
+}: TableClientWrapperProps) {
   const { module } = useParams();
   const [TableComponent, setTableComponent] =
     useState<React.ComponentType<any> | null>(null);

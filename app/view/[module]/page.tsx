@@ -1,15 +1,15 @@
-import ClientWrapper from "@/app/_components/general/ClientWrapper";
 import ModuleNotFound from "@/app/_components/general/ModuleNotFound";
+import TableClientWrapper from "@/app/_components/table/_subComponents/TableClientWrapper";
 import { ModulesSet } from "@/app/_utils/constants/ModulesSet";
 
 interface PageProps {
   params: Promise<any>;
-  searchParams: any;
+  searchParams: Promise<any>;
 }
 
 async function Page({ params, searchParams }: PageProps) {
   const { module } = await params;
-  const { page, pageSize } = searchParams;
+  const { page, pageSize } = await searchParams;
   if (!ModulesSet.has(module)) return <ModuleNotFound />;
   const apis = await import(`@/app/_features/${module}/services/${module}APIs`);
   const { result: data, additionalInfo } = await apis.getAllRecords({
@@ -17,7 +17,7 @@ async function Page({ params, searchParams }: PageProps) {
     pageSize: pageSize ?? 10,
   });
 
-  return <ClientWrapper data={data} additionalInfo={additionalInfo} />;
+  return <TableClientWrapper data={data} additionalInfo={additionalInfo} />;
 }
 
 export default Page;

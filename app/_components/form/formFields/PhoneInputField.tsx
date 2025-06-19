@@ -1,4 +1,3 @@
-import { Input } from "@/app/_components/shadcn/input";
 import {
   Control,
   Controller,
@@ -8,7 +7,8 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import { inputFieldType } from "../_types/inputFieldType";
+import { Input } from "../../ui/input";
+import { inputFieldType } from "@/app/_types/inputFieldType";
 
 interface PhoneInputFieldProps<T extends FieldValues>
   extends inputFieldType<T> {
