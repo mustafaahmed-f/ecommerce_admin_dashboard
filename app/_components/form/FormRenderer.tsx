@@ -11,6 +11,7 @@ import DropListField from "./formFields/DropListField";
 import PhoneInputField from "./formFields/PhoneInputField";
 import TextInputField from "./formFields/TextInputField";
 import QuantityControl from "./formFields/QuantityControl";
+import TextArea from "./formFields/TextArea";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -75,6 +76,19 @@ function FormRenderer<T extends FieldValues>({
               />
             );
 
+          case "TextArea":
+            return (
+              <TextArea<T>
+                {...field}
+                key={field.name}
+                watch={watch}
+                setValue={setValue}
+                trigger={trigger}
+                register={register}
+                errors={errors}
+              />
+            );
+
           default:
             return (
               <TextInputField<T>
@@ -85,7 +99,6 @@ function FormRenderer<T extends FieldValues>({
                 trigger={trigger}
                 register={register}
                 errors={errors}
-                isPassword={field.type === "password"}
               />
             );
         }

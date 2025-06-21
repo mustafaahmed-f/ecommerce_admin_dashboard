@@ -28,14 +28,7 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       required: true,
       placeholder: "Enter product price",
     },
-    {
-      type: "text",
-      name: "description",
-      lable: "Description",
-      fullWidth: false,
-      required: true,
-      placeholder: "Enter product description",
-    },
+
     {
       type: "text",
       name: "brand",
@@ -131,5 +124,13 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter available stock (optional)",
+    },
+    {
+      type: "TextArea",
+      name: "description",
+      lable: "Description",
+      fullWidth: true,
+      required: true,
+      placeholder: "Enter product description",
     },
   ];

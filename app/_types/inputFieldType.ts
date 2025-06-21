@@ -6,9 +6,9 @@ export interface inputFieldType<T extends FieldValues> {
     | "text"
     | "phone"
     | "dropdown"
-    | "password"
     | "quantity"
-    | "number";
+    | "number"
+    | "TextArea";
   name: Path<T>;
   lable: string;
   fullWidth: boolean;
