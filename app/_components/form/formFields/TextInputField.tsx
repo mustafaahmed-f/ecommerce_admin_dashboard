@@ -28,7 +28,6 @@ function TextInputField<T extends FieldValues>({
   fullWidth,
   required,
   placeholder,
-  register,
   trigger,
   setValue,
   watch,
