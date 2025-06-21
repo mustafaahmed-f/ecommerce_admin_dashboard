@@ -12,14 +12,7 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       required: true,
       placeholder: "Enter product title",
     },
-    {
-      type: "text",
-      name: "image",
-      lable: "Image URL",
-      fullWidth: false,
-      required: true,
-      placeholder: "Enter image URL",
-    },
+
     {
       type: "text",
       name: "price",
@@ -27,6 +20,7 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: true,
       placeholder: "Enter product price",
+      isNumber: true,
     },
 
     {
@@ -133,5 +127,13 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: true,
       required: true,
       placeholder: "Enter product description",
+    },
+    {
+      type: "image",
+      name: "image",
+      lable: "Image URL",
+      fullWidth: false,
+      required: true,
+      placeholder: "Enter image URL",
     },
   ];

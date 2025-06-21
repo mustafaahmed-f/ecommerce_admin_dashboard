@@ -1,5 +1,5 @@
 import { inputFieldType } from "@/app/_types/inputFieldType";
-import { useState } from "react";
+import { getErrObject } from "@/app/_utils/helperMethods/getErrObject";
 import {
   FieldValues,
   PathValue,
@@ -8,10 +8,7 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from "react-hook-form";
-import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
-import { getErrObject } from "@/app/_utils/helperMethods/getErrObject";
-import { getFullAddress } from "@/app/_utils/helperMethods/getAddress";
 
 interface TextInputFieldProps<T extends FieldValues> extends inputFieldType<T> {
   register: UseFormRegister<T>;
@@ -51,11 +48,12 @@ function TextInputField<T extends FieldValues>({
         id={name}
         type={isNumber ? "number" : "text"}
         placeholder={placeholder}
-        value={watchedValue}
+        value={watchedValue ?? ""}
         onChange={(e: any) => {
           if (isNumber && e.target.value === "") return;
           if (
             isNumber &&
+            name === "discount" &&
             (parseInt(e.target.value) < 0 || parseInt(e.target.value) > 100)
           )
             return;

@@ -12,6 +12,7 @@ import PhoneInputField from "./formFields/PhoneInputField";
 import TextInputField from "./formFields/TextInputField";
 import QuantityControl from "./formFields/QuantityControl";
 import TextArea from "./formFields/TextArea";
+import ImageUploadField from "./formFields/ImageUploadField";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -87,6 +88,19 @@ function FormRenderer<T extends FieldValues>({
                 register={register}
                 errors={errors}
                 isNumber={field.isNumber ?? false}
+              />
+            );
+
+          case "image":
+            return (
+              <ImageUploadField<T>
+                {...field}
+                key={field.name}
+                watch={watch}
+                setValue={setValue}
+                trigger={trigger}
+                register={register}
+                errors={errors}
               />
             );
 

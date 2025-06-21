@@ -6,13 +6,25 @@ import {
 } from "@/app/_utils/helperMethods/validationErrorMessages";
 import * as yup from "yup";
 
+const MAX_IMAGE_SIZE_MB = 1;
+const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+
 export const validations = yup.object({
   title: yup.string().required(requiredFieldMsg("Title")),
 
   image: yup
-    .string()
-    .url(invalidUrlMsg())
-    .required(requiredFieldMsg("Image URL")),
+    .mixed<File>()
+    .required("Image is required")
+    .test("fileType", "Only image files are allowed", (value) => {
+      return value instanceof File && value.type.startsWith("image/");
+    })
+    .test(
+      "fileSize",
+      `Image must be smaller than ${MAX_IMAGE_SIZE_MB}MB`,
+      (value) => {
+        return value instanceof File && value.size <= MAX_IMAGE_SIZE_BYTES;
+      },
+    ),
 
   price: yup
     .number()

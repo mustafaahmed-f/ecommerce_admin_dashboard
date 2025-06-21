@@ -8,7 +8,8 @@ export interface inputFieldType<T extends FieldValues> {
     | "dropdown"
     | "quantity"
     | "number"
-    | "TextArea";
+    | "TextArea"
+    | "image";
   name: Path<T>;
   lable: string;
   fullWidth: boolean;
