@@ -1,11 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Product } from "@/app/_features/products/types/productType";
 import { Column } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
 import Spinner from "../../general/Spinner";
+import { configType } from "@/app/_types/configType";
 
 interface TableClientWrapperProps {
   data: any[];
@@ -20,7 +25,7 @@ export default function TableClientWrapper({
   const [TableComponent, setTableComponent] =
     useState<React.ComponentType<any> | null>(null);
   const [columns, setColumns] = useState<Column<any>[]>([]);
-  const [config, setConfig] = useState<any>(null);
+  const [config, setConfig] = useState<configType<any> | null>(null);
 
   useEffect(() => {
     const loadDependencies = async () => {
@@ -52,6 +57,8 @@ export default function TableClientWrapper({
     columns: useMemo(() => columns, [columns]),
     data,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: config?.backendPagination ? true : false,
   });
 
   if (!TableComponent) {

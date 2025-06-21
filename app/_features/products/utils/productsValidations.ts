@@ -40,5 +40,5 @@ export const validations = yup.object({
 
   discount: yup.number().default(0).min(0, "Discount cannot be negative"),
 
-  stock: yup.number().default(10).min(0, "Stock cannot be negative"),
+  stock: yup.number().min(0, "Stock cannot be negative"),
 });

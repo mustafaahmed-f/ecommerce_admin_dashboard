@@ -34,36 +34,49 @@ function QuantityControl<T extends FieldValues>({
   watch,
   setValue,
   trigger,
+  fullWidth,
 }: QuantityControlProps<T>) {
   const errObj = getErrObject<T>(errors, name);
-  const params = useParams();
 
-  function set<P extends Path<T>>(path: P, value: PathValue<T, P>) {
-    setValue(path, value);
-  }
+  const quantityValue = watch(name);
 
-  const quantityValue = watch("products.0.quantity" as Path<T>);
+  const handleIncrement = () => {
+    if (quantityValue) {
+      setValue(
+        name,
+        ((quantityValue as number) + 1) as PathValue<T, typeof name>,
+      );
+      trigger(name);
+    }
+  };
 
-  function handlePaymentChange(quantity: number) {}
-
-  const handleIncrement = () => {};
-
-  const handleDecrement = () => {};
+  const handleDecrement = () => {
+    if (quantityValue) {
+      setValue(
+        name,
+        ((quantityValue as number) - 1) as PathValue<T, typeof name>,
+      );
+      trigger(name);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "" || e.target.value === "0") return;
 
     if (/^\d*$/.test(e.target.value)) {
+      setValue(name, parseInt(e.target.value) as PathValue<T, typeof name>);
+      trigger(name);
     }
   };
 
   return (
-    <div className={`col-span-2 flex justify-start`}>
+    <div
+      className={`flex flex-col items-start ${
+        fullWidth ? "col-span-2" : "col-span-1"
+      } w-full`}
+    >
       <div className="flex w-fit flex-col gap-1">
-        <label
-          htmlFor={name}
-          className="mb-1 text-sm font-medium text-gray-700"
-        >
+        <label htmlFor={name} className="text-sm font-medium text-gray-700">
           {lable}
           {required && <span className="ms-1 text-red-500">*</span>}
         </label>
