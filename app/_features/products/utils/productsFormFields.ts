@@ -116,6 +116,7 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter discount (optional)",
+      isNumber: true,
     },
     {
       type: "quantity",

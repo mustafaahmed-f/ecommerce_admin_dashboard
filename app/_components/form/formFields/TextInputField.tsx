@@ -19,6 +19,7 @@ interface TextInputFieldProps<T extends FieldValues> extends inputFieldType<T> {
   watch: UseFormWatch<T>;
   setValue: UseFormSetValue<T>;
   trigger: UseFormTrigger<T>;
+  isNumber?: boolean;
 }
 
 function TextInputField<T extends FieldValues>({
@@ -31,6 +32,7 @@ function TextInputField<T extends FieldValues>({
   setValue,
   watch,
   errors,
+  isNumber = false,
 }: TextInputFieldProps<T>) {
   const watchedValue: PathValue<T, typeof name> = watch(name);
   const errorObj = getErrObject<T>(errors, name);
@@ -47,11 +49,18 @@ function TextInputField<T extends FieldValues>({
       </label>
       <Input
         id={name}
-        type="text"
+        type={isNumber ? "number" : "text"}
         placeholder={placeholder}
-        value={watchedValue || ""}
+        value={watchedValue}
         onChange={(e: any) => {
-          setValue(name, e.target.value as PathValue<T, typeof name>, {
+          if (isNumber && e.target.value === "") return;
+          if (
+            isNumber &&
+            (parseInt(e.target.value) < 0 || parseInt(e.target.value) > 100)
+          )
+            return;
+          const value = isNumber ? +e.target.value : e.target.value;
+          setValue(name, value as PathValue<T, typeof name>, {
             shouldValidate: true,
           });
           trigger(name);

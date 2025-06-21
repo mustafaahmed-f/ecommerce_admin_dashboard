@@ -201,12 +201,13 @@
   border-top: 0;
   box-sizing: content-box;
   border-radius: 0 0 40% 40%;
-  -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
+  -webkit-mask:
+    linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
-  background: linear-gradient(var(--d, 0deg), var(--c2) 50%, #0000 0) bottom /
-      100% 205%,
+  background:
+    linear-gradient(var(--d, 0deg), var(--c2) 50%, #0000 0) bottom / 100% 205%,
     linear-gradient(var(--c2) 0 0) center/0 100%;
   background-repeat: no-repeat;
   animation: inherit;
@@ -232,10 +233,22 @@
 @keyframes l5-1 {
   10%,
   70% {
-    background-size: 100% 205%, var(--s, 0) 100%;
+    background-size:
+      100% 205%,
+      var(--s, 0) 100%;
   }
   70%,
   100% {
     background-position: top, center;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -16,4 +16,5 @@ export interface inputFieldType<T extends FieldValues> {
   placeholder: string;
   optionsMethod?: (dependency?: string) => Promise<string[]>;
   dependency?: Path<T>;
+  isNumber?: boolean;
 }
