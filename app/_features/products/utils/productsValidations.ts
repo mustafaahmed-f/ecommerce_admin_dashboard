@@ -1,44 +1,47 @@
+import {
+  invalidNumberMsg,
+  invalidUrlMsg,
+  positiveNumberMsg,
+  requiredFieldMsg,
+} from "@/app/_utils/helperMethods/validationErrorMessages";
 import * as yup from "yup";
 
 export const validations = yup.object({
-  title: yup.string().required("Title is required"),
+  title: yup.string().required(requiredFieldMsg("Title")),
 
   image: yup
     .string()
-    .url("Image must be a valid URL")
-    .required("Image is required"),
+    .url(invalidUrlMsg())
+    .required(requiredFieldMsg("Image URL")),
 
   price: yup
     .number()
-    .typeError("Price must be a number")
-    .required("Price is required"),
+    .typeError(invalidNumberMsg("Price"))
+    .required(requiredFieldMsg("Price")),
 
-  description: yup.string().required("Description is required"),
+  description: yup.string().required(requiredFieldMsg("Description")),
 
-  brand: yup.string().required("Brand is required"),
+  brand: yup.string().required(requiredFieldMsg("Brand")),
 
-  model: yup.string().required("Model is required"),
+  model: yup.string().required(requiredFieldMsg("Model")),
 
   color: yup.string().nullable(),
 
   size: yup.string().nullable(),
 
-  ram: yup.number().nullable().typeError("RAM must be a number"),
+  ram: yup.number().nullable().typeError(invalidNumberMsg("RAM")),
 
-  power: yup.number().nullable().typeError("Power must be a number"),
+  power: yup.number().nullable().typeError(invalidNumberMsg("Power")),
 
-  fps: yup.number().nullable().typeError("FPS must be a number"),
+  fps: yup.number().nullable().typeError(invalidNumberMsg("FPS")),
 
-  soundOutput: yup
-    .number()
-    .nullable()
-    .typeError("Sound Output must be a number"),
+  soundOutput: yup.number().nullable().typeError(invalidNumberMsg("Sound")),
 
-  screenSize: yup.number().nullable().typeError("Screen Size must be a number"),
+  screenSize: yup.number().nullable().typeError(invalidNumberMsg("Screen")),
 
-  category: yup.string().required("Category is required"),
+  category: yup.string().required(requiredFieldMsg("Category")),
 
-  discount: yup.number().default(0).min(0, "Discount cannot be negative"),
+  discount: yup.number().default(0).min(0, positiveNumberMsg("Discount")),
 
-  stock: yup.number().min(0, "Stock cannot be negative"),
+  stock: yup.number().min(0, positiveNumberMsg("Stock")),
 });

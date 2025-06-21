@@ -26,8 +26,12 @@ export function invalidDateMsg(): string[] {
   return ["Date must be in the future", "Invalid date format"];
 }
 
-export function invalidNumberMsg(): string {
-  return `Invalid number format`;
+export function invalidNumberMsg(field: string): string {
+  return `Invalid number format for field : ${field}`;
+}
+
+export function positiveNumberMsg(field: string): string {
+  return `${field} should be positive`;
 }
 
 export function invalidUrlMsg(): string {
