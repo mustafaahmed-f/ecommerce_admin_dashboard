@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get("page") ?? "1";
     const size = searchParams.get("size") ?? "10";
+    const searchTerm = searchParams.get("searchTerm") ?? "";
 
     //   const category = searchParams.get("category");
     //   const brand = searchParams.get("brand");
@@ -20,7 +21,8 @@ export async function GET(request: NextRequest) {
     //   const priceMin = searchParams.get("priceMin");
     //   const priceMax = searchParams.get("priceMax");
 
-    //   let filter: any = {};
+    let filter: any = {};
+    if (searchTerm) filter.title = { $regex: searchTerm, $options: "i" };
     //   if (category) filter.category = category; // Directly filtering by category name
     //   if (brand) filter.brand = { $in: brand.split("/") }; // Filtering by multiple brand names
     //   if (color) filter.color = { $in: color.split("/") };
@@ -38,9 +40,12 @@ export async function GET(request: NextRequest) {
       // priceMax,
     };
 
-    const totalProducts = await productsModel.countDocuments();
+    const totalProducts = await productsModel.countDocuments(filter);
 
-    const apiFeatureInstance = new apiFeatures(productsModel.find(), queryObj)
+    const apiFeatureInstance = new apiFeatures(
+      productsModel.find(filter),
+      queryObj,
+    )
       .pagination()
       .sort();
 
@@ -57,12 +62,12 @@ export async function GET(request: NextRequest) {
       },
       {
         status: 200,
-      }
+      },
     );
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error?.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

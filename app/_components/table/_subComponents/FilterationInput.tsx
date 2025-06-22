@@ -1,0 +1,44 @@
+import { useRef, useState } from "react";
+import { Input } from "../../ui/input";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+interface FilterationInputProps {
+  backendPagination?: boolean;
+}
+
+function FilterationInput({ backendPagination }: FilterationInputProps) {
+  const timerOut = useRef<NodeJS.Timeout | null>(null);
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const { 0: inputValue, 1: setInputValue } = useState<string>("");
+  function handleFiltration(e: React.ChangeEvent<HTMLInputElement>) {
+    setInputValue(e.target.value);
+    if (backendPagination) {
+      clearTimeout(timerOut.current!);
+      timerOut.current = setTimeout(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set("searchTerm", e.target.value);
+        router.replace(`${pathName}?${params.toString()}`);
+      }, 1000);
+      //   const params = new URLSearchParams(searchParams);
+      //   params.set("page", page.toString());
+      //   router.replace(`${pathName}?${params.toString()}`);
+    } else {
+      //// handle client side filtration
+    }
+  }
+  return (
+    <div className="mb-4 flex w-full items-center justify-end">
+      <Input
+        id="filterationInput"
+        placeholder="Search ..."
+        onChange={handleFiltration}
+        value={inputValue}
+        className="max-w-[200px]"
+      />
+    </div>
+  );
+}
+
+export default FilterationInput;

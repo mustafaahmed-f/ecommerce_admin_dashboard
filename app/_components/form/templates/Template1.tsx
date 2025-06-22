@@ -68,7 +68,12 @@ function Template1<T extends AnyObjectSchema>({
           control={methods.control}
         />
         <div className="mt-5 flex items-center justify-end px-1">
-          <Button variant="secondary" type="submit" disabled={!isValid}>
+          <Button
+            variant="secondary"
+            className="bg-primary hover:bg-primary/70 cursor-pointer"
+            type="submit"
+            disabled={!isValid}
+          >
             Add New
           </Button>
         </div>

@@ -6,6 +6,7 @@ import { Button } from "../../ui/button";
 import ShadcnPagination from "../../general/ShadcnPagination";
 import Link from "next/link";
 import { configType } from "@/app/_types/configType";
+import FilterationInput from "../_subComponents/FilterationInput";
 
 interface Template1Props {
   data: any;
@@ -45,7 +46,8 @@ function Template1({
         )}
       </div>
 
-      <div className="flex w-full items-center justify-center">
+      <div className="w-full">
+        <FilterationInput backendPagination={config.backendPagination} />
         <div className="max-h-[600px] w-full overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">

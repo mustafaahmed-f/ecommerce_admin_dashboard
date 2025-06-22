@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -63,7 +64,9 @@ export default function TableClientWrapper({
     data,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     manualPagination: config?.backendPagination ? true : false,
+    manualFiltering: config?.backendPagination ? true : false,
     pageCount,
     state: {
       pagination,
