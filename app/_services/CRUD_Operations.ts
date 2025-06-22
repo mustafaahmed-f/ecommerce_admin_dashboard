@@ -2,6 +2,24 @@ import { apiResponseType, crudResponseType } from "../_types/apiResponseType";
 
 const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
+export async function _getEveryRecord(_APIEndpointName: string) {
+  //// This method is used to get all records from table and apply api feature on the client side
+  const res = await fetch(`${mainURL}/${_APIEndpointName}`);
+
+  if (!res.ok) throw new Error("Failed getting records");
+
+  const jsonResponse: apiResponseType = await res.json();
+
+  if (!jsonResponse.success) {
+    throw new Error(jsonResponse.error || "Unknown error from API");
+  }
+
+  return {
+    result: jsonResponse.result,
+    additionalInfo: jsonResponse.additionalInfo ?? null,
+  };
+}
+
 export async function _getAllRecords({
   _APIEndpointName,
   page = 1,
@@ -14,7 +32,7 @@ export async function _getAllRecords({
   searchTerm?: string;
 }): Promise<crudResponseType> {
   const res = await fetch(
-    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`
+    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`,
   );
 
   if (!res.ok) throw new Error("Failed getting records");
@@ -39,7 +57,7 @@ export async function _getSingleRecord({
   recordId: string;
 }): Promise<crudResponseType> {
   const res = await fetch(
-    `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`
+    `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
   );
 
   if (!res.ok) throw new Error("Failed getting record");
@@ -67,7 +85,7 @@ export async function _deleteSingleRecord({
     `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
     {
       method: "DELETE",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed deleting record");
@@ -98,7 +116,7 @@ export async function _updateSingleRecord({
     {
       method: "PUT",
       body: JSON.stringify(data),
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed updating record");

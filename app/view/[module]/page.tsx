@@ -1,5 +1,6 @@
 import ModuleNotFound from "@/app/_components/general/ModuleNotFound";
 import TableClientWrapper from "@/app/_components/table/_subComponents/TableClientWrapper";
+import { configType } from "@/app/_types/configType";
 import { ModulesSet } from "@/app/_utils/constants/ModulesSet";
 
 interface PageProps {
@@ -12,10 +13,18 @@ async function Page({ params, searchParams }: PageProps) {
   const { page, pageSize } = await searchParams;
   if (!ModulesSet.has(module)) return <ModuleNotFound />;
   const apis = await import(`@/app/_features/${module}/services/${module}APIs`);
-  const { result: data, additionalInfo } = await apis.getAllRecords({
-    page: page ?? 1,
-    pageSize: pageSize ?? 10,
-  });
+  const configModule = await import(
+    `@/app/_features/${module}/${module}Config.ts`
+  );
+  const config: configType<any> = configModule.config;
+
+  const { result: data, additionalInfo } = config.backendPagination
+    ? await apis.getAllRecords({
+        page: page ?? 1,
+        pageSize: pageSize ?? 10,
+        searchTerm: "",
+      })
+    : await apis.getAllRecords({});
 
   return <TableClientWrapper data={data} additionalInfo={additionalInfo} />;
 }

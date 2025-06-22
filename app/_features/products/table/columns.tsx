@@ -89,7 +89,6 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: ({ row }) => (
         <ActionsSection recordId={String(row.original.productId)} />
       ),
-      // cell:<span>edit</span>
     }),
   ];
 };

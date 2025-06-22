@@ -52,12 +52,12 @@ function ActionsSection({ recordId }: ActionsSectionProps) {
   return (
     <div
       className={`flex items-center justify-center gap-1 ${
-        deleteMutation.isPending ? "opacity-65 pointer-events-none" : ""
+        deleteMutation.isPending ? "pointer-events-none opacity-65" : ""
       }`}
     >
       <Link
         href={`/view/${module}/edit/${recordId}`}
-        className="cursor-pointer hover:bg-muted-foreground py-2 px-3 rounded-lg"
+        className="hover:bg-muted-foreground cursor-pointer rounded-lg px-3 py-2"
       >
         <Pencil size={20} />
       </Link>
@@ -65,7 +65,7 @@ function ActionsSection({ recordId }: ActionsSectionProps) {
         <AlertDialogTrigger asChild>
           <Button
             variant="ghost"
-            className="cursor-pointer hover:bg-secondary"
+            className="hover:bg-secondary cursor-pointer"
             onClick={() => setOpen(true)}
           >
             <Trash />

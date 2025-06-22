@@ -26,6 +26,11 @@ export default function TableClientWrapper({
     useState<React.ComponentType<any> | null>(null);
   const [columns, setColumns] = useState<Column<any>[]>([]);
   const [config, setConfig] = useState<configType<any> | null>(null);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 10, //default page size
+  });
+  const pageCount = Math.ceil(data.length / pagination.pageSize); //// Used for client side pagination
 
   useEffect(() => {
     const loadDependencies = async () => {
@@ -59,6 +64,18 @@ export default function TableClientWrapper({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: config?.backendPagination ? true : false,
+    pageCount,
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    initialState: {
+      pagination: {
+        pageIndex: 0, //initial page index
+        pageSize: 10, //default page size
+      },
+    },
+    autoResetPageIndex: true,
   });
 
   if (!TableComponent) {
@@ -71,6 +88,7 @@ export default function TableClientWrapper({
       config={config}
       data={data}
       additionalInfo={additionalInfo}
+      pageCount={pageCount}
     />
   );
 }

@@ -1,6 +1,5 @@
 import {
   invalidNumberMsg,
-  invalidUrlMsg,
   positiveNumberMsg,
   requiredFieldMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
@@ -24,7 +23,8 @@ export const validations = yup.object({
       (value) => {
         return value instanceof File && value.size <= MAX_IMAGE_SIZE_BYTES;
       },
-    ),
+    )
+    .nullable(),
 
   price: yup
     .number()
