@@ -50,7 +50,8 @@ function Template1<T extends AnyObjectSchema>({
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
       <p className="w-full text-2xl font-bold sm:text-3xl md:text-4xl">
-        {title}
+        {`${title} : `}{" "}
+        <span className="font-normal">{`${isEditMode ? "Edit Record" : "Add New Record"}`}</span>
       </p>
 
       <form
@@ -66,7 +67,7 @@ function Template1<T extends AnyObjectSchema>({
           errors={errors}
           control={methods.control}
         />
-        <div className="mt-5 flex items-center justify-end px-1 sm:px-4 md:px-8">
+        <div className="mt-5 flex items-center justify-end px-1">
           <Button variant="secondary" type="submit" disabled={!isValid}>
             Add New
           </Button>
