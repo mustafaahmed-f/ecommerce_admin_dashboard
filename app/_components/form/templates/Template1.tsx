@@ -8,7 +8,7 @@ import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { Button } from "../../ui/button";
 import FormRenderer from "../FormRenderer";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface Template1Props<T extends AnyObjectSchema> {
   defaultValues: InferFormValues<T>;
@@ -41,6 +41,9 @@ function Template1<T extends AnyObjectSchema>({
     register,
     // getValues,
   } = methods;
+
+  const { module: moduleName, id } = useParams();
+  const isEditMode = !!id;
 
   async function onSubmit(data: InferFormValues<T>) {}
 

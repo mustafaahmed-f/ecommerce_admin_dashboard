@@ -30,6 +30,7 @@ function TextInputField<T extends FieldValues>({
   watch,
   errors,
   isNumber = false,
+  isNullable = false,
 }: TextInputFieldProps<T>) {
   const watchedValue: PathValue<T, typeof name> = watch(name);
   const errorObj = getErrObject<T>(errors, name);
@@ -50,13 +51,27 @@ function TextInputField<T extends FieldValues>({
         placeholder={placeholder}
         value={watchedValue ?? ""}
         onChange={(e: any) => {
-          if (isNumber && e.target.value === "") return;
-          if (
-            isNumber &&
-            name === "discount" &&
-            (parseInt(e.target.value) < 0 || parseInt(e.target.value) > 100)
-          )
-            return;
+          if (isNumber) {
+            if (
+              name === "discount" &&
+              (parseInt(e.target.value) < 0 || parseInt(e.target.value) > 100)
+            ) {
+              return;
+            } else if (!isNullable && e.target.value === "") {
+              setValue(name, 0 as PathValue<T, typeof name>, {
+                shouldValidate: true,
+              });
+              return;
+            } else if (
+              isNullable &&
+              (e.target.value === "" || e.target.value === "0")
+            ) {
+              setValue(name, null as PathValue<T, typeof name>, {
+                shouldValidate: true,
+              });
+              return;
+            }
+          }
           const value = isNumber ? +e.target.value : e.target.value;
           setValue(name, value as PathValue<T, typeof name>, {
             shouldValidate: true,

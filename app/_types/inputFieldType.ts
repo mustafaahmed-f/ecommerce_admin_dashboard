@@ -18,4 +18,5 @@ export interface inputFieldType<T extends FieldValues> {
   optionsMethod?: (dependency?: string) => Promise<string[]>;
   dependency?: Path<T>;
   isNumber?: boolean;
+  isNullable?: boolean; //// Used to allow empty fields for numerical input field ( as this is not allowed by default )
 }

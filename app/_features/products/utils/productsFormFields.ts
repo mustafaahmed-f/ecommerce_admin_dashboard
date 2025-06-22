@@ -54,6 +54,7 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter size (optional)",
+      isNullable: true,
     },
     {
       type: "text",
@@ -62,6 +63,8 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter RAM in GB (optional)",
+      isNumber: true,
+      isNullable: true,
     },
     {
       type: "text",
@@ -70,6 +73,8 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter power in watts (optional)",
+      isNumber: true,
+      isNullable: true,
     },
     {
       type: "text",
@@ -78,6 +83,8 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter FPS (optional)",
+      isNumber: true,
+      isNullable: true,
     },
     {
       type: "text",
@@ -86,6 +93,8 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter sound output in watts (optional)",
+      isNumber: true,
+      isNullable: true,
     },
     {
       type: "text",
@@ -94,6 +103,8 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       fullWidth: false,
       required: false,
       placeholder: "Enter screen size (optional)",
+      isNumber: true,
+      isNullable: true,
     },
     {
       type: "text",
