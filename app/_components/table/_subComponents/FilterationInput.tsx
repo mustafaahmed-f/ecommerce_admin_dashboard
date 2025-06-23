@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
+import { Button } from "../../ui/button";
 
 interface FilterationInputProps {
   backendPagination?: boolean;
@@ -42,6 +43,8 @@ function FilterationInput({
       }, 1000);
     } else {
       //// handle client side filtration
+      const tableColumn = tableInstance.getColumn(currentFilterColumn);
+      tableColumn?.setFilterValue(e.target.value);
     }
   }
 
@@ -49,6 +52,11 @@ function FilterationInput({
     if (backendPagination) {
     } else {
       //// handle client side filtration
+      setCurrentFilterColumn(column);
+      tableInstance.setColumnFilters([{ id: column, value: "" }]);
+      const tableColumn = tableInstance.getColumn(column);
+      tableColumn?.setFilterValue("");
+      setInputValue("");
     }
   }
 
@@ -58,13 +66,20 @@ function FilterationInput({
         <p className="text-sm font-semibold text-gray-700">Filter By:</p>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            {currentFilterColumn}
+            <Button
+              variant={"outline"}
+              className="flex cursor-pointer items-center gap-1 px-1 py-0.5 text-sm"
+            >
+              {currentFilterColumn}
+              <span className="text-xs">▼</span>
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {filtrationColumns.map((column) => (
               <DropdownMenuItem
                 key={column}
                 onClick={() => setFilterColumn(column)}
+                // className="cursor-pointer"
               >
                 {column}
               </DropdownMenuItem>

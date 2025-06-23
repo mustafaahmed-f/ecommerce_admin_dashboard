@@ -34,11 +34,7 @@ export default function TableClientWrapper({
     pageSize: 10, //default page size
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [currentFilterColumn, setCurrentFilterColumn] = useState<string>(
-    config?.defaultFiltrationColumn ?? "",
-  );
-
-  const pageCount = Math.ceil(data.length / pagination.pageSize); //// Used for client side pagination
+  const [currentFilterColumn, setCurrentFilterColumn] = useState<string>("");
 
   useEffect(() => {
     const loadDependencies = async () => {
@@ -57,6 +53,13 @@ export default function TableClientWrapper({
       ).default;
 
       setConfig(configModule.config);
+      setCurrentFilterColumn(configModule.config.defaultFiltrationColumn);
+      setColumnFilters([
+        {
+          id: configModule.config.defaultFiltrationColumn,
+          value: "",
+        },
+      ]);
       setColumns(
         columnsModule.generalColumns(configModule.config.hasDetails, module),
       );
@@ -76,8 +79,6 @@ export default function TableClientWrapper({
 
     manualPagination: config?.backendPagination ? true : false,
     manualFiltering: config?.backendPagination ? true : false,
-
-    pageCount,
 
     defaultColumn: {
       filterFn: "includesString",
@@ -109,7 +110,7 @@ export default function TableClientWrapper({
     config: config,
     data: data,
     additionalInfo: additionalInfo,
-    pageCount: pageCount,
+    pageSize: pagination.pageSize,
     currentFilterColumn: currentFilterColumn,
     setCurrentFilterColumn: setCurrentFilterColumn,
   };

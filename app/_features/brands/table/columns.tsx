@@ -15,7 +15,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       enableColumnFilter: false,
     }),
     columnHelper.accessor((row) => row._id, {
-      id: "id",
+      id: "_id",
       header: "ID",
       cell: (info) => <span className="w-fit">{info.getValue()}</span>,
       meta: { className: " text-center" },

@@ -6,7 +6,7 @@ export interface tableComponentPropsType {
   config: configType<any> | null;
   data: any;
   additionalInfo: any;
-  pageCount: number;
+  pageSize: number;
   currentFilterColumn: string;
   setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
 }

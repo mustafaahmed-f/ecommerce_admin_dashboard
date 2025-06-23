@@ -14,7 +14,7 @@ interface Template1Props {
   tableInstance: Table<any>;
   config: configType<any>;
   additionalInfo?: any;
-  pageCount: number;
+  pageSize: number;
   currentFilterColumn: string;
   setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -24,7 +24,7 @@ function Template1({
   tableInstance,
   config,
   additionalInfo,
-  pageCount,
+  pageSize,
   currentFilterColumn,
   setCurrentFilterColumn,
 }: Template1Props) {
@@ -33,7 +33,7 @@ function Template1({
   const size = parseInt(params.get("pageSize") ?? "10");
   let count = config.backendPagination
     ? Math.ceil(additionalInfo / (size ?? 10))
-    : pageCount;
+    : Math.ceil(tableInstance.getFilteredRowModel().rows.length / pageSize);
 
   const { module } = useParams();
 
