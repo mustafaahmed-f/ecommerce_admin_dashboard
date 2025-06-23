@@ -17,9 +17,15 @@ const typeIcons: Record<string, string> = {
 const args = process.argv.slice(2); // ['feat', 'auth', 'add login flow']
 const [type, scope, ...messageParts] = args;
 
+//// check if type is one of the keys of typeIcons:
+if (!Object.keys(typeIcons).includes(type)) {
+  console.log("❌ Invalid type:", type);
+  process.exit(1);
+}
+
 if (!type || !scope || messageParts.length === 0) {
   console.log(
-    `❌ Usage: ts-node scripts/generate-commit.ts <type> <scope> <message>`
+    `❌ Usage: ts-node scripts/generate-commit.ts <type> <scope> <message>`,
   );
   process.exit(1);
 }
