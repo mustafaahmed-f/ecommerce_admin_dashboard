@@ -7,6 +7,7 @@ import ShadcnPagination from "../../general/ShadcnPagination";
 import Link from "next/link";
 import { configType } from "@/app/_types/configType";
 import FilterationInput from "../_subComponents/FilterationInput";
+import { filtrationPropsType } from "../types/filtrationPropsType";
 
 interface Template1Props {
   data: any;
@@ -14,6 +15,8 @@ interface Template1Props {
   config: configType<any>;
   additionalInfo?: any;
   pageCount: number;
+  currentFilterColumn: string;
+  setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Template1({
@@ -22,6 +25,8 @@ function Template1({
   config,
   additionalInfo,
   pageCount,
+  currentFilterColumn,
+  setCurrentFilterColumn,
 }: Template1Props) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
@@ -31,8 +36,16 @@ function Template1({
     : pageCount;
 
   const { module } = useParams();
+
+  const filtrationProps: filtrationPropsType = {
+    backendPagination: config.backendPagination ?? false,
+    tableInstance,
+    currentFilterColumn,
+    setCurrentFilterColumn,
+  };
+
   return (
-    <section className="flex h-full min-w-full flex-col items-center gap-6 sm:gap-8">
+    <section className="flex h-full w-full min-w-full flex-col items-center gap-6 sm:gap-8">
       <div className="flex w-full items-center justify-between">
         <p className="text-2xl font-bold sm:text-3xl md:text-4xl">
           {config.title}
@@ -47,8 +60,8 @@ function Template1({
       </div>
 
       <div className="w-full">
-        <FilterationInput backendPagination={config.backendPagination} />
-        <div className="max-h-[600px] w-full overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
+        <FilterationInput {...filtrationProps} />
+        <div className="max-h-[600px] w-full overflow-x-scroll overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
               {tableInstance.getHeaderGroups().map((headerGroup) => (
@@ -72,6 +85,18 @@ function Template1({
             </thead>
 
             <tbody>
+              {/* If data array is empty, show no data message */}
+              {tableInstance.getRowModel().rows.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={tableInstance.getAllColumns().length}
+                    className="h-24 text-center align-middle"
+                  >
+                    No results.
+                  </td>
+                </tr>
+              )}
+
               {tableInstance.getRowModel().rows.map((row) => (
                 <tr key={row.id}>
                   {row.getAllCells().map((cell) => (

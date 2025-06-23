@@ -57,7 +57,7 @@ function SideBar({}: SideBarProps) {
   const sideBarItems = config.sideBar;
 
   return (
-    <Sidebar>
+    <Sidebar className="z-50">
       <SidebarHeader>
         <Link
           href={"/"}

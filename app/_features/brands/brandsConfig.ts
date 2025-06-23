@@ -15,4 +15,6 @@ export const config: configType<InferFormValues<typeof validations>> = {
   canAddNewRecord: true,
   backendPagination: false,
   hasDetails: false,
+  defaultFiltrationColumn: "title",
+  filtrationColumns: Object.keys(defaultValues),
 };

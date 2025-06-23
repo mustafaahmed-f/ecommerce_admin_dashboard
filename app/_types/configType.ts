@@ -12,4 +12,6 @@ export interface configType<T extends FieldValues> {
   backendPagination?: boolean;
   hasDetails?: boolean;
   canAddNewRecord: boolean;
+  defaultFiltrationColumn: string;
+  filtrationColumns: string[];
 }

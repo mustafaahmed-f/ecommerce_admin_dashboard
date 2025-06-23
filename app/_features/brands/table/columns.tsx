@@ -12,12 +12,14 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "No.",
       cell: (info) => <span className="w-fit">{info.row.index + 1}</span>,
       meta: { className: "max-w-[80px] text-center" },
+      enableColumnFilter: false,
     }),
     columnHelper.accessor((row) => row._id, {
       id: "id",
       header: "ID",
       cell: (info) => <span className="w-fit">{info.getValue()}</span>,
       meta: { className: " text-center" },
+      enableColumnFilter: false,
     }),
     columnHelper.accessor("title", {
       header: "Title",

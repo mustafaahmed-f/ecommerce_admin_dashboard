@@ -8,10 +8,18 @@ const columnHelper = createColumnHelper<Product>();
 
 export const generalColumns = (hasDetails?: boolean, module?: string) => {
   return [
+    columnHelper.accessor((row) => row._id, {
+      id: "id",
+      header: "ID",
+      cell: (info) => <span className="w-fit">{info.getValue()}</span>,
+      meta: { className: " text-center" },
+      enableColumnFilter: false,
+    }),
     columnHelper.accessor((row) => row.productId, {
       id: "productId",
-      header: "ID",
+      header: "Product ID",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableColumnFilter: false,
     }),
     columnHelper.accessor("title", {
       header: "Title",
@@ -38,6 +46,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
           className="mx-auto rounded object-cover"
         />
       ),
+      enableColumnFilter: false,
     }),
     columnHelper.accessor("category", {
       header: "Category",

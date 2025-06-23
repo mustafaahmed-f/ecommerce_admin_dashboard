@@ -1,12 +1,21 @@
 import { useRef, useState } from "react";
 import { Input } from "../../ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Table } from "@tanstack/react-table";
 
 interface FilterationInputProps {
   backendPagination?: boolean;
+  tableInstance: Table<any>;
+  currentFilterColumn: string;
+  setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function FilterationInput({ backendPagination }: FilterationInputProps) {
+function FilterationInput({
+  backendPagination,
+  tableInstance,
+  currentFilterColumn,
+  setCurrentFilterColumn,
+}: FilterationInputProps) {
   const timerOut = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
   const pathName = usePathname();
