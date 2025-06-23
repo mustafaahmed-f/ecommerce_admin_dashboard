@@ -2,12 +2,21 @@ import { useRef, useState } from "react";
 import { Input } from "../../ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Table } from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../ui/dropdown-menu";
 
 interface FilterationInputProps {
   backendPagination?: boolean;
   tableInstance: Table<any>;
   currentFilterColumn: string;
   setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
+  filtrationColumns: string[];
 }
 
 function FilterationInput({
@@ -15,6 +24,7 @@ function FilterationInput({
   tableInstance,
   currentFilterColumn,
   setCurrentFilterColumn,
+  filtrationColumns,
 }: FilterationInputProps) {
   const timerOut = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
@@ -34,8 +44,34 @@ function FilterationInput({
       //// handle client side filtration
     }
   }
+
+  function setFilterColumn(column: string) {
+    if (backendPagination) {
+    } else {
+      //// handle client side filtration
+    }
+  }
+
   return (
-    <div className="mb-4 flex w-full items-center justify-end">
+    <div className="mb-4 flex w-full flex-col items-center justify-center max-sm:flex-wrap max-sm:gap-4 sm:flex-row sm:justify-between">
+      <div className="flex items-center gap-1">
+        <p className="text-sm font-semibold text-gray-700">Filter By:</p>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            {currentFilterColumn}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {filtrationColumns.map((column) => (
+              <DropdownMenuItem
+                key={column}
+                onClick={() => setFilterColumn(column)}
+              >
+                {column}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <Input
         id="filterationInput"
         placeholder="Search ..."

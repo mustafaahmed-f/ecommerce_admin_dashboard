@@ -5,4 +5,5 @@ export interface filtrationPropsType {
   tableInstance: Table<any>;
   currentFilterColumn: string;
   setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
+  filtrationColumns: string[];
 }

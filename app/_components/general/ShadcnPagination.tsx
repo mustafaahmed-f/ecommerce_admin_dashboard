@@ -85,8 +85,8 @@ function ShadcnPagination({
   const pageRange = createPageRange();
 
   return (
-    <Pagination className="flex w-full justify-end">
-      <PaginationContent>
+    <Pagination className="flex w-full max-w-full justify-center sm:justify-end">
+      <PaginationContent className="flex max-w-full flex-wrap justify-center sm:justify-end">
         {showFirstLast && currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious

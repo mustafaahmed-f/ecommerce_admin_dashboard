@@ -8,17 +8,17 @@ const columnHelper = createColumnHelper<Product>();
 
 export const generalColumns = (hasDetails?: boolean, module?: string) => {
   return [
-    columnHelper.accessor((row) => row._id, {
-      id: "id",
-      header: "ID",
-      cell: (info) => <span className="w-fit">{info.getValue()}</span>,
-      meta: { className: " text-center" },
-      enableColumnFilter: false,
-    }),
     columnHelper.accessor((row) => row.productId, {
       id: "productId",
       header: "Product ID",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableColumnFilter: false,
+    }),
+    columnHelper.accessor((row) => row._id, {
+      id: "id",
+      header: "Database ID",
+      cell: (info) => <span>{info.getValue()}</span>,
+      meta: { className: " text-center" },
       enableColumnFilter: false,
     }),
     columnHelper.accessor("title", {
@@ -34,6 +34,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         ) : (
           <span>{info.getValue()}</span>
         ),
+      meta: { className: " text-center min-w-[200px]" },
     }),
     columnHelper.accessor("image", {
       header: "Image",

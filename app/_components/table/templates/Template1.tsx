@@ -39,13 +39,14 @@ function Template1({
 
   const filtrationProps: filtrationPropsType = {
     backendPagination: config.backendPagination ?? false,
+    filtrationColumns: config.filtrationColumns,
     tableInstance,
     currentFilterColumn,
     setCurrentFilterColumn,
   };
 
   return (
-    <section className="flex h-full w-full min-w-full flex-col items-center gap-6 sm:gap-8">
+    <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
       <div className="flex w-full items-center justify-between">
         <p className="text-2xl font-bold sm:text-3xl md:text-4xl">
           {config.title}
@@ -61,7 +62,7 @@ function Template1({
 
       <div className="w-full">
         <FilterationInput {...filtrationProps} />
-        <div className="max-h-[600px] w-full overflow-x-scroll overflow-y-auto rounded-2xl border-t bg-transparent px-3 shadow-lg">
+        <div className="max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen">
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
               {tableInstance.getHeaderGroups().map((headerGroup) => (

@@ -40,9 +40,9 @@ export default async function RootLayout({
         <Providers defaultOpen={defaultOpen}>
           <ReactQueryDevtools initialIsOpen={false} />
           <SideBar />
-          <div className="flex flex-grow flex-col">
+          <div className="flex max-w-full flex-grow flex-col">
             <Header />
-            <main className="from-primary-foreground flex flex-grow overflow-hidden overflow-x-auto bg-gradient-to-b to-white p-9 sm:p-10 md:p-12">
+            <main className="from-primary-foreground flex w-full max-w-full flex-grow bg-gradient-to-b to-white p-9 sm:p-10 md:p-12">
               {children}
             </main>
           </div>

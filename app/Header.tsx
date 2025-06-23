@@ -7,10 +7,10 @@ interface HeaderProps {}
 function Header({}: HeaderProps) {
   return (
     <header>
-      <div className="w-full p-5 flex items-center justify-between">
+      <div className="flex w-full items-center justify-between p-5">
         {/* <Button>SideBar</Button> */}
         <SidebarTrigger className="cursor-pointer" />
-        <div className="p-2 rounded-3xl flex items-center gap-4">
+        <div className="flex items-center gap-4 rounded-3xl p-2">
           <p>
             Welcome, <span className="font-semibold">Mustafa</span>
           </p>
