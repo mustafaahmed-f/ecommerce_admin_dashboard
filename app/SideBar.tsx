@@ -61,9 +61,11 @@ function SideBar({}: SideBarProps) {
       <SidebarHeader>
         <Link
           href={"/"}
-          className="text-center font-bold text-2xl hover:text-primary flex-row justify-center flex items-center gap-2"
+          className="hover:text-primary flex flex-row items-center justify-center gap-2 text-center text-2xl font-bold"
         >
-          <ShoppingBag />
+          <span className="text-primary">
+            <ShoppingBag />
+          </span>
           {config.title}
         </Link>
       </SidebarHeader>
@@ -91,7 +93,7 @@ function SideBar({}: SideBarProps) {
       <SidebarFooter>
         <Button
           variant={"outline"}
-          className=" cursor-pointer bg-secondary text-white"
+          className="bg-secondary cursor-pointer text-white"
         >
           Logout
         </Button>

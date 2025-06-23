@@ -21,9 +21,6 @@ function FilterationInput({ backendPagination }: FilterationInputProps) {
         params.set("searchTerm", e.target.value);
         router.replace(`${pathName}?${params.toString()}`);
       }, 1000);
-      //   const params = new URLSearchParams(searchParams);
-      //   params.set("page", page.toString());
-      //   router.replace(`${pathName}?${params.toString()}`);
     } else {
       //// handle client side filtration
     }
