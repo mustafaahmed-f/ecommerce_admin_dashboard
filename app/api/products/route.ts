@@ -12,32 +12,19 @@ export async function GET(request: NextRequest) {
     const page = searchParams.get("page") ?? "1";
     const size = searchParams.get("size") ?? "10";
     const searchTerm = searchParams.get("searchTerm") ?? "";
+    const searchField = searchParams.get("searchField") ?? "";
 
-    //   const category = searchParams.get("category");
-    //   const brand = searchParams.get("brand");
-    //   const model = searchParams.get("model");
-    //   const sort = searchParams.get("sort");
-    //   const color = searchParams.get("color");
-    //   const priceMin = searchParams.get("priceMin");
-    //   const priceMax = searchParams.get("priceMax");
+    console.log("Filter Field inside route :", searchField);
+    console.log("Search Term:", searchTerm);
 
     let filter: any = {};
-    if (searchTerm) filter.title = { $regex: searchTerm, $options: "i" };
-    //   if (category) filter.category = category; // Directly filtering by category name
-    //   if (brand) filter.brand = { $in: brand.split("/") }; // Filtering by multiple brand names
-    //   if (color) filter.color = { $in: color.split("/") };
-    //   if (priceMin) filter.price = { ...filter.price, $gte: parseFloat(priceMin) };
-    //   if (priceMax) filter.price = { ...filter.price, $lte: parseFloat(priceMax) };
+    if (searchField && searchTerm) {
+      filter[searchField] = { $regex: searchTerm, $options: "i" };
+    }
 
     const queryObj = {
       page: parseInt(page),
       size: parseInt(size),
-      // brand,
-      // model,
-      // sort,
-      // color,
-      // priceMin,
-      // priceMax,
     };
 
     const totalProducts = await productsModel.countDocuments(filter);

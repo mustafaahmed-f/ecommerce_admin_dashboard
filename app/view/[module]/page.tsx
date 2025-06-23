@@ -10,7 +10,7 @@ interface PageProps {
 
 async function Page({ params, searchParams }: PageProps) {
   const { module } = await params;
-  const { page, pageSize, searchTerm } = await searchParams;
+  const { page, pageSize, searchTerm, searchField } = await searchParams;
   if (!ModulesSet.has(module)) return <ModuleNotFound />;
   const apis = await import(`@/app/_features/${module}/services/${module}APIs`);
   const configModule = await import(
@@ -23,8 +23,11 @@ async function Page({ params, searchParams }: PageProps) {
         page: page ?? 1,
         pageSize: pageSize ?? 10,
         searchTerm: searchTerm ?? "",
+        searchField: searchField ?? "",
       })
     : await apis.getAllRecords({});
+
+  // console.log("data", data);
 
   return <TableClientWrapper data={data} additionalInfo={additionalInfo} />;
 }

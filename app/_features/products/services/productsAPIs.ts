@@ -12,16 +12,19 @@ export async function getAllRecords({
   page = 1,
   pageSize = 10,
   searchTerm = "",
+  searchField = "",
 }: {
   page: number;
   pageSize: number;
   searchTerm: string;
+  searchField: string;
 }) {
   return _getAllRecords({
     _APIEndpointName: APIendPoint,
     page,
     pageSize,
     searchTerm,
+    searchField,
   });
 }
 

@@ -39,8 +39,10 @@ function FilterationInput({
       timerOut.current = setTimeout(() => {
         const params = new URLSearchParams(searchParams);
         params.set("searchTerm", e.target.value);
+        params.set("searchField", currentFilterColumn);
+        params.set("page", "1");
         router.replace(`${pathName}?${params.toString()}`);
-      }, 1000);
+      }, 900);
     } else {
       //// handle client side filtration
       const tableColumn = tableInstance.getColumn(currentFilterColumn);
@@ -49,14 +51,19 @@ function FilterationInput({
   }
 
   function setFilterColumn(column: string) {
+    setInputValue("");
+    setCurrentFilterColumn(column);
     if (backendPagination) {
+      const params = new URLSearchParams(searchParams);
+      params.set("searchTerm", "");
+      params.set("searchField", column);
+      params.set("page", "1");
+      router.replace(`${pathName}?${params.toString()}`);
     } else {
       //// handle client side filtration
-      setCurrentFilterColumn(column);
       tableInstance.setColumnFilters([{ id: column, value: "" }]);
       const tableColumn = tableInstance.getColumn(column);
       tableColumn?.setFilterValue("");
-      setInputValue("");
     }
   }
 

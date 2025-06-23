@@ -25,14 +25,16 @@ export async function _getAllRecords({
   page = 1,
   pageSize = 10,
   searchTerm = "",
+  searchField = "",
 }: {
   _APIEndpointName: string;
   page?: number;
   pageSize?: number;
   searchTerm?: string;
+  searchField?: string;
 }): Promise<crudResponseType> {
   const res = await fetch(
-    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}`,
+    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}`,
   );
 
   if (!res.ok) throw new Error("Failed getting records");
