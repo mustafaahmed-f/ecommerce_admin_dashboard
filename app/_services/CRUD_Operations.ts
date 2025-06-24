@@ -72,13 +72,10 @@ export async function _getSingleRecord({
   _APIEndpointName: string;
   recordId: string;
 }): Promise<crudResponseType> {
-  const res = await fetch(
-    `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
-    {
-      //// Cache for one hour
-      next: { revalidate: 60 * 60 },
-    },
-  );
+  const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    //// Cache for one hour
+    next: { revalidate: 60 * 60 },
+  });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
@@ -106,12 +103,9 @@ export async function _deleteSingleRecord({
   _APIEndpointName: string;
   recordId: string;
 }): Promise<crudResponseType> {
-  const res = await fetch(
-    `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
-    {
-      method: "DELETE",
-    },
-  );
+  const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    method: "DELETE",
+  });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
@@ -141,13 +135,10 @@ export async function _updateSingleRecord({
   recordId: string;
   data: any;
 }): Promise<crudResponseType> {
-  const res = await fetch(
-    `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(data),
-    },
-  );
+  const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 

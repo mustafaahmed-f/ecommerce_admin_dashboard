@@ -10,7 +10,7 @@ async function page({ params }: pageProps) {
   const { module } = await params;
   if (!ModulesSet.has(module)) return <ModuleNotFound />;
 
-  return <FormClientWrapper />;
+  return <FormClientWrapper singleRecord={{}} />;
 }
 
 export default page;

@@ -31,15 +31,25 @@ function ImageUploadField<T extends FieldValues>({
   required,
   setValue,
   errors,
+  watch,
 }: ImageUploadFieldProps<T>) {
-  const [image, setImage] = useState<string | null>(null);
+  const watchedValue = watch(name);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    typeof watchedValue === "string" ? watchedValue : null, // ✅ Set initial preview from backend
+  );
+  const [originalImageUrl] = useState<string | null>(
+    typeof watchedValue === "string" ? watchedValue : null, // ✅ Save original image to restore later
+  );
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const onDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: File) => {
       setImageFile(file);
-      setImage(URL.createObjectURL(file));
+      setPreviewUrl(URL.createObjectURL(file));
       setValue(name, file as PathValue<T, typeof name>, {
         shouldValidate: true,
       });
@@ -55,7 +65,7 @@ function ImageUploadField<T extends FieldValues>({
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImage(reader.result as string);
+      setPreviewUrl(reader.result as string);
     };
     setImageFile(file);
     reader.readAsDataURL(file);
@@ -65,12 +75,17 @@ function ImageUploadField<T extends FieldValues>({
   }
 
   function handleRemoveImage() {
-    setImage(null);
+    // setImage(null);
     setImageFile(null);
+
+    setPreviewUrl(originalImageUrl);
+
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // ✅ clear input
     }
-    setValue(name, null as PathValue<T, typeof name>, { shouldValidate: true });
+    setValue(name, originalImageUrl as PathValue<T, typeof name>, {
+      shouldValidate: true,
+    });
   }
 
   function handleOpenUploader() {
@@ -105,7 +120,7 @@ function ImageUploadField<T extends FieldValues>({
               className="border-primary text-primary hover:text-primary cursor-pointer border-2"
               type="button"
             >
-              {image ? "Change Image" : "Upload Image"}
+              {previewUrl ? "Change Image" : "Upload Image"}
             </Button>
           </div>
           <div className="flex min-w-[220px] items-center gap-2 max-sm:flex-wrap sm:w-auto sm:min-w-[300px]">
@@ -119,10 +134,10 @@ function ImageUploadField<T extends FieldValues>({
             <Progress value={((imageFile?.size ?? 0) / 1024 / 1024) * 100} />
           </div>
         </div>
-        {image ? (
+        {previewUrl ? (
           <div className="flex min-h-24 w-full flex-nowrap items-center justify-between p-1">
             <div className="flex max-w-1/2 items-center gap-2">
-              <Image width={70} height={70} src={image} alt="Product" />
+              <Image width={70} height={70} src={previewUrl} alt="Product" />
               <div className="flex flex-col gap-1">
                 <span className="font-semibold break-all">
                   {imageFile?.name}

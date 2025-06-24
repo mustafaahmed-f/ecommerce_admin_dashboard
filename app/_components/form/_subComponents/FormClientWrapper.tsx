@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import Spinner from "../../general/Spinner";
 import { configType } from "@/app/_types/configType";
 
-interface FormClientWrapperProps {}
+interface FormClientWrapperProps {
+  singleRecord: any;
+}
 
-function FormClientWrapper({}: FormClientWrapperProps) {
+function FormClientWrapper({ singleRecord }: FormClientWrapperProps) {
   const { module } = useParams();
   const [config, setConfig] = useState<configType<any> | null>(null);
   const [FormComponent, setFormComponent] =
@@ -33,15 +35,19 @@ function FormClientWrapper({}: FormClientWrapperProps) {
     loadDependencies();
   }, [module]);
 
+  const finalDefaultValues = { ...config?.formDefaultValues, ...singleRecord };
+
   if (!FormComponent) {
     return <Spinner />;
   }
+
+  console.log("Final defaultValues : ", finalDefaultValues);
 
   return (
     <FormComponent
       title={config?.title}
       fields={config?.formFields}
-      defaultValues={config?.formDefaultValues}
+      defaultValues={finalDefaultValues}
       validations={config?.formValidations}
     />
   );

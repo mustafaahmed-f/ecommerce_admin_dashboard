@@ -16,20 +16,22 @@ export const validations = yup.object({
     .min(3, minLengthMsg(3)),
 
   image: yup
-    .mixed<File>()
+    .mixed<File | string>()
     .required("Image is required")
     .test("fileType", "Only image files are allowed", (value) => {
-      return value instanceof File && value.type.startsWith("image/");
+      return (
+        (value instanceof File && value.type.startsWith("image/")) ||
+        typeof value === "string"
+      );
     })
     .test(
       "fileSize",
       `Image must be smaller than ${MAX_IMAGE_SIZE_MB}MB`,
       (value) => {
-        return value instanceof File && value.size <= MAX_IMAGE_SIZE_BYTES;
+        if (value instanceof File) return value.size <= MAX_IMAGE_SIZE_BYTES;
+        return true; // ✅ Skip size check for string or null values
       },
-    )
-    .nullable(),
-
+    ),
   price: yup
     .number()
     .typeError(invalidNumberMsg("Price"))

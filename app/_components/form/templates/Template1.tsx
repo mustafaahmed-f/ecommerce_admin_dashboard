@@ -39,13 +39,17 @@ function Template1<T extends AnyObjectSchema>({
     setValue,
     trigger,
     register,
-    // getValues,
+    getValues,
   } = methods;
+
+  console.log("Form values : ", getValues());
 
   const { module: moduleName, id } = useParams();
   const isEditMode = !!id;
 
-  async function onSubmit(data: InferFormValues<T>) {}
+  async function onSubmit(data: InferFormValues<T>) {
+    //TODO : check image type ( string or File ) in the api route
+  }
 
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
