@@ -1,16 +1,14 @@
-import { useRef, useState } from "react";
-import { Input } from "../../ui/input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Table } from "@tanstack/react-table";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRef, useState } from "react";
+import { Button } from "../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 
 interface FilterationInputProps {
   backendPagination?: boolean;
@@ -32,16 +30,24 @@ function FilterationInput({
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const { 0: inputValue, 1: setInputValue } = useState<string>("");
+
+  function handleBackEndLogic(
+    searchTermValue: string,
+    searchFieldValue: string,
+  ) {
+    const params = new URLSearchParams(searchParams);
+    params.set("searchTerm", searchTermValue);
+    params.set("searchField", searchFieldValue);
+    params.set("page", "1");
+    router.replace(`${pathName}?${params.toString()}`);
+  }
+
   function handleFiltration(e: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value);
     if (backendPagination) {
       clearTimeout(timerOut.current!);
       timerOut.current = setTimeout(() => {
-        const params = new URLSearchParams(searchParams);
-        params.set("searchTerm", e.target.value);
-        params.set("searchField", currentFilterColumn);
-        params.set("page", "1");
-        router.replace(`${pathName}?${params.toString()}`);
+        handleBackEndLogic(e.target.value, currentFilterColumn);
       }, 900);
     } else {
       //// handle client side filtration
@@ -54,11 +60,7 @@ function FilterationInput({
     setInputValue("");
     setCurrentFilterColumn(column);
     if (backendPagination) {
-      const params = new URLSearchParams(searchParams);
-      params.set("searchTerm", "");
-      params.set("searchField", column);
-      params.set("page", "1");
-      router.replace(`${pathName}?${params.toString()}`);
+      handleBackEndLogic("", column);
     } else {
       //// handle client side filtration
       tableInstance.setColumnFilters([{ id: column, value: "" }]);

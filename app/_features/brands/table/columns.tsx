@@ -40,6 +40,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "Actions",
       cell: ({ row }) => <ActionsSection recordId={String(row.original._id)} />,
       meta: { className: "max-w-[80px] text-center" },
+      enablePinning: true,
     }),
   ];
 };
