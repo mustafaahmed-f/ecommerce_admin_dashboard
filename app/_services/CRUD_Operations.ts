@@ -6,12 +6,17 @@ export async function _getEveryRecord(_APIEndpointName: string) {
   //// This method is used to get all records from table and apply api feature on the client side
   const res = await fetch(`${mainURL}/${_APIEndpointName}`);
 
-  if (!res.ok) throw new Error("Failed getting records");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed getting records : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {
@@ -35,14 +40,23 @@ export async function _getAllRecords({
 }): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}`,
+    {
+      //// Cache for one hour
+      next: { revalidate: 60 * 60 },
+    },
   );
 
-  if (!res.ok) throw new Error("Failed getting records");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed getting records : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {
@@ -60,14 +74,23 @@ export async function _getSingleRecord({
 }): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}/?recordId=${recordId}`,
+    {
+      //// Cache for one hour
+      next: { revalidate: 60 * 60 },
+    },
   );
 
-  if (!res.ok) throw new Error("Failed getting record");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed getting record : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {
@@ -90,12 +113,17 @@ export async function _deleteSingleRecord({
     },
   );
 
-  if (!res.ok) throw new Error("Failed deleting record");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed deleting record : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {
@@ -121,12 +149,17 @@ export async function _updateSingleRecord({
     },
   );
 
-  if (!res.ok) throw new Error("Failed updating record");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed updating record : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {
@@ -147,12 +180,17 @@ export async function _createSingleRecord({
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed creating record");
+  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
-  const jsonResponse: apiResponseType = await res.json();
+  if (!res.ok)
+    throw new Error(
+      jsonResponse.message || `Failed creating record : ${res.statusText} `,
+    );
 
   if (!jsonResponse.success) {
-    throw new Error(jsonResponse.error || "Unknown error from API");
+    throw new Error(
+      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+    );
   }
 
   return {

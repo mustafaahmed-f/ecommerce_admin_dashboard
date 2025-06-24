@@ -19,7 +19,24 @@ export async function GET(request: NextRequest) {
 
     let filter: any = {};
     if (searchField && searchTerm) {
-      filter[searchField] = { $regex: searchTerm, $options: "i" };
+      if (searchField === "productId") {
+        const num = Number(searchTerm);
+        if (!isNaN(num)) {
+          filter["productId"] = num;
+        } else {
+          return NextResponse.json(
+            {
+              success: false,
+              result: [],
+              additionalInfo: 0,
+              message: "Invalid productId format.",
+            },
+            { status: 400 },
+          );
+        }
+      } else {
+        filter[searchField] = { $regex: searchTerm, $options: "i" };
+      }
     }
 
     const queryObj = {
@@ -38,7 +55,17 @@ export async function GET(request: NextRequest) {
 
     const products = await apiFeatureInstance.query;
 
-    if (!products.length) throw new Error("No products found", { cause: 404 });
+    if (!products.length) {
+      return NextResponse.json(
+        {
+          success: true,
+          result: [],
+          additionalInfo: 0,
+          message: "No products found",
+        },
+        { status: 200 },
+      );
+    }
 
     return NextResponse.json(
       {
@@ -54,7 +81,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error?.message },
-      { status: 500 },
+      { status: error.cause ?? 500 },
     );
   }
 }

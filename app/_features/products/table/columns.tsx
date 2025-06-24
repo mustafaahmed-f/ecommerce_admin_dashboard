@@ -15,13 +15,14 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       enableColumnFilter: false,
     }),
     columnHelper.accessor((row) => row._id, {
-      id: "id",
+      id: "_id",
       header: "Database ID",
       cell: (info) => <span>{info.getValue()}</span>,
       meta: { className: " text-center" },
       enableColumnFilter: false,
     }),
     columnHelper.accessor("title", {
+      id: "title",
       header: "Title",
       cell: (info) =>
         hasDetails ? (
@@ -37,6 +38,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       meta: { className: " text-center min-w-[200px]" },
     }),
     columnHelper.accessor("image", {
+      id: "image",
       header: "Image",
       cell: (info) => (
         <Image
@@ -50,27 +52,38 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       enableColumnFilter: false,
     }),
     columnHelper.accessor("category", {
+      id: "category",
       header: "Category",
       cell: (info) => <span>{info.getValue()}</span>,
     }),
     columnHelper.accessor("brand", {
+      id: "brand",
       header: "Brand",
       cell: (info) => <span>{info.getValue()}</span>,
     }),
 
     columnHelper.accessor("model", {
+      id: "model",
       header: "Model",
       cell: (info) => <span>{info.getValue()}</span>,
     }),
     columnHelper.accessor("stock", {
+      id: "stock",
       header: "Stock",
       cell: (info) => <span>{info.getValue()}</span>,
     }),
+    columnHelper.accessor("sold", {
+      id: "sold",
+      header: "Sold",
+      cell: (info) => <span>{info.getValue()}</span>,
+    }),
     columnHelper.accessor("discount", {
+      id: "discount",
       header: "Discount (%)",
       cell: (info) => <span>{info.getValue() ?? 0}%</span>,
     }),
     columnHelper.accessor("price", {
+      id: "price",
       header: "Price",
       cell: (info) => (
         <div className="flex w-full flex-col items-center justify-start gap-[2px] sm:gap-3">

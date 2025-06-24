@@ -27,8 +27,6 @@ async function Page({ params, searchParams }: PageProps) {
       })
     : await apis.getAllRecords({});
 
-  // console.log("data", data);
-
   return <TableClientWrapper data={data} additionalInfo={additionalInfo} />;
 }
 

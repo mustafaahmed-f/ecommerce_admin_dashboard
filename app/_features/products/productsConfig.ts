@@ -3,9 +3,17 @@ import { validations } from "./utils/productsValidations";
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { defaultValues } from "./utils/productsDefaultValues";
 import { formFields } from "./utils/productsFormFields";
+import { generalColumns } from "./table/columns";
 
 //// avoid filtration on these columns:
-const excludedColumns = ["image"];
+const excludedColumns = [
+  "image",
+  "actions",
+  "price",
+  "discount",
+  "stock",
+  "_id",
+];
 
 export const config: configType<InferFormValues<typeof validations>> = {
   title: "Products",
@@ -19,7 +27,7 @@ export const config: configType<InferFormValues<typeof validations>> = {
   backendPagination: true,
   hasDetails: true,
   defaultFiltrationColumn: "title",
-  filtrationColumns: Object.keys(defaultValues).filter(
-    (key) => !excludedColumns.includes(key),
-  ),
+  filtrationColumns: generalColumns(true, "products")
+    .map((column) => column.id!)
+    .filter((column) => !excludedColumns.includes(column!)),
 };

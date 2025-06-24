@@ -101,10 +101,6 @@ export default function TableClientWrapper({
     autoResetPageIndex: true,
   });
 
-  if (!TableComponent) {
-    return <Spinner />;
-  }
-
   const TableComponentProps: tableComponentPropsType = {
     tableInstance: table,
     config: config,
@@ -114,6 +110,10 @@ export default function TableClientWrapper({
     currentFilterColumn: currentFilterColumn,
     setCurrentFilterColumn: setCurrentFilterColumn,
   };
+
+  if (!TableComponent) {
+    return <Spinner />;
+  }
 
   return <TableComponent {...TableComponentProps} />;
 }
