@@ -20,7 +20,6 @@ const productSchema = new Schema(
     model: { type: String, required: true },
 
     color: { type: String, default: null },
-
     size: { type: String, default: null }, // For cloths
     ram: { type: Number, default: null }, // For laptops & mobiles
     power: { type: Number, default: null }, // For appliances

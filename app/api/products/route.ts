@@ -4,7 +4,9 @@ import productsModel from "@/app/_mongoDB/models/productsModel";
 import { apiFeatures } from "@/app/_services/apiFeatures";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
+import { generateTags } from "@/app/_utils/helperMethods/generateTags";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -21,9 +23,6 @@ export async function GET(request: NextRequest) {
     const size = searchParams.get("size") ?? "10";
     const searchTerm = searchParams.get("searchTerm") ?? "";
     const searchField = searchParams.get("searchField") ?? "";
-
-    console.log("Filter Field inside route :", searchField);
-    console.log("Search Term:", searchTerm);
 
     let filter: any = {};
     if (searchField && searchTerm) {
@@ -120,6 +119,8 @@ export async function POST(request: NextRequest) {
       fps: fields.fps ? Number(fields.fps) : null,
       soundOutput: fields.soundOutput ? Number(fields.soundOutput) : null,
       screenSize: fields.screenSize ? Number(fields.screenSize) : null,
+      size: fields.size ? Number(fields.size) : null,
+      color: fields.color ? Number(fields.color) : null,
     };
 
     // Validate
@@ -150,6 +151,8 @@ export async function POST(request: NextRequest) {
     });
 
     await newProduct.save();
+
+    revalidateTag(generateTags("products", "allRecords")[0]);
 
     return NextResponse.json(
       {

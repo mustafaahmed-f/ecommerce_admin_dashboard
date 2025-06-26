@@ -1,10 +1,17 @@
 import { apiResponseType, crudResponseType } from "../_types/apiResponseType";
+import { generateTags } from "../_utils/helperMethods/generateTags";
 
 const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
 export async function _getEveryRecord(_APIEndpointName: string) {
   //// This method is used to get all records from table and apply api feature on the client side
-  const res = await fetch(`${mainURL}/${_APIEndpointName}`);
+  const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
+    //// Cache for three hours
+    next: {
+      revalidate: 60 * 60 * 3,
+      tags: generateTags(_APIEndpointName, "everyRecord"),
+    },
+  });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
 
@@ -43,8 +50,11 @@ export async function _getAllRecords({
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}`,
     {
-      //// Cache for one hour
-      next: { revalidate: 60 * 60 },
+      //// Cache for three hours
+      next: {
+        revalidate: 60 * 60 * 3,
+        tags: generateTags(_APIEndpointName, "allRecords"),
+      },
     },
   );
 
@@ -77,8 +87,11 @@ export async function _getSingleRecord({
   recordId: string;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
-    //// Cache for one hour
-    next: { revalidate: 60 * 60 },
+    //// Cache for three hours
+    next: {
+      revalidate: 60 * 60 * 3,
+      tags: generateTags(_APIEndpointName, "singleRecord", recordId),
+    },
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -190,13 +203,13 @@ export async function _createSingleRecord({
     body: data instanceof FormData ? data : JSON.stringify(data),
     headers:
       data instanceof FormData
-        ? undefined // let the browser set the correct multipart headers
+        ? undefined
         : {
             "Content-Type": "application/json",
           },
   });
 
-  const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
+  const jsonResponse: apiResponseType = await res.json();
 
   if (!res.ok)
     throw new Error(

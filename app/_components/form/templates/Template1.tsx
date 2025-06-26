@@ -62,8 +62,8 @@ function Template1<T extends AnyObjectSchema>({
     formData.append("brand", data.brand);
     formData.append("model", data.model);
 
-    formData.append("color", data.color);
-    formData.append("size", data.size);
+    if (data.color) formData.append("color", data.color);
+    if (data.size) formData.append("size", data.size);
 
     if (data.ram) formData.append("ram", String(data.ram));
     if (data.power) formData.append("power", String(data.power));
@@ -83,7 +83,7 @@ function Template1<T extends AnyObjectSchema>({
       const response = isEditMode
         ? await APIsFile.updateSingleRecord(id, formData)
         : await APIsFile.createSingleRecord(formData);
-      console.log("response", response);
+
       if (response.success) {
         showSuccessToast(
           `${isEditMode ? "Record updated" : "Record created"} successfully!`,
@@ -135,7 +135,7 @@ function Template1<T extends AnyObjectSchema>({
             type="submit"
             disabled={!isValid}
           >
-            Add New
+            {isEditMode ? "Update" : "Add New"}
           </Button>
         </div>
       </form>
