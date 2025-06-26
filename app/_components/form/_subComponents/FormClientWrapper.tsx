@@ -41,8 +41,6 @@ function FormClientWrapper({ singleRecord }: FormClientWrapperProps) {
     return <Spinner />;
   }
 
-  console.log("Final defaultValues : ", finalDefaultValues);
-
   return (
     <FormComponent
       title={config?.title}

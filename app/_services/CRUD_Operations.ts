@@ -20,6 +20,8 @@ export async function _getEveryRecord(_APIEndpointName: string) {
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message,
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };
@@ -60,6 +62,8 @@ export async function _getAllRecords({
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message,
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };
@@ -91,6 +95,8 @@ export async function _getSingleRecord({
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message ?? "",
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };
@@ -121,6 +127,8 @@ export async function _deleteSingleRecord({
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message ?? "",
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };
@@ -137,7 +145,13 @@ export async function _updateSingleRecord({
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
     method: "PUT",
-    body: JSON.stringify(data),
+    body: data instanceof FormData ? data : JSON.stringify(data),
+    headers:
+      data instanceof FormData
+        ? undefined // let the browser set the correct multipart headers
+        : {
+            "Content-Type": "application/json",
+          },
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -149,11 +163,16 @@ export async function _updateSingleRecord({
 
   if (!jsonResponse.success) {
     throw new Error(
-      jsonResponse.error || jsonResponse.message || "Unknown error from API",
+      jsonResponse.error ||
+        jsonResponse.errors ||
+        jsonResponse.message ||
+        "Unknown error from API",
     );
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message ?? "",
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };
@@ -168,7 +187,13 @@ export async function _createSingleRecord({
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
     method: "POST",
-    body: JSON.stringify(data),
+    body: data instanceof FormData ? data : JSON.stringify(data),
+    headers:
+      data instanceof FormData
+        ? undefined // let the browser set the correct multipart headers
+        : {
+            "Content-Type": "application/json",
+          },
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -185,6 +210,8 @@ export async function _createSingleRecord({
   }
 
   return {
+    success: jsonResponse.success,
+    message: jsonResponse.message ?? "",
     result: jsonResponse.result,
     additionalInfo: jsonResponse.additionalInfo ?? null,
   };

@@ -102,8 +102,6 @@ export async function POST(request: NextRequest) {
 
     const imageFile = formData.get("image") as File;
 
-    console.log("File: ", imageFile);
-
     const fields = Array.from(formData).reduce(
       (acc: { [key: string]: any }, [key, value]) => {
         if (key !== "image") acc[key] = value;
@@ -124,8 +122,6 @@ export async function POST(request: NextRequest) {
       screenSize: fields.screenSize ? Number(fields.screenSize) : null,
     };
 
-    console.log("Final Fields: ", finalFields);
-
     // Validate
     const validationResult = validateSchema(addNewProductSchema, {
       ...finalFields,
@@ -142,12 +138,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("File: ", imageFile);
-
     // TODO: Replace this later with actual uploaded URL (Amazon S3)
     //TODO: check for model, brand and category in DB.
 
-    const fakeImageUrl = "https://placehold.co/600x400";
+    const fakeImageUrl =
+      "https://storage.googleapis.com/fir-auth-1c3bc.appspot.com/1694290122808-71AL1tTRosL._SL1500_.jpg";
 
     const newProduct = new productsModel({
       ...finalFields,

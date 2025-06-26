@@ -2,6 +2,7 @@
 
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { inputFieldType } from "@/app/_types/inputFieldType";
+import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -48,20 +49,63 @@ function Template1<T extends AnyObjectSchema>({
   const isEditMode = !!id;
 
   async function onSubmit(data: InferFormValues<T>) {
+    setIsLoading(true);
     //TODO : check image type ( string or File ) in the api route
     //TODO : use form data to send data to api route so it can handle mixed types ( type of image )
-    /*
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("image", data.image); // File object
-      // ... append all other fields
+    const formData = new FormData();
 
-      await fetch("/api/products", {
-        method: "POST",
-        body: formData,
-      });
-    */
-    // console.log("Submitted : ", data);
+    formData.append("title", data.title);
+    formData.append("image", data.image); // if image is a File object
+
+    formData.append("price", String(data.price));
+    formData.append("description", data.description);
+    formData.append("brand", data.brand);
+    formData.append("model", data.model);
+
+    formData.append("color", data.color);
+    formData.append("size", data.size);
+
+    if (data.ram) formData.append("ram", String(data.ram));
+    if (data.power) formData.append("power", String(data.power));
+    if (data.fps) formData.append("fps", String(data.fps));
+    if (data.soundOutput)
+      formData.append("soundOutput", String(data.soundOutput));
+    if (data.screenSize) formData.append("screenSize", String(data.screenSize));
+
+    formData.append("category", data.category);
+    formData.append("discount", String(data.discount));
+    formData.append("stock", String(data.stock));
+
+    try {
+      const APIsFile = await import(
+        `@/app/_features/${moduleName}/services/${moduleName}APIs`
+      );
+      const response = isEditMode
+        ? await APIsFile.updateSingleRecord(id, formData)
+        : await APIsFile.createSingleRecord(formData);
+      console.log("response", response);
+      if (response.success) {
+        showSuccessToast(
+          `${isEditMode ? "Record updated" : "Record created"} successfully!`,
+        );
+
+        router.push(`/view/${moduleName}`);
+      } else {
+        showErrorToast(
+          response.error ||
+            response.message ||
+            `Failed ${isEditMode ? "updating" : "creating"} record`,
+        );
+      }
+
+      setIsLoading(false);
+    } catch (error: any) {
+      showErrorToast(
+        `Error submitting record : ${typeof error === "string" ? error : error.message ? error.message : "Unknown error"}`,
+      );
+      console.error("❌ Error submitting record:", error);
+      setIsLoading(false);
+    }
   }
 
   return (
