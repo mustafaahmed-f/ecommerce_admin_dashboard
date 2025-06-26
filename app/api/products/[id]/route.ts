@@ -137,6 +137,27 @@ export async function PUT(request: NextRequest, props: any) {
 export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
+    const productId = await props.params.id;
+
+    const deletedProduct = await productsModel.findOneAndDelete({
+      productId,
+    });
+
+    if (!deletedProduct) {
+      throw new Error("Product not found", { cause: 404 });
+    }
+
+    revalidateTag(generateTags("products", "singleRecord", productId)[0]);
+    revalidateTag(generateTags("products", "allRecords")[0]);
+
+    return NextResponse.json(
+      {
+        success: true,
+        result: deletedProduct,
+        message: generateSuccessMsg(actions.deleted),
+      },
+      { status: 200 },
+    );
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error?.message },
