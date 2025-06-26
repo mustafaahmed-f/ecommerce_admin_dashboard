@@ -12,15 +12,13 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       required: true,
       placeholder: "Enter product title",
     },
-
     {
       type: "text",
-      name: "price",
-      lable: "Price",
+      name: "category",
+      lable: "Category",
       fullWidth: false,
       required: true,
-      placeholder: "Enter product price",
-      isNumber: true,
+      placeholder: "Enter product category",
     },
 
     {
@@ -39,6 +37,25 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       required: true,
       placeholder: "Enter model name",
     },
+    {
+      type: "text",
+      name: "price",
+      lable: "Price",
+      fullWidth: false,
+      required: true,
+      placeholder: "Enter product price",
+      isNumber: true,
+    },
+    {
+      type: "text",
+      name: "discount",
+      lable: "Discount (%)",
+      fullWidth: false,
+      required: false,
+      placeholder: "Enter discount (optional)",
+      isNumber: true,
+    },
+
     {
       type: "text",
       name: "color",
@@ -105,23 +122,6 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       placeholder: "Enter screen size (optional)",
       isNumber: true,
       isNullable: true,
-    },
-    {
-      type: "text",
-      name: "category",
-      lable: "Category",
-      fullWidth: false,
-      required: true,
-      placeholder: "Enter product category",
-    },
-    {
-      type: "text",
-      name: "discount",
-      lable: "Discount (%)",
-      fullWidth: false,
-      required: false,
-      placeholder: "Enter discount (optional)",
-      isNumber: true,
     },
     {
       type: "quantity",

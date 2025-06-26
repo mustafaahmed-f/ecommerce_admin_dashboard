@@ -11,7 +11,7 @@ const reviewSchema = new Schema({
 
 const productSchema = new Schema(
   {
-    productId: { type: Number, required: true },
+    productId: { type: Number, required: false },
     title: { type: String, required: true },
     image: { type: String, required: true },
     price: { type: Number, required: true },
@@ -37,8 +37,16 @@ const productSchema = new Schema(
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
-  }
+  },
 );
+
+productSchema.pre("save", async function () {
+  if (this.isNew && !this.productId) {
+    const Product = mongoose.model("Product");
+    const productsNumber = await Product.countDocuments();
+    this.productId = productsNumber + 1;
+  }
+});
 
 export default mongoose.models.Product ||
   mongoose.model("Product", productSchema);

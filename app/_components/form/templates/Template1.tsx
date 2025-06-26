@@ -1,14 +1,14 @@
 "use client";
 
-import { inputFieldType } from "@/app/_types/inputFieldType";
-import { FieldValues, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { AnyObjectSchema } from "yup";
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
+import { inputFieldType } from "@/app/_types/inputFieldType";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AnyObjectSchema } from "yup";
 import { Button } from "../../ui/button";
 import FormRenderer from "../FormRenderer";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 
 interface Template1Props<T extends AnyObjectSchema> {
   defaultValues: InferFormValues<T>;
@@ -42,13 +42,26 @@ function Template1<T extends AnyObjectSchema>({
     getValues,
   } = methods;
 
-  console.log("Form values : ", getValues());
+  // console.log("Form values : ", getValues());
 
   const { module: moduleName, id } = useParams();
   const isEditMode = !!id;
 
   async function onSubmit(data: InferFormValues<T>) {
     //TODO : check image type ( string or File ) in the api route
+    //TODO : use form data to send data to api route so it can handle mixed types ( type of image )
+    /*
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("image", data.image); // File object
+      // ... append all other fields
+
+      await fetch("/api/products", {
+        method: "POST",
+        body: formData,
+      });
+    */
+    // console.log("Submitted : ", data);
   }
 
   return (
