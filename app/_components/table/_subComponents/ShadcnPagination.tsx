@@ -8,35 +8,40 @@ import {
   PaginationPrevious,
 } from "@/app/_components/ui/pagination";
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
-import { Table } from "@tanstack/react-table";
+import { useTableContext } from "@/app/_context/TableProvider";
+import { TransitionStartFunction, useTransition } from "react";
 
 interface ShadcnPaginationProps {
   count: number;
   siblingCount?: number;
   showFirstLast?: boolean;
-  tableInstance: Table<any>;
-  backendPagination?: boolean;
+  startTransition: TransitionStartFunction;
 }
 
 function ShadcnPagination({
   count,
   siblingCount = 1,
   showFirstLast = true,
-  tableInstance,
-  backendPagination = false,
+  startTransition,
 }: ShadcnPaginationProps) {
   const { router, searchParams, pathName } = useNextNavigation();
+
+  const { tableInstance, config } = useTableContext();
+  const backendPagination = config?.backendPagination;
+
   const currentPage = backendPagination
     ? parseInt(searchParams.get("page") ?? "1")
-    : tableInstance.getState().pagination.pageIndex + 1;
+    : tableInstance!.getState().pagination.pageIndex + 1;
 
   const handleChange = (page: number) => {
     if (backendPagination) {
       const params = new URLSearchParams(searchParams);
       params.set("page", page.toString());
-      router.replace(`${pathName}?${params.toString()}`);
+      startTransition(() => {
+        router.replace(`${pathName}?${params.toString()}`);
+      });
     } else {
-      tableInstance.setPageIndex(page - 1);
+      tableInstance!.setPageIndex(page - 1);
     }
   };
 

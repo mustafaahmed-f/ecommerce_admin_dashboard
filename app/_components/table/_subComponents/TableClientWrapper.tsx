@@ -14,7 +14,8 @@ import { useParams } from "next/navigation";
 import Spinner from "../../general/Spinner";
 import { configType } from "@/app/_types/configType";
 import { ColumnFiltersState } from "../types/ColumnFilterType";
-import { tableComponentPropsType } from "../types/tableComponentPropsType";
+import TableProvider from "@/app/_context/TableProvider";
+import { TableProvderValuesType } from "../types/TableProvderValuesType";
 
 interface TableClientWrapperProps {
   data: any[];
@@ -110,7 +111,7 @@ export default function TableClientWrapper({
     autoResetPageIndex: true,
   });
 
-  const TableComponentProps: tableComponentPropsType = {
+  const TableProviderValues: TableProvderValuesType = {
     tableInstance: table,
     config: config,
     data: data,
@@ -124,5 +125,9 @@ export default function TableClientWrapper({
     return <Spinner />;
   }
 
-  return <TableComponent {...TableComponentProps} />;
+  return (
+    <TableProvider {...TableProviderValues}>
+      <TableComponent />
+    </TableProvider>
+  );
 }

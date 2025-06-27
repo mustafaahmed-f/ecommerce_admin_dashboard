@@ -1,7 +1,7 @@
 import { configType } from "@/app/_types/configType";
 import { Table } from "@tanstack/react-table";
 
-export interface tableComponentPropsType {
+export interface TableProvderValuesType {
   tableInstance: Table<any>;
   config: configType<any> | null;
   data: any;

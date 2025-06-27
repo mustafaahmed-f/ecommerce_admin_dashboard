@@ -1,8 +1,8 @@
 "use client";
 
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
-import { configType } from "@/app/_types/configType";
-import { flexRender, Header, type Table } from "@tanstack/react-table";
+import { useTableContext } from "@/app/_context/TableProvider";
+import { flexRender, Header } from "@tanstack/react-table";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -10,28 +10,10 @@ import SortIndicators from "../../form/_subComponents/SortIndicators";
 import { Button } from "../../ui/button";
 import FilterationInput from "../_subComponents/FilterationInput";
 import ShadcnPagination from "../_subComponents/ShadcnPagination";
-import { filtrationPropsType } from "../types/filtrationPropsType";
 
-interface Template1Props {
-  data: any;
-  tableInstance: Table<any>;
-  config: configType<any>;
-  additionalInfo?: any;
-  pageSize: number;
-  currentFilterColumn: string;
-  setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
-}
-
-function Template1({
-  data,
-  tableInstance,
-  config,
-  additionalInfo,
-  pageSize,
-  currentFilterColumn,
-  setCurrentFilterColumn,
-}: Template1Props) {
+function Template1() {
   const { router, searchParams, pathName } = useNextNavigation();
+  const { tableInstance, config, additionalInfo, pageSize } = useTableContext();
 
   const params = new URLSearchParams(searchParams);
   const { 0: isPending, 1: startTransition } = useTransition();
@@ -53,23 +35,15 @@ function Template1({
   );
 
   const size = parseInt(params.get("pageSize") ?? "10");
-  let count = config.backendPagination
+  let count = config!.backendPagination
     ? Math.ceil(additionalInfo / (size ?? 10))
-    : Math.ceil(tableInstance.getFilteredRowModel().rows.length / pageSize);
+    : Math.ceil(tableInstance!.getFilteredRowModel().rows.length / pageSize);
 
   const { module } = useParams();
 
-  const filtrationProps: filtrationPropsType = {
-    backendPagination: config.backendPagination ?? false,
-    filtrationColumns: config.filtrationColumns,
-    tableInstance,
-    currentFilterColumn,
-    setCurrentFilterColumn,
-  };
-
   function handleSorting(header: Header<any, unknown>) {
     let newMap = new Map(sortingMap);
-    if (config.backendPagination) {
+    if (config!.backendPagination) {
       switch (newMap.get(header.id)) {
         case undefined:
           newMap.set(header.id, 1);
@@ -98,12 +72,12 @@ function Template1({
         router.replace(`${pathName}?${params.toString()}`);
       });
     } else {
-      tableInstance.getColumn(header.id)?.toggleSorting(undefined, true);
+      tableInstance!.getColumn(header.id)?.toggleSorting(undefined, true);
     }
   }
 
   function indicateSortDirection(header: Header<any, unknown>): 0 | 1 | -1 {
-    if (config.backendPagination) {
+    if (config!.backendPagination) {
       if (sortingMap.has(header.id)) {
         return sortingMap.get(header.id)!;
       }
@@ -123,19 +97,13 @@ function Template1({
     }
   }
 
-  console.log("Sorting state : ", tableInstance.getState().sorting);
-  console.log(
-    "Sorting direction of No column : ",
-    tableInstance.getColumn("no")?.getNextSortingOrder(),
-  );
-
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
       <div className="flex w-full items-center justify-between">
         <p className="text-2xl font-bold sm:text-3xl md:text-4xl">
-          {config.title}
+          {config!.title}
         </p>
-        {config.canAddNewRecord ? (
+        {config!.canAddNewRecord ? (
           <Button variant={"default"} className="ms-auto cursor-pointer">
             <Link href={`/view/${module}/new`}>Add New</Link>
           </Button>
@@ -145,13 +113,13 @@ function Template1({
       </div>
 
       <div className="w-full">
-        <FilterationInput {...filtrationProps} />
+        <FilterationInput startTransition={startTransition} />
         <div
           className={`${isPending ? "pointer-events-none opacity-45" : ""} max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen`}
         >
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
-              {tableInstance.getHeaderGroups().map((headerGroup) => (
+              {tableInstance!.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="border-b">
                   {headerGroup.headers.map((header) => {
                     return (
@@ -185,10 +153,10 @@ function Template1({
 
             <tbody>
               {/* If data array is empty, show no data message */}
-              {tableInstance.getRowModel().rows.length === 0 && (
+              {tableInstance!.getRowModel().rows.length === 0 && (
                 <tr>
                   <td
-                    colSpan={tableInstance.getAllColumns().length}
+                    colSpan={tableInstance!.getAllColumns().length}
                     className="h-24 text-center align-middle"
                   >
                     No results.
@@ -196,7 +164,7 @@ function Template1({
                 </tr>
               )}
 
-              {tableInstance.getRowModel().rows.map((row) => (
+              {tableInstance!.getRowModel().rows.map((row) => (
                 <tr key={row.id}>
                   {row.getAllCells().map((cell) => (
                     <td
@@ -220,8 +188,7 @@ function Template1({
         count={count}
         showFirstLast={true}
         siblingCount={2}
-        tableInstance={tableInstance}
-        backendPagination={config.backendPagination}
+        startTransition={startTransition}
       />
     </section>
   );

@@ -1,6 +1,6 @@
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
-import { Table } from "@tanstack/react-table";
-import { useRef, useState } from "react";
+import { useTableContext } from "@/app/_context/TableProvider";
+import { TransitionStartFunction, useRef, useState } from "react";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,
@@ -10,24 +10,18 @@ import {
 } from "../../ui/dropdown-menu";
 import { Input } from "../../ui/input";
 
-interface FilterationInputProps {
-  backendPagination?: boolean;
-  tableInstance: Table<any>;
-  currentFilterColumn: string;
-  setCurrentFilterColumn: React.Dispatch<React.SetStateAction<string>>;
-  filtrationColumns: string[];
-}
-
 function FilterationInput({
-  backendPagination,
-  tableInstance,
-  currentFilterColumn,
-  setCurrentFilterColumn,
-  filtrationColumns,
-}: FilterationInputProps) {
+  startTransition,
+}: {
+  startTransition: TransitionStartFunction;
+}) {
   const timerOut = useRef<NodeJS.Timeout | null>(null);
   const { router, searchParams, pathName } = useNextNavigation();
   const { 0: inputValue, 1: setInputValue } = useState<string>("");
+  const { config, setCurrentFilterColumn, currentFilterColumn, tableInstance } =
+    useTableContext();
+  const backendPagination = config?.backendPagination;
+  const filtrationColumns = config?.filtrationColumns;
 
   function handleBackEndLogic(
     searchTermValue: string,
@@ -37,7 +31,9 @@ function FilterationInput({
     params.set("searchTerm", searchTermValue);
     params.set("searchField", searchFieldValue);
     params.set("page", "1");
-    router.replace(`${pathName}?${params.toString()}`);
+    startTransition(() => {
+      router.replace(`${pathName}?${params.toString()}`);
+    });
   }
 
   function handleFiltration(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,10 +42,10 @@ function FilterationInput({
       clearTimeout(timerOut.current!);
       timerOut.current = setTimeout(() => {
         handleBackEndLogic(e.target.value, currentFilterColumn);
-      }, 900);
+      }, 500);
     } else {
       //// handle client side filtration
-      const tableColumn = tableInstance.getColumn(currentFilterColumn);
+      const tableColumn = tableInstance!.getColumn(currentFilterColumn);
       tableColumn?.setFilterValue(e.target.value);
     }
   }
@@ -61,8 +57,8 @@ function FilterationInput({
       handleBackEndLogic("", column);
     } else {
       //// handle client side filtration
-      tableInstance.setColumnFilters([{ id: column, value: "" }]);
-      const tableColumn = tableInstance.getColumn(column);
+      tableInstance!.setColumnFilters([{ id: column, value: "" }]);
+      const tableColumn = tableInstance!.getColumn(column);
       tableColumn?.setFilterValue("");
     }
   }
@@ -82,7 +78,7 @@ function FilterationInput({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            {filtrationColumns.map((column) => (
+            {filtrationColumns!.map((column) => (
               <DropdownMenuItem
                 key={column}
                 onClick={() => setFilterColumn(column)}
