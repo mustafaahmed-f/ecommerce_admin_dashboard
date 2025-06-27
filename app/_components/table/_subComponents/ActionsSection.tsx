@@ -3,7 +3,7 @@
 import { DeleteIcon, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
@@ -16,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "../../ui/alert-dialog";
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 

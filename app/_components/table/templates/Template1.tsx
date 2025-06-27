@@ -1,13 +1,20 @@
 "use client";
 
-import { flexRender, type Table } from "@tanstack/react-table";
-import { useParams, useSearchParams } from "next/navigation";
-import { Button } from "../../ui/button";
-import ShadcnPagination from "../../general/ShadcnPagination";
-import Link from "next/link";
 import { configType } from "@/app/_types/configType";
+import { flexRender, type Table } from "@tanstack/react-table";
+import Link from "next/link";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import SortIndicators from "../../form/_subComponents/SortIndicators";
+import ShadcnPagination from "../_subComponents/ShadcnPagination";
+import { Button } from "../../ui/button";
 import FilterationInput from "../_subComponents/FilterationInput";
 import { filtrationPropsType } from "../types/filtrationPropsType";
+import { useState, useTransition } from "react";
 
 interface Template1Props {
   data: any;
@@ -30,6 +37,27 @@ function Template1({
 }: Template1Props) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
+  const router = useRouter();
+  const pathName = usePathname();
+
+  const { 0: isPending, 1: startTransition } = useTransition();
+
+  const backEndInitialSorting: [string, 1 | -1][] =
+    params.get("sort") === undefined ||
+    params.get("sort") === "" ||
+    params.get("sort") === null
+      ? []
+      : (params.get("sort") || "")
+          .split("/")
+          .map((sortField: string) => [
+            sortField.startsWith("-") ? sortField.slice(1) : sortField,
+            sortField.startsWith("-") ? -1 : 1,
+          ]);
+
+  const { 0: sortingMap, 1: setSortingMap } = useState<Map<string, 1 | -1 | 0>>(
+    new Map(backEndInitialSorting),
+  );
+
   const size = parseInt(params.get("pageSize") ?? "10");
   let count = config.backendPagination
     ? Math.ceil(additionalInfo / (size ?? 10))
@@ -44,6 +72,52 @@ function Template1({
     currentFilterColumn,
     setCurrentFilterColumn,
   };
+
+  function handleSorting(column: string) {
+    let newMap = new Map(sortingMap);
+    if (config.backendPagination) {
+      switch (newMap.get(column)) {
+        case undefined:
+          newMap.set(column, 1);
+          break;
+        case 0:
+          newMap.set(column, 1);
+          break;
+        case 1:
+          newMap.set(column, -1);
+          break;
+        case -1:
+          newMap.set(column, 0);
+          break;
+      }
+      setSortingMap(newMap);
+      const params = new URLSearchParams(searchParams);
+      params.set(
+        "sort",
+        Array.from(newMap)
+          .filter((item) => item[1] !== 0)
+          .map((item) => `${item[1] === 1 ? "" : "-"}${item[0]}`)
+          .join("/"),
+      );
+      params.set("page", "1");
+      startTransition(() => {
+        router.replace(`${pathName}?${params.toString()}`);
+      });
+    } else {
+    }
+  }
+  console.log("sortingMap", sortingMap);
+  function indicateSortDirection(column: string): 0 | 1 | -1 {
+    if (config.backendPagination) {
+      if (sortingMap.has(column)) {
+        return sortingMap.get(column)!;
+      }
+      return 0;
+    } else {
+      //// handle clientSide indicator
+      return 0;
+    }
+  }
 
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
@@ -62,7 +136,9 @@ function Template1({
 
       <div className="w-full">
         <FilterationInput {...filtrationProps} />
-        <div className="max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen">
+        <div
+          className={`${isPending ? "pointer-events-none opacity-45" : ""} max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen`}
+        >
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
               {tableInstance.getHeaderGroups().map((headerGroup) => (
@@ -72,12 +148,24 @@ function Template1({
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className={`text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                        className={`${header.column.getCanSort() ? "hover:bg-secondary-foreground cursor-pointer" : ""} text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                        onClick={
+                          header.column.getCanSort()
+                            ? () => handleSorting(header.id)
+                            : undefined
+                        }
                       >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        <div className="flex items-center justify-center gap-1">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                          {header.column.getCanSort() && (
+                            <SortIndicators
+                              sortDirection={indicateSortDirection(header.id)}
+                            />
+                          )}
+                        </div>
                       </th>
                     );
                   })}

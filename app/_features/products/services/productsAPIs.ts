@@ -11,11 +11,13 @@ const APIendPoint = "products";
 export async function getAllRecords({
   page = 1,
   pageSize = 10,
+  sort = "",
   searchTerm = "",
   searchField = "",
 }: {
   page: number;
   pageSize: number;
+  sort: string;
   searchTerm: string;
   searchField: string;
 }) {
@@ -23,6 +25,7 @@ export async function getAllRecords({
     _APIEndpointName: APIendPoint,
     page,
     pageSize,
+    sort,
     searchTerm,
     searchField,
   });

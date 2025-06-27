@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Product } from "@/app/_features/products/types/productType";
@@ -33,8 +34,11 @@ export default function TableClientWrapper({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [currentFilterColumn, setCurrentFilterColumn] = useState<string>("");
+
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     const loadDependencies = async () => {
@@ -76,12 +80,15 @@ export default function TableClientWrapper({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
 
     manualPagination: config?.backendPagination ? true : false,
     manualFiltering: config?.backendPagination ? true : false,
+    manualSorting: config?.backendPagination ? true : false,
 
     defaultColumn: {
       filterFn: "includesString",
+      sortingFn: "alphanumeric",
     },
 
     initialState: {
@@ -93,10 +100,12 @@ export default function TableClientWrapper({
     state: {
       pagination,
       columnFilters,
+      sorting,
     },
 
     onPaginationChange: setPagination,
     onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting,
 
     autoResetPageIndex: true,
   });

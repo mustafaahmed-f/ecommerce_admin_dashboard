@@ -38,17 +38,19 @@ export async function _getAllRecords({
   _APIEndpointName,
   page = 1,
   pageSize = 10,
+  sort = "",
   searchTerm = "",
   searchField = "",
 }: {
   _APIEndpointName: string;
   page?: number;
   pageSize?: number;
+  sort?: string;
   searchTerm?: string;
   searchField?: string;
 }): Promise<crudResponseType> {
   const res = await fetch(
-    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}`,
+    `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}&sort=${sort}`,
     {
       //// Cache for three hours
       next: {

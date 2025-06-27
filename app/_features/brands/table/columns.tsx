@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { Brand } from "../types/brandType";
-import ActionsSection from "@/app/_components/general/ActionsSection";
+import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
 
 const columnHelper = createColumnHelper<Brand>();
 

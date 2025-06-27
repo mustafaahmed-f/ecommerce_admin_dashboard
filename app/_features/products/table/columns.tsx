@@ -1,8 +1,8 @@
-import ActionsSection from "@/app/_components/general/ActionsSection";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Product } from "../types/productType";
 import Image from "next/image";
 import Link from "next/link";
+import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -13,6 +13,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "Product ID",
       cell: (info) => <span>{info.getValue()}</span>,
       enableColumnFilter: false,
+      enableSorting: true,
     }),
     columnHelper.accessor((row) => row._id, {
       id: "_id",
@@ -20,6 +21,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: (info) => <span>{info.getValue()}</span>,
       meta: { className: " text-center" },
       enableColumnFilter: false,
+      enableSorting: false,
     }),
     columnHelper.accessor("title", {
       id: "title",
@@ -36,6 +38,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
           <span>{info.getValue()}</span>
         ),
       meta: { className: " text-center min-w-[200px]" },
+      enableSorting: true,
     }),
     columnHelper.accessor("image", {
       id: "image",
@@ -50,37 +53,44 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         />
       ),
       enableColumnFilter: false,
+      enableSorting: false,
     }),
     columnHelper.accessor("category", {
       id: "category",
       header: "Category",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableSorting: true,
     }),
     columnHelper.accessor("brand", {
       id: "brand",
       header: "Brand",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableSorting: true,
     }),
 
     columnHelper.accessor("model", {
       id: "model",
       header: "Model",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableSorting: true,
     }),
     columnHelper.accessor("stock", {
       id: "stock",
       header: "Stock",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableSorting: true,
     }),
     columnHelper.accessor("sold", {
       id: "sold",
       header: "Sold",
       cell: (info) => <span>{info.getValue()}</span>,
+      enableSorting: true,
     }),
     columnHelper.accessor("discount", {
       id: "discount",
       header: "Discount (%)",
       cell: (info) => <span>{info.getValue() ?? 0}%</span>,
+      enableSorting: true,
     }),
     columnHelper.accessor("price", {
       id: "price",
@@ -104,6 +114,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
           )}
         </div>
       ),
+      enableSorting: true,
     }),
 
     columnHelper.display({
@@ -112,6 +123,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: ({ row }) => (
         <ActionsSection recordId={String(row.original.productId)} />
       ),
+      enableSorting: false,
     }),
   ];
 };

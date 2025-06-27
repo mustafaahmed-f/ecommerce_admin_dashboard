@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get("page") ?? "1";
     const size = searchParams.get("size") ?? "10";
+    const sort = searchParams.get("sort") ?? "";
     const searchTerm = searchParams.get("searchTerm") ?? "";
     const searchField = searchParams.get("searchField") ?? "";
 
@@ -49,6 +50,7 @@ export async function GET(request: NextRequest) {
     const queryObj = {
       page: parseInt(page),
       size: parseInt(size),
+      sort,
     };
 
     const totalProducts = await productsModel.countDocuments(filter);

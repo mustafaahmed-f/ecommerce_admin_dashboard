@@ -10,7 +10,7 @@ interface PageProps {
 
 async function Page({ params, searchParams }: PageProps) {
   const { module } = await params;
-  const { page, pageSize, searchTerm, searchField } = await searchParams;
+  const { page, pageSize, searchTerm, searchField, sort } = await searchParams;
   if (!ModulesSet.has(module)) return <ModuleNotFound />;
   const apis = await import(`@/app/_features/${module}/services/${module}APIs`);
   const configModule = await import(
@@ -22,6 +22,7 @@ async function Page({ params, searchParams }: PageProps) {
     ? await apis.getAllRecords({
         page: page ?? 1,
         pageSize: pageSize ?? 10,
+        sort: sort ?? "",
         searchTerm: searchTerm ?? "",
         searchField: searchField ?? "",
       })
