@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { SidebarProvider } from "./_components/ui/sidebar";
+import NextNavigationProvider from "./_context/NextNavigationProvider";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -17,11 +18,13 @@ function Providers({ children, defaultOpen }: ProvidersProps) {
             staleTime: 1000 * 60 * 60 * 24,
           },
         },
-      })
+      }),
   );
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <NextNavigationProvider>{children}</NextNavigationProvider>
+      </QueryClientProvider>
     </SidebarProvider>
   );
 }
