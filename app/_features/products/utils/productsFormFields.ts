@@ -1,6 +1,13 @@
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { inputFieldType } from "@/app/_types/inputFieldType";
 import { validations } from "./productsValidations";
+import {
+  getBrands,
+  getCategories,
+  getColors,
+  getModels,
+  getSizes,
+} from "../services/productsAPIs";
 
 export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
   [
@@ -13,29 +20,32 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       placeholder: "Enter product title",
     },
     {
-      type: "text",
+      type: "dropdown",
       name: "category",
       lable: "Category",
       fullWidth: false,
       required: true,
       placeholder: "Enter product category",
+      optionsMethod: getCategories,
     },
 
     {
-      type: "text",
+      type: "dropdown",
       name: "brand",
       lable: "Brand",
       fullWidth: false,
       required: true,
       placeholder: "Enter brand name",
+      optionsMethod: getBrands,
     },
     {
-      type: "text",
+      type: "dropdown",
       name: "model",
       lable: "Model",
       fullWidth: false,
       required: true,
       placeholder: "Enter model name",
+      optionsMethod: getModels,
     },
     {
       type: "text",
@@ -57,21 +67,23 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
     },
 
     {
-      type: "text",
+      type: "dropdown",
       name: "color",
       lable: "Color",
       fullWidth: false,
       required: false,
       placeholder: "Enter color (optional)",
+      optionsMethod: getColors,
     },
     {
-      type: "text",
+      type: "dropdown",
       name: "size",
       lable: "Size",
       fullWidth: false,
       required: false,
       placeholder: "Enter size (optional)",
       isNullable: true,
+      optionsMethod: getSizes,
     },
     {
       type: "text",

@@ -121,8 +121,8 @@ export async function POST(request: NextRequest) {
       fps: fields.fps ? Number(fields.fps) : null,
       soundOutput: fields.soundOutput ? Number(fields.soundOutput) : null,
       screenSize: fields.screenSize ? Number(fields.screenSize) : null,
-      size: fields.size ? Number(fields.size) : null,
-      color: fields.color ? Number(fields.color) : null,
+      size: fields.size ? fields.size : null,
+      color: fields.color ? fields.color : null,
     };
 
     // Validate

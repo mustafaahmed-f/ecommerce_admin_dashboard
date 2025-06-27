@@ -54,7 +54,7 @@ function DropListField<T extends FieldValues>({
   const fieldValue = watch(name);
   const queryKey = dependency
     ? ["dependency dropListOptions", dependencyValue]
-    : ["dropListOptions", fieldValue];
+    : ["dropListOptions", name];
 
   const errorObj = getErrObject<T>(errors, name);
 
@@ -105,15 +105,15 @@ function DropListField<T extends FieldValues>({
             className={cn(
               "w-full justify-between",
               fullWidth ? "col-span-2" : "col-span-1",
-              isError || errorObj ? "border-red-600" : ""
+              isError || errorObj ? "border-red-600" : "",
             )}
             id={name}
           >
             {fieldValue
-              ? dropListOptions.find((opt) => opt === fieldValue) ??
+              ? (dropListOptions.find((opt) => opt === fieldValue) ??
                 placeholder ??
-                "Select..."
-              : placeholder ?? "Select..."}
+                "Select...")
+              : (placeholder ?? "Select...")}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -138,7 +138,7 @@ function DropListField<T extends FieldValues>({
                     <Check
                       className={cn(
                         "ml-auto h-4 w-4",
-                        fieldValue === option ? "opacity-100" : "opacity-0"
+                        fieldValue === option ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>
