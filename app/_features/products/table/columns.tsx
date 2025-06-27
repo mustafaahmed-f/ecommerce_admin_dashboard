@@ -116,6 +116,12 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       ),
       enableSorting: true,
     }),
+    columnHelper.accessor("createdAt", {
+      id: "createdAt",
+      header: "Created At",
+      cell: (info) => <span>{new Date(info.getValue()).toDateString()}</span>,
+      enableSorting: true,
+    }),
 
     columnHelper.display({
       id: "actions",
