@@ -1,5 +1,5 @@
 import connectDB from "@/app/_mongoDB/connectDB";
-import brandsModel from "@/app/_mongoDB/models/brandsModel";
+import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { NextResponse } from "next/server";
@@ -7,20 +7,20 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connectDB();
-    const brands = await brandsModel.find();
+    const categories = await categoriesModel.find();
 
-    if (!brands.length) {
+    if (!categories.length) {
       return NextResponse.json(
-        { success: false, error: "No brands found" },
+        { success: false, error: "No categories found" },
         { status: 404 },
       );
     }
-    // let finalBrands = brands.map((brand: any) => brand.title);
+
     return NextResponse.json(
       {
         success: true,
+        result: categories as any[],
         message: generateSuccessMsg(actions.fetched),
-        result: brands as any[],
       },
       { status: 200 },
     );

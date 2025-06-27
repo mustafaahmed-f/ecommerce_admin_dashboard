@@ -1,4 +1,3 @@
-import { config } from "./../../../_features/brands/brandsConfig";
 import { configType } from "@/app/_types/configType";
 import { Header, Table } from "@tanstack/react-table";
 import { TransitionStartFunction } from "react";

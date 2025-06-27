@@ -9,7 +9,7 @@ import {
 } from "@/app/_components/ui/pagination";
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { useTableContext } from "@/app/_context/TableProvider";
-import { TransitionStartFunction, useTransition } from "react";
+import { TransitionStartFunction } from "react";
 
 interface ShadcnPaginationProps {
   count: number;
