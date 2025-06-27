@@ -1,10 +1,11 @@
 "use client";
 
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { inputFieldType } from "@/app/_types/inputFieldType";
 import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AnyObjectSchema } from "yup";
@@ -24,7 +25,7 @@ function Template1<T extends AnyObjectSchema>({
   fields,
   title,
 }: Template1Props<T>) {
-  const router = useRouter();
+  const { router } = useNextNavigation();
   const { 0: isLoading, 1: setIsLoading } = useState<boolean>(false);
 
   const methods = useForm<InferFormValues<T>>({

@@ -7,8 +7,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/app/_components/ui/pagination";
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { Table } from "@tanstack/react-table";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface ShadcnPaginationProps {
   count: number;
@@ -25,9 +25,7 @@ function ShadcnPagination({
   tableInstance,
   backendPagination = false,
 }: ShadcnPaginationProps) {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
+  const { router, searchParams, pathName } = useNextNavigation();
   const currentPage = backendPagination
     ? parseInt(searchParams.get("page") ?? "1")
     : tableInstance.getState().pagination.pageIndex + 1;

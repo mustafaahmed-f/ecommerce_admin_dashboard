@@ -1,5 +1,5 @@
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { Table } from "@tanstack/react-table";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "../../ui/button";
 import {
@@ -26,9 +26,7 @@ function FilterationInput({
   filtrationColumns,
 }: FilterationInputProps) {
   const timerOut = useRef<NodeJS.Timeout | null>(null);
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
+  const { router, searchParams, pathName } = useNextNavigation();
   const { 0: inputValue, 1: setInputValue } = useState<string>("");
 
   function handleBackEndLogic(

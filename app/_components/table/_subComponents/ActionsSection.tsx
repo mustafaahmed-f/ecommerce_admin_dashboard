@@ -1,13 +1,14 @@
 "use client";
 
-import { DeleteIcon, Pencil, Trash } from "lucide-react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import { Button } from "../../ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
+import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
+import { useMutation } from "@tanstack/react-query";
+import { Pencil, Trash } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,8 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../ui/alert-dialog";
-import { useState } from "react";
-import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
+import { Button } from "../../ui/button";
 
 interface ActionsSectionProps {
   recordId: string;
@@ -27,8 +27,7 @@ interface ActionsSectionProps {
 function ActionsSection({ recordId }: ActionsSectionProps) {
   const { module } = useParams();
   const [open, setOpen] = useState(false);
-  const { 0: isLoading, 1: setIsLoading } = useState<boolean>(false);
-  const router = useRouter();
+  const { router } = useNextNavigation();
 
   const deleteMutation = useMutation({
     mutationFn: async () => {

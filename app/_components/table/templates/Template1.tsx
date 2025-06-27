@@ -1,20 +1,16 @@
 "use client";
 
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { configType } from "@/app/_types/configType";
 import { flexRender, Header, type Table } from "@tanstack/react-table";
 import Link from "next/link";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState, useTransition } from "react";
 import SortIndicators from "../../form/_subComponents/SortIndicators";
-import ShadcnPagination from "../_subComponents/ShadcnPagination";
 import { Button } from "../../ui/button";
 import FilterationInput from "../_subComponents/FilterationInput";
+import ShadcnPagination from "../_subComponents/ShadcnPagination";
 import { filtrationPropsType } from "../types/filtrationPropsType";
-import { useState, useTransition } from "react";
 
 interface Template1Props {
   data: any;
@@ -35,11 +31,9 @@ function Template1({
   currentFilterColumn,
   setCurrentFilterColumn,
 }: Template1Props) {
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const router = useRouter();
-  const pathName = usePathname();
+  const { router, searchParams, pathName } = useNextNavigation();
 
+  const params = new URLSearchParams(searchParams);
   const { 0: isPending, 1: startTransition } = useTransition();
 
   const backEndInitialSorting: [string, 1 | -1][] =
