@@ -7,12 +7,15 @@ const columnHelper = createColumnHelper<Brand>();
 
 export const generalColumns = (hasDetails?: boolean, module?: string) => {
   return [
-    columnHelper.accessor((row) => row._id, {
+    columnHelper.accessor((_row, i) => i + 1, {
       id: "no",
       header: "No.",
-      cell: (info) => <span className="w-fit">{info.row.index + 1}</span>,
+      cell: (info) => <span className="w-fit">{info.getValue()}</span>,
       meta: { className: "max-w-[80px] text-center" },
       enableColumnFilter: false,
+      enableSorting: true,
+      sortingFn: "alphanumeric",
+      sortDescFirst: false,
     }),
     columnHelper.accessor((row) => row._id, {
       id: "_id",

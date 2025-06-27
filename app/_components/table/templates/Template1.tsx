@@ -1,7 +1,7 @@
 "use client";
 
 import { configType } from "@/app/_types/configType";
-import { flexRender, type Table } from "@tanstack/react-table";
+import { flexRender, Header, type Table } from "@tanstack/react-table";
 import Link from "next/link";
 import {
   useParams,
@@ -73,21 +73,21 @@ function Template1({
     setCurrentFilterColumn,
   };
 
-  function handleSorting(column: string) {
+  function handleSorting(header: Header<any, unknown>) {
     let newMap = new Map(sortingMap);
     if (config.backendPagination) {
-      switch (newMap.get(column)) {
+      switch (newMap.get(header.id)) {
         case undefined:
-          newMap.set(column, 1);
+          newMap.set(header.id, 1);
           break;
         case 0:
-          newMap.set(column, 1);
+          newMap.set(header.id, 1);
           break;
         case 1:
-          newMap.set(column, -1);
+          newMap.set(header.id, -1);
           break;
         case -1:
-          newMap.set(column, 0);
+          newMap.set(header.id, 0);
           break;
       }
       setSortingMap(newMap);
@@ -104,20 +104,36 @@ function Template1({
         router.replace(`${pathName}?${params.toString()}`);
       });
     } else {
+      tableInstance.getColumn(header.id)?.toggleSorting(undefined, true);
     }
   }
-  console.log("sortingMap", sortingMap);
-  function indicateSortDirection(column: string): 0 | 1 | -1 {
+
+  function indicateSortDirection(header: Header<any, unknown>): 0 | 1 | -1 {
     if (config.backendPagination) {
-      if (sortingMap.has(column)) {
-        return sortingMap.get(column)!;
+      if (sortingMap.has(header.id)) {
+        return sortingMap.get(header.id)!;
       }
       return 0;
     } else {
       //// handle clientSide indicator
-      return 0;
+      switch (header.column.getNextSortingOrder()) {
+        case "asc":
+          return 0;
+        case "desc":
+          return 1;
+        case false:
+          return -1;
+        default:
+          return 0;
+      }
     }
   }
+
+  console.log("Sorting state : ", tableInstance.getState().sorting);
+  console.log(
+    "Sorting direction of No column : ",
+    tableInstance.getColumn("no")?.getNextSortingOrder(),
+  );
 
   return (
     <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
@@ -151,7 +167,7 @@ function Template1({
                         className={`${header.column.getCanSort() ? "hover:bg-secondary-foreground cursor-pointer" : ""} text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
                         onClick={
                           header.column.getCanSort()
-                            ? () => handleSorting(header.id)
+                            ? () => handleSorting(header)
                             : undefined
                         }
                       >
@@ -162,7 +178,7 @@ function Template1({
                           )}
                           {header.column.getCanSort() && (
                             <SortIndicators
-                              sortDirection={indicateSortDirection(header.id)}
+                              sortDirection={indicateSortDirection(header)}
                             />
                           )}
                         </div>
