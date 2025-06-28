@@ -10,7 +10,7 @@ import {
   indicateSortDirection,
 } from "../_subUtils/SortingMethods";
 import { flexRender } from "@tanstack/react-table";
-import SortIndicators from "../../form/_subComponents/SortIndicators";
+import SortIndicators from "./SortIndicators";
 import ShadcnPagination from "./ShadcnPagination";
 
 interface TableUI1Props {

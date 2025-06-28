@@ -22,9 +22,10 @@ import { Button } from "../../ui/button";
 
 interface ActionsSectionProps {
   recordId: string;
+  useIcons?: boolean;
 }
 
-function ActionsSection({ recordId }: ActionsSectionProps) {
+function ActionsSection({ recordId, useIcons = true }: ActionsSectionProps) {
   const { module } = useParams();
   const [open, setOpen] = useState(false);
   const { router } = useNextNavigation();
@@ -52,22 +53,30 @@ function ActionsSection({ recordId }: ActionsSectionProps) {
     <div
       className={`flex items-center justify-center gap-1 ${
         deleteMutation.isPending ? "pointer-events-none opacity-65" : ""
-      }`}
+      } `}
     >
-      <Link
-        href={`/view/${module}/edit/${recordId}`}
-        className="hover:bg-muted-foreground cursor-pointer rounded-lg px-3 py-2"
-      >
-        <Pencil size={20} />
-      </Link>
+      {useIcons ? (
+        <Link
+          href={`/view/${module}/edit/${recordId}`}
+          className="hover:bg-muted-foreground cursor-pointer rounded-lg px-3 py-2"
+        >
+          <Pencil size={20} />
+        </Link>
+      ) : (
+        <Link href={`/view/${module}/edit/${recordId}`}>
+          <Button variant={"outline"} className="cursor-pointer">
+            Edit
+          </Button>
+        </Link>
+      )}
       <AlertDialog open={open} onOpenChange={setOpen} key={recordId}>
         <AlertDialogTrigger asChild>
           <Button
-            variant="ghost"
-            className="hover:bg-secondary cursor-pointer"
+            variant={!useIcons ? "destructive" : "ghost"}
+            className={`hover:bg-secondary cursor-pointer ${!useIcons && "text-white"}`}
             onClick={() => setOpen(true)}
           >
-            <Trash />
+            {useIcons ? <Trash /> : "Delete"}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
