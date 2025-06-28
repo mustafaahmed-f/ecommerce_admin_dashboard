@@ -7,6 +7,8 @@ import ProductInfo from "./ProductInfo";
 import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
+import { Button } from "@/app/_components/ui/button";
 
 interface DetailsUIProps {
   product: Product;
@@ -15,14 +17,19 @@ interface DetailsUIProps {
 function DetailsUI({ product }: DetailsUIProps) {
   const { title, image } = product;
   const { module } = useParams();
+  const { router } = useNextNavigation();
 
   return (
     <section className="flex w-full flex-col">
       <div className="mb-2 flex w-full justify-start">
-        <Link href={`/view/${module}`} className="underline">
+        <Button
+          variant={"link"}
+          onClick={() => router.back()}
+          className="cursor-pointer text-black hover:underline"
+        >
           {"← "}
           back
-        </Link>
+        </Button>
       </div>
       <div className="relative flex flex-col px-5 py-6 sm:px-14 sm:py-10 md:px-20">
         {/* Out of stock ribbon */}
