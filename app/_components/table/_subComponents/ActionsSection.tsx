@@ -22,7 +22,7 @@ import { Button } from "../../ui/button";
 
 interface ActionsSectionProps {
   recordId: string;
-  useIcons?: boolean;
+  useIcons?: boolean; //// If false, so it is used in details UI, else it is used in the table.
 }
 
 function ActionsSection({ recordId, useIcons = true }: ActionsSectionProps) {
@@ -40,7 +40,11 @@ function ActionsSection({ recordId, useIcons = true }: ActionsSectionProps) {
     },
     onSuccess: () => {
       showSuccessToast(generateSuccessMsg("Deleted successfully"));
-      router.refresh();
+      if (useIcons) {
+        router.refresh();
+      } else if (!useIcons) {
+        router.push(`/view/${module}`);
+      }
     },
 
     onError: (err) => {

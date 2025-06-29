@@ -1,14 +1,12 @@
 "use client";
 
+import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
+import { Button } from "@/app/_components/ui/button";
+import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import Image from "next/image";
 import { Product } from "../types/productType";
-import ProductTabs from "./ProductTabs";
 import ProductInfo from "./ProductInfo";
-import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
-import { Button } from "@/app/_components/ui/button";
+import ProductTabs from "./ProductTabs";
 
 interface DetailsUIProps {
   product: Product;
@@ -16,7 +14,6 @@ interface DetailsUIProps {
 
 function DetailsUI({ product }: DetailsUIProps) {
   const { title, image } = product;
-  const { module } = useParams();
   const { router } = useNextNavigation();
 
   return (

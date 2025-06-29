@@ -1,3 +1,4 @@
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createContext, useContext } from "react";
 
@@ -8,11 +9,11 @@ interface NextNavigationProviderProps {
 const nextNavigateContext = createContext<{
   searchParams: URLSearchParams;
   pathName: string;
-  router: any;
+  router: AppRouterInstance;
 }>({
   searchParams: new URLSearchParams(),
   pathName: "",
-  router: {},
+  router: {} as AppRouterInstance,
 });
 
 function NextNavigationProvider({ children }: NextNavigationProviderProps) {
