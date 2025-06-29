@@ -39,7 +39,8 @@ export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
 
-    const productId = await props.params.id;
+    const AwaitedProps = await props;
+    const productId = AwaitedProps.params.id;
     const checkProductExistence = await productsModel.findOne({
       productId,
     });
@@ -137,7 +138,8 @@ export async function PUT(request: NextRequest, props: any) {
 export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
-    const productId = await props.params.id;
+    const AwaitedProps = await props;
+    const productId = AwaitedProps.params.id;
 
     const deletedProduct = await productsModel.findOneAndDelete({
       productId,
