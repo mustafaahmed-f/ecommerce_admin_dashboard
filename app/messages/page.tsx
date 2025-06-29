@@ -1,7 +1,9 @@
+import MessagesUI from "../_features/messages/_subComponents/MessagesUI";
+
 interface PageProps {}
 
 function Page({}: PageProps) {
-  return <div></div>;
+  return <MessagesUI />;
 }
 
 export default Page;

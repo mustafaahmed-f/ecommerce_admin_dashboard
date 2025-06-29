@@ -20,12 +20,6 @@ export const mainConfig: mainConfigType = {
             href: "/view/brands",
             icon: Home,
           },
-          {
-            name: "users",
-            label: "Users",
-            href: "/",
-            icon: Home,
-          },
         ],
       },
       {
@@ -34,13 +28,13 @@ export const mainConfig: mainConfigType = {
           {
             name: "messages",
             label: "Messages",
-            href: "/",
+            href: "/messages",
             icon: MessagesSquare,
           },
           {
             name: "transactions",
             label: "Transactions",
-            href: "/",
+            href: "/transactions",
             icon: MessagesSquare,
           },
         ],
