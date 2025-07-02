@@ -4,7 +4,7 @@ import { validations } from "./utils/brandsValidations";
 import { formFields } from "./utils/brandsFormFields";
 import { defaultValues } from "./utils/brandsDefaultValues";
 
-export const config: configType<InferFormValues<typeof validations>> = {
+export const brandsConfig: configType<InferFormValues<typeof validations>> = {
   title: "Brands",
   tableTemplate: 1,
   formTemplate: 1,
@@ -15,6 +15,8 @@ export const config: configType<InferFormValues<typeof validations>> = {
   canAddNewRecord: true,
   backendPagination: false,
   hasDetails: false,
+  hasFiltration: true,
   defaultFiltrationColumn: "title",
   filtrationColumns: [...Object.keys(defaultValues), "_id"],
+  typeOfPagination: "number",
 };

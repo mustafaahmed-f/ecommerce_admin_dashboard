@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/app/_features/products/types/productType";
+import { Product } from "@/app/_features/products/types/productsType";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";

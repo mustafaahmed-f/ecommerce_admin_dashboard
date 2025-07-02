@@ -1,10 +1,10 @@
-export type StripeTransaction = {
+export interface StripeTransaction {
   id: string;
   created: number;
-  merchant_name: string | null;
-  merchant_category: string | null;
+  status: string;
   amount: number;
   currency: string;
-  type: string;
-  cardholder: string;
-};
+  payment_method_types: string[];
+  amount_received: number;
+  latest_charge: string | null;
+}

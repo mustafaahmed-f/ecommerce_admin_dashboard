@@ -3,7 +3,7 @@
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { useTableContext } from "@/app/_context/TableProvider";
 import { useState } from "react";
-import TableUI1 from "../_subComponents/TableUI1";
+import TableUI1 from "./TableUI1";
 
 function Template1() {
   const { searchParams } = useNextNavigation();

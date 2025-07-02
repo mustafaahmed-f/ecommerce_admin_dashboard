@@ -1,17 +1,17 @@
 import { useTableContext } from "@/app/_context/TableProvider";
-import { Button } from "../../ui/button";
+import { Button } from "../../../ui/button";
 import Link from "next/link";
-import FilterationInput from "./FilterationInput";
+import FilterationInput from "../../_subComponents/FilterationInput";
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import {
   handleSorting,
   indicateSortDirection,
-} from "../_subUtils/SortingMethods";
+} from "../../_subUtils/SortingMethods";
 import { flexRender } from "@tanstack/react-table";
-import SortIndicators from "./SortIndicators";
-import ShadcnPagination from "./ShadcnPagination";
+import SortIndicators from "../../_subComponents/SortIndicators";
+import ShadcnPagination from "../../_subComponents/ShadcnPagination";
 
 interface TableUI1Props {
   count: number;
@@ -20,8 +20,8 @@ interface TableUI1Props {
 }
 
 function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
-  const { config, tableInstance } = useTableContext();
   const { module } = useParams();
+  const { config, tableInstance } = useTableContext();
   const { 0: isPending, 1: startTransition } = useTransition();
   const { pathName, router, searchParams } = useNextNavigation();
 
@@ -41,7 +41,9 @@ function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
       </div>
 
       <div className="w-full">
-        <FilterationInput startTransition={startTransition} />
+        {config?.hasFiltration && (
+          <FilterationInput startTransition={startTransition} />
+        )}
         <div
           className={`${isPending ? "pointer-events-none opacity-45" : ""} max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen`}
         >
@@ -127,12 +129,14 @@ function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
         </div>
       </div>
 
-      <ShadcnPagination
-        count={count}
-        showFirstLast={true}
-        siblingCount={2}
-        startTransition={startTransition}
-      />
+      {config?.typeOfPagination === "number" && (
+        <ShadcnPagination
+          count={count}
+          showFirstLast={true}
+          siblingCount={2}
+          startTransition={startTransition}
+        />
+      )}
     </section>
   );
 }

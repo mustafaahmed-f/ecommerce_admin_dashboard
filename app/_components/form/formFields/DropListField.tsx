@@ -75,11 +75,6 @@ function DropListField<T extends FieldValues>({
     }
   }, [data, setDropListOptions, fieldValue, setValue, name, trigger]);
 
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setValue(name, event.target.value as PathValue<T, typeof name>);
-  //   trigger(name);
-  // };
-
   const onSelect = (val: string) => {
     setValue(name, val as PathValue<T, typeof name>);
     trigger(name);

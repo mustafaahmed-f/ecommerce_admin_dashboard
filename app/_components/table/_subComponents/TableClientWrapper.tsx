@@ -1,24 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import {
+  ColumnDef,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Product } from "@/app/_features/products/types/productType";
-import { Column } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
+
+import TableProvider from "@/app/_context/TableProvider";
+import { configType } from "@/app/_types/configType";
+import { ModuleTypeMap } from "@/app/_types/ModuleTypeMap";
 import { useParams } from "next/navigation";
 import Spinner from "../../general/Spinner";
-import { configType } from "@/app/_types/configType";
 import { ColumnFiltersState } from "../types/ColumnFilterType";
-import TableProvider from "@/app/_context/TableProvider";
 import { TableProvderValuesType } from "../types/TableProvderValuesType";
 
 interface TableClientWrapperProps {
-  data: any[];
+  data: (keyof ModuleTypeMap)[];
   additionalInfo?: any;
 }
 
@@ -27,9 +28,10 @@ export default function TableClientWrapper({
   additionalInfo,
 }: TableClientWrapperProps) {
   const { module } = useParams();
+
   const [TableComponent, setTableComponent] =
     useState<React.ComponentType<any> | null>(null);
-  const [columns, setColumns] = useState<Column<any>[]>([]);
+  const [columns, setColumns] = useState<ColumnDef<any>[]>([]);
   const [config, setConfig] = useState<configType<any> | null>(null);
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
@@ -49,24 +51,29 @@ export default function TableClientWrapper({
       const columnsModule = await import(
         `@/app/_features/${module}/table/columns.tsx`
       );
-      const tableTemplate = configModule.config.tableTemplate;
+      const tableTemplate = configModule[`${module}Config`].tableTemplate;
 
       const Component = (
         await import(
-          `@/app/_components/table/templates/Template${tableTemplate}`
+          `@/app/_components/table/templates/Template${tableTemplate}/Template${tableTemplate}`
         )
       ).default;
 
-      setConfig(configModule.config);
-      setCurrentFilterColumn(configModule.config.defaultFiltrationColumn);
+      setConfig(configModule[`${module}Config`]);
+      setCurrentFilterColumn(
+        configModule[`${module}Config`].defaultFiltrationColumn,
+      );
       setColumnFilters([
         {
-          id: configModule.config.defaultFiltrationColumn,
+          id: configModule[`${module}Config`].defaultFiltrationColumn,
           value: "",
         },
       ]);
       setColumns(
-        columnsModule.generalColumns(configModule.config.hasDetails, module),
+        columnsModule.generalColumns(
+          configModule[`${module}Config`].hasDetails,
+          module,
+        ),
       );
       setTableComponent(() => Component);
     };
@@ -74,7 +81,7 @@ export default function TableClientWrapper({
     loadDependencies();
   }, [module]);
 
-  const table = useReactTable<Product>({
+  const table = useReactTable<any>({
     columns: useMemo(() => columns, [columns]),
     data,
 

@@ -14,9 +14,9 @@ export async function getAllRecords({
   const res = await fetch(
     `${mainURL}/${APIendPoint}?starting_after=${starting_after}&ending_before=${ending_before}`,
     {
-      //// Cache for three hours
+      //// Cache for half an hour
       next: {
-        revalidate: 60 * 60 * 3,
+        revalidate: 60 * 60 * 0.5,
         tags: generateTags(APIendPoint, "allRecords"),
       },
     },

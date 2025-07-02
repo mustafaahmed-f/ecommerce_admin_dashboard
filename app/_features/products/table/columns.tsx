@@ -1,10 +1,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { Product } from "../types/productType";
 import Image from "next/image";
 import Link from "next/link";
 import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
+import { productsType } from "../types/productsType";
 
-const columnHelper = createColumnHelper<Product>();
+const columnHelper = createColumnHelper<productsType>();
 
 export const generalColumns = (hasDetails?: boolean, module?: string) => {
   return [

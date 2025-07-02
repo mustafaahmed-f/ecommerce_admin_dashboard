@@ -1,9 +1,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { StripeTransaction } from "../types/TransactionType";
+import TransactionStatus from "../_subComponents/TransactionStatus";
 
 const columnHelper = createColumnHelper<StripeTransaction>();
 
-export const generalColumns = (hasDetails?: boolean, module?: string) => {
+export const generalColumns = () => {
   return [
     columnHelper.accessor("id", {
       id: "id",
@@ -19,18 +20,14 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       ),
       enableSorting: true,
     }),
-    columnHelper.accessor("merchant_name", {
-      id: "merchant_name",
-      header: "Merchant Name",
-      cell: (info) => <span>{info.getValue() || "-"}</span>,
+
+    columnHelper.accessor("status", {
+      id: "status",
+      header: "Status",
+      cell: (info) => <TransactionStatus status={info.getValue()} />,
       enableSorting: true,
     }),
-    columnHelper.accessor("merchant_category", {
-      id: "merchant_category",
-      header: "Merchant Category",
-      cell: (info) => <span>{info.getValue() || "-"}</span>,
-      enableSorting: true,
-    }),
+
     columnHelper.accessor("amount", {
       id: "amount",
       header: "Amount",
@@ -45,23 +42,35 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       },
       enableSorting: true,
     }),
+    columnHelper.accessor("amount_received", {
+      id: "amount_received",
+      header: "Received",
+      cell: (info) => {
+        const val = info.getValue();
+        const dollars = (val / 100).toFixed(2);
+        return (
+          <span className="text-green-600">${Math.abs(Number(dollars))}</span>
+        );
+      },
+      enableSorting: true,
+    }),
     columnHelper.accessor("currency", {
       id: "currency",
       header: "Currency",
       cell: (info) => <span>{info.getValue().toUpperCase()}</span>,
       enableSorting: true,
     }),
-    columnHelper.accessor("type", {
-      id: "type",
-      header: "Type",
-      cell: (info) => <span>{info.getValue()}</span>,
-      enableSorting: true,
+    columnHelper.accessor("payment_method_types", {
+      id: "payment_method_types",
+      header: "Payment Method(s)",
+      cell: (info) => <span>{info.getValue().join(", ")}</span>,
+      enableSorting: false,
     }),
-    columnHelper.accessor("cardholder", {
-      id: "cardholder",
-      header: "Cardholder ID",
-      cell: (info) => <span>{info.getValue()}</span>,
-      enableSorting: true,
+    columnHelper.accessor("latest_charge", {
+      id: "latest_charge",
+      header: "Latest Charge ID",
+      cell: (info) => <span>{info.getValue() || "-"}</span>,
+      enableSorting: false,
     }),
   ];
 };

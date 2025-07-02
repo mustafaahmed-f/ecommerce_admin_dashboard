@@ -21,13 +21,13 @@ function FormClientWrapper({ singleRecord }: FormClientWrapperProps) {
         `@/app/_features/${module}/${module}Config.ts`
       );
 
-      const formTemplate = configModule.config.formTemplate;
+      const formTemplate = configModule[`${module}Config`].formTemplate;
 
       const Component = (
         await import(`@/app/_components/form/templates/Template${formTemplate}`)
       ).default;
 
-      setConfig(configModule.config);
+      setConfig(configModule[`${module}Config`]);
 
       setFormComponent(() => Component);
     };

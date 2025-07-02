@@ -1,10 +1,11 @@
 import ModuleNotFound from "@/app/_components/general/ModuleNotFound";
 import TableClientWrapper from "@/app/_components/table/_subComponents/TableClientWrapper";
 import { configType } from "@/app/_types/configType";
+import { ModuleTypeMap } from "@/app/_types/ModuleTypeMap";
 import { ModulesSet } from "@/app/_utils/constants/ModulesSet";
 
 interface PageProps {
-  params: Promise<any>;
+  params: Promise<{ module: keyof ModuleTypeMap }>;
   searchParams: Promise<any>;
 }
 
@@ -16,7 +17,7 @@ async function Page({ params, searchParams }: PageProps) {
   const configModule = await import(
     `@/app/_features/${module}/${module}Config.ts`
   );
-  const config: configType<any> = configModule.config;
+  const config: configType<any> = configModule[`${module}Config`];
 
   const { result: data, additionalInfo } = config.backendPagination
     ? await apis.getAllRecords({

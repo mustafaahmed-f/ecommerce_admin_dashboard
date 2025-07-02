@@ -1,6 +1,6 @@
 import { Review } from "./reviewType";
 
-export type Product = {
+export type productsType = {
   _id: string;
   productId: number;
   title: string;

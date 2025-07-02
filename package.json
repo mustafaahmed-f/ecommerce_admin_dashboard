@@ -51,6 +51,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.78.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/formidable": "^3.4.5",
     "@types/lodash": "^4.17.17",
     "@types/node": "^20",

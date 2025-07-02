@@ -15,7 +15,7 @@ const excludedColumns = [
   "_id",
 ];
 
-export const config: configType<InferFormValues<typeof validations>> = {
+export const productsConfig: configType<InferFormValues<typeof validations>> = {
   title: "Products",
   tableTemplate: 1,
   formTemplate: 1,
@@ -26,8 +26,10 @@ export const config: configType<InferFormValues<typeof validations>> = {
   canAddNewRecord: true,
   backendPagination: true,
   hasDetails: true,
+  hasFiltration: true,
   defaultFiltrationColumn: "title",
   filtrationColumns: generalColumns(true, "products")
     .map((column) => column.id!)
     .filter((column) => !excludedColumns.includes(column!)),
+  typeOfPagination: "number",
 };

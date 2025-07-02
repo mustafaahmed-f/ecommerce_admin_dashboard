@@ -7,7 +7,7 @@ import {
   TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import { useState } from "react";
-import { Product } from "../types/productType";
+import { Product } from "../types/productsType";
 import ProductReviewsSection from "./ProductReviewsSection";
 
 interface ProductTabsProps {
