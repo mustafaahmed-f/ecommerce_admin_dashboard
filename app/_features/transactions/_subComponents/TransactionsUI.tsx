@@ -84,8 +84,11 @@ function TransactionsUI({
               </tr>
             )}
 
-            {tableInstance!.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+            {tableInstance!.getRowModel().rows.map((row, i) => (
+              <tr
+                key={row.id}
+                className={i % 2 === 0 ? "bg-secondary-foreground" : ""}
+              >
                 {row.getAllCells().map((cell) => (
                   <td
                     className={`border-b px-1 py-4 text-center ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
