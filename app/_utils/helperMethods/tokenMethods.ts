@@ -1,4 +1,4 @@
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const signToken = ({
   payload = {},
@@ -12,9 +12,7 @@ export const signToken = ({
   if (!Object.keys(payload).length) {
     throw new Error("payload is required to sign token !", { cause: 400 });
   }
-  const token = jwt.sign(payload, signature, {
-    expiresIn: expiresIn as string | number,
-  });
+  const token = jwt.sign(payload, signature, { expiresIn });
   return token;
 };
 
