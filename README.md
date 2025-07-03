@@ -5,6 +5,7 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 ## Features
 
 - Modern and responsive UI built with Tailwind CSS and shadcn/ui
+- Fetches transactions from Stripe and displays them in a paginated table
 - Dynamic module-based routing system
 - Robust form validation with Yup and Zod
 - Powerful data management with TanStack Table
@@ -24,13 +25,18 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
   - date-fns
   - Framer Motion
   - TanStack Table
+  - TanStack Query
   - Yup (Frontend validations)
   - React Hook Form
+  - recharts
+  - loadash
+  - React dropzone
 
 - **Backend**:
   - MongoDB
   - Mongoose
   - Zod (Backend validations)
+  - Stripe
 
 ## Project Structure
 
@@ -45,25 +51,31 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 ├── types/                   # general types
 ├── hooks/                   # general hooks
 ├── components/              # Shared UI components
+│   ├── Dashboard/
+│   ├── general/
 │   ├── ui/                  # Tailwind + shadcn components
 │   ├── table/               # Table wrappers
+│   │   ├── subComponents/
+│   │   ├── subUtils/
+│   │   └── templates/
+│   │   └── types/
 │   └── form/                # Form wrappers
 ├── icons/
 ├── features/                # Business logic by domain
-│   ├── products/
-│   │   ├── components/
-│   │   ├── hooks/
+│   ├── model/
+│   │   ├── subComponents/
+│   │   ├── table/
 │   │   ├── services/
 │   │   ├── types/
-│   ├── users/
-│   └── orders/
+│   │   ├── utils/
+│   │   └── modelConfig.ts
+│   ├── otherModel/
 ├── utils/                   # Shared utilities
 │   ├── constants/
 │   ├── helperMethods/
 │   ├── auth.ts
 │   ├── api.ts
 │   ├── validation.ts
-│   └── connectDB.ts
 ├── services/
 ├── middleware.ts
 ├── tailwind.config.ts
@@ -76,7 +88,7 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 - `/auth` - Authentication (login/register)
 - `/view/[module]` - Module table view
 - `/view/[module]/new` - Add new record
-- `/view/[module]/edit` - Edit record
+- `/view/[module]/edit/[recordId]` - Edit record
 - `/view/[module]/details/[recordId]` - Record details (if showDetails = true)
 - `/messages` - Messages
 - `/transactions` - Transactions
@@ -136,13 +148,20 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+5. Use main config to add your sidebar items and main title.
+
+6. Follow the structure to add your new modules.
+
 ## Adding New Modules
 
 1. Add your module to `utils/mainConfig.ts`
-2. Create the necessary components in `features/[module]/components`
-3. Add validation schemas in `mongoDB/validationSchemas`
-4. Create the Mongoose model in `mongoDB/models`
+2. Add validation schemas in `mongoDB/validationSchemas`
+3. Create the Mongoose model in `mongoDB/models`
+4. Create the necessary sub components in `features/[module]/components`
 5. Add business logic in `features/[module]/services`
+6. Add types in `features/[module]/types`
+7. Add utils in `features/[module]/utils`
+8. Add table columns in `features/[module]/components`
 
 ## Contributing
 
@@ -154,4 +173,4 @@ npm run dev
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is open source and available for free, but if you find it useful, please consider giving it a star on GitHub.
