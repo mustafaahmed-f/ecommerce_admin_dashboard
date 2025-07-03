@@ -9,6 +9,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { Input } from "../../ui/input";
+import { useState } from "react";
 
 interface TextInputFieldProps<T extends FieldValues> extends inputFieldType<T> {
   register: UseFormRegister<T>;
@@ -17,6 +18,7 @@ interface TextInputFieldProps<T extends FieldValues> extends inputFieldType<T> {
   setValue: UseFormSetValue<T>;
   trigger: UseFormTrigger<T>;
   isNumber?: boolean;
+  isPassword?: boolean;
 }
 
 function TextInputField<T extends FieldValues>({
@@ -31,9 +33,11 @@ function TextInputField<T extends FieldValues>({
   errors,
   isNumber = false,
   isNullable = false,
+  isPassword = false,
 }: TextInputFieldProps<T>) {
   const watchedValue: PathValue<T, typeof name> = watch(name);
   const errorObj = getErrObject<T>(errors, name);
+  const [showPass, setShowPass] = useState(false);
 
   return (
     <div
@@ -47,7 +51,9 @@ function TextInputField<T extends FieldValues>({
       </label>
       <Input
         id={name}
-        type={isNumber ? "number" : "text"}
+        type={
+          isNumber ? "number" : isPassword && !showPass ? "password" : "text"
+        }
         placeholder={placeholder}
         value={watchedValue ?? ""}
         onChange={(e: any) => {
@@ -82,6 +88,19 @@ function TextInputField<T extends FieldValues>({
       />
       {errorObj && (
         <p className="mt-1 text-xs text-red-600">{errorObj.message}</p>
+      )}
+
+      {isPassword && name !== "rePassword" && (
+        <div className="flex items-center gap-1 px-2 py-1">
+          <input
+            type="checkbox"
+            id={`${name}-show-password`}
+            onChange={(e) => setShowPass(e.target.checked)}
+          />
+          <label htmlFor={`${name}-show-password`} className="select-none">
+            Show password
+          </label>
+        </div>
       )}
     </div>
   );

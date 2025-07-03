@@ -9,9 +9,11 @@ export function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME!,
   )?.value;
 
-  if (!token && pathname !== "/login") {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  //TODO : uncomment this after finishing login page
+
+  // if (!token && pathname !== "/login") {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   if (token) {
     try {

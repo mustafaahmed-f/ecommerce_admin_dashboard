@@ -115,6 +115,7 @@ function FormRenderer<T extends FieldValues>({
                 errors={errors}
                 isNumber={field.isNumber ?? false}
                 isNullable={field.isNullable ?? false}
+                isPassword={field.type === "password"}
               />
             );
         }

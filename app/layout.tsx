@@ -1,13 +1,12 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
 import { Toaster } from "./_components/ui/sonner";
 import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
-import { SidebarTrigger } from "./_components/ui/sidebar";
 import SideBar from "./SideBar";
-import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: {

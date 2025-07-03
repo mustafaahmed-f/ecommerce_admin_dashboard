@@ -9,7 +9,8 @@ export interface inputFieldType<T extends FieldValues> {
     | "quantity"
     | "number"
     | "TextArea"
-    | "image";
+    | "image"
+    | "password";
   name: Path<T>;
   lable: string;
   fullWidth: boolean;
