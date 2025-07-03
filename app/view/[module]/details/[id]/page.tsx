@@ -16,7 +16,7 @@ async function Page({ params }: PageProps) {
     `@/app/_features/${module}/${module}Config.ts`
   );
 
-  const config = configModule.config;
+  const config = configModule[`${module}Config`];
 
   if (!config.hasDetails) throw new Error(`No details for ${module}`);
 

@@ -1,11 +1,10 @@
 import ModuleNotFound from "@/app/_components/general/ModuleNotFound";
 import TableClientWrapper from "@/app/_components/table/_subComponents/TableClientWrapper";
 import { configType } from "@/app/_types/configType";
-import { ModuleTypeMap } from "@/app/_types/ModuleTypeMap";
 import { ModulesSet } from "@/app/_utils/constants/ModulesSet";
 
 interface PageProps {
-  params: Promise<{ module: keyof ModuleTypeMap }>;
+  params: Promise<{ module: string }>;
   searchParams: Promise<any>;
 }
 

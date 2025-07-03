@@ -12,6 +12,7 @@ import {
 import { flexRender } from "@tanstack/react-table";
 import SortIndicators from "../../_subComponents/SortIndicators";
 import ShadcnPagination from "../../_subComponents/ShadcnPagination";
+import clsx from "clsx";
 
 interface TableUI1Props {
   count: number;
@@ -45,7 +46,7 @@ function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
           <FilterationInput startTransition={startTransition} />
         )}
         <div
-          className={`${isPending ? "pointer-events-none opacity-45" : ""} max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent px-3 shadow-lg max-md:max-w-screen`}
+          className={`${isPending ? "pointer-events-none opacity-45" : ""} max-h-[600px] w-full overflow-auto rounded-2xl border-t bg-transparent shadow-lg max-md:max-w-screen`}
         >
           <table className="relative w-full table-auto">
             <thead className="bg-primary-foreground sticky top-0 z-10 border-b">
@@ -56,7 +57,16 @@ function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
                       <th
                         key={header.id}
                         colSpan={header.colSpan}
-                        className={`${header.column.getCanSort() ? "hover:bg-secondary-foreground cursor-pointer" : ""} text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                        className={clsx(
+                          // sticky right for pinned columns
+                          header.column.getCanPin() &&
+                            "bg-primary-foreground/90 sticky right-0 z-10 shadow",
+                          header.column.getCanSort() &&
+                            "hover:bg-secondary-foreground cursor-pointer",
+                          "text-table-header p-1 text-center text-sm text-[16px] font-medium text-nowrap sm:p-3",
+                          (header.column.columnDef.meta as any)?.className ??
+                            "",
+                        )}
                         onClick={
                           header.column.getCanSort()
                             ? () =>
@@ -113,7 +123,12 @@ function TableUI1({ count, setSortingMap, sortingMap }: TableUI1Props) {
                 <tr key={row.id}>
                   {row.getAllCells().map((cell) => (
                     <td
-                      className={`border-b px-1 py-4 text-center ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
+                      className={clsx(
+                        cell.column.getCanPin() &&
+                          "bg-primary-foreground/90 sticky right-0 shadow-xl",
+                        "border-b px-1 py-4 text-center",
+                        (cell.column.columnDef.meta as any)?.className ?? "",
+                      )}
                       key={cell.id}
                     >
                       {flexRender(

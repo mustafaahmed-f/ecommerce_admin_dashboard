@@ -4,12 +4,12 @@ import ActionsSection from "@/app/_components/table/_subComponents/ActionsSectio
 import { Button } from "@/app/_components/ui/button";
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import Image from "next/image";
-import { Product } from "../types/productsType";
+import { productsType } from "../types/productsType";
 import ProductInfo from "./ProductInfo";
 import ProductTabs from "./ProductTabs";
 
 interface DetailsUIProps {
-  product: Product;
+  product: productsType;
 }
 
 function DetailsUI({ product }: DetailsUIProps) {

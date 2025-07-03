@@ -14,6 +14,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: (info) => <span>{info.getValue()}</span>,
       enableColumnFilter: false,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor((row) => row._id, {
       id: "_id",
@@ -22,6 +23,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       meta: { className: " text-center" },
       enableColumnFilter: false,
       enableSorting: false,
+      enablePinning: false,
     }),
     columnHelper.accessor("title", {
       id: "title",
@@ -39,6 +41,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         ),
       meta: { className: " text-center min-w-[200px]" },
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("image", {
       id: "image",
@@ -54,18 +57,21 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       ),
       enableColumnFilter: false,
       enableSorting: false,
+      enablePinning: false,
     }),
     columnHelper.accessor("category", {
       id: "category",
       header: "Category",
       cell: (info) => <span>{info.getValue()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("brand", {
       id: "brand",
       header: "Brand",
       cell: (info) => <span>{info.getValue()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
 
     columnHelper.accessor("model", {
@@ -73,24 +79,28 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       header: "Model",
       cell: (info) => <span>{info.getValue()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("stock", {
       id: "stock",
       header: "Stock",
       cell: (info) => <span>{info.getValue()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("sold", {
       id: "sold",
       header: "Sold",
       cell: (info) => <span>{info.getValue()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("discount", {
       id: "discount",
       header: "Discount (%)",
       cell: (info) => <span>{info.getValue() ?? 0}%</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("price", {
       id: "price",
@@ -115,12 +125,14 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         </div>
       ),
       enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.accessor("createdAt", {
       id: "createdAt",
       header: "Created At",
       cell: (info) => <span>{new Date(info.getValue()).toDateString()}</span>,
       enableSorting: true,
+      enablePinning: false,
     }),
 
     columnHelper.display({
@@ -130,6 +142,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         <ActionsSection recordId={String(row.original.productId)} />
       ),
       enableSorting: false,
+      enablePinning: true,
     }),
   ];
 };

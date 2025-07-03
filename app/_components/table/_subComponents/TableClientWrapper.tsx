@@ -12,14 +12,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import TableProvider from "@/app/_context/TableProvider";
 import { configType } from "@/app/_types/configType";
-import { ModuleTypeMap } from "@/app/_types/ModuleTypeMap";
 import { useParams } from "next/navigation";
 import Spinner from "../../general/Spinner";
 import { ColumnFiltersState } from "../types/ColumnFilterType";
 import { TableProvderValuesType } from "../types/TableProvderValuesType";
 
 interface TableClientWrapperProps {
-  data: (keyof ModuleTypeMap)[];
+  data: any[];
   additionalInfo?: any;
 }
 
@@ -116,6 +115,8 @@ export default function TableClientWrapper({
     onSortingChange: setSorting,
 
     autoResetPageIndex: true,
+
+    enableColumnPinning: true,
   });
 
   const TableProviderValues: TableProvderValuesType = {

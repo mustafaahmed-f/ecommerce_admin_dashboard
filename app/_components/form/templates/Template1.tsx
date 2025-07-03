@@ -110,8 +110,18 @@ function Template1<T extends AnyObjectSchema>({
   }
 
   return (
-    <section className="flex h-full w-full flex-col items-center gap-6 sm:gap-8">
-      <p className="w-full text-2xl font-bold sm:text-3xl md:text-4xl">
+    <section className="flex h-full w-full flex-col items-center">
+      <div className="mb-4 flex w-full justify-start">
+        <Button
+          variant={"link"}
+          onClick={() => router.back()}
+          className="cursor-pointer px-0 text-black hover:underline"
+        >
+          {"← "}
+          back
+        </Button>
+      </div>
+      <p className="mb-4 w-full text-2xl font-bold sm:text-3xl md:text-4xl">
         {`${title} : `}{" "}
         <span className="font-normal">{`${isEditMode ? "Edit Record" : "Add New Record"}`}</span>
       </p>
