@@ -4,8 +4,11 @@ import MyCardsSection from "./_components/DashBoard/MyCardsSection";
 import QuickTransferSection from "./_components/DashBoard/QuickTransferSection";
 import RecentTransactionsSection from "./_components/DashBoard/RecentTransactionsSection";
 import WeeklyActivityChart from "./_components/DashBoard/WeeklyActivityChart";
+import { getAllRecords } from "./_features/transactions/services/transactionsAPIs";
 
-export default function Home() {
+export default async function Home() {
+  const transactions = await getAllRecords({});
+
   return (
     <main className="w-full space-y-8 p-4 md:p-6 lg:p-8">
       <div className="flex items-center justify-between">
@@ -18,7 +21,7 @@ export default function Home() {
           <MyCardsSection />
         </div>
         <div className="md:col-span-1">
-          <RecentTransactionsSection />
+          <RecentTransactionsSection transactions={transactions.result ?? []} />
         </div>
       </div>
 

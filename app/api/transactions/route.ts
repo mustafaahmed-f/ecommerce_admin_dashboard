@@ -1,7 +1,9 @@
 import { StripeTransaction } from "@/app/_features/transactions/types/TransactionType";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
+import { generateTags } from "@/app/_utils/helperMethods/generateTags";
 import { stripe } from "@/app/_utils/stripe";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -45,6 +47,8 @@ export async function GET(request: NextRequest) {
         latest_charge: transaction.latest_charge,
       }),
     );
+
+    revalidateTag(generateTags("transactions", "allRecords")[0]);
 
     return NextResponse.json(
       {
