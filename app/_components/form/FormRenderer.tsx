@@ -13,6 +13,7 @@ import TextInputField from "./formFields/TextInputField";
 import QuantityControl from "./formFields/QuantityControl";
 import TextArea from "./formFields/TextArea";
 import ImageUploadField from "./formFields/ImageUploadField";
+import clsx from "clsx";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -22,6 +23,7 @@ interface FormRendererProps<T extends FieldValues> {
   setValue: UseFormSetValue<T>;
   trigger: UseFormTrigger<T>;
   control: Control<T>;
+  className?: string;
 }
 
 function FormRenderer<T extends FieldValues>({
@@ -32,9 +34,10 @@ function FormRenderer<T extends FieldValues>({
   setValue,
   register,
   control,
+  className,
 }: FormRendererProps<T>) {
   return (
-    <div className="grid w-full grid-cols-2 gap-x-4 gap-y-3">
+    <div className={clsx("grid w-full grid-cols-2 gap-x-4 gap-y-3", className)}>
       {fields.map((field: inputFieldType<T>) => {
         switch (field.type) {
           case "dropdown":

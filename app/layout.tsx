@@ -1,7 +1,7 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Toaster } from "./_components/ui/sonner";
 import "./globals.css";
 import Header from "./Header";
@@ -31,6 +31,10 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+  const headersObj = await headers();
+  const pathName = headersObj.get("x-next-url") ?? "/";
+  const loginPath = pathName === "/login";
+
   return (
     <html lang="en">
       <body
@@ -38,9 +42,9 @@ export default async function RootLayout({
       >
         <Providers defaultOpen={defaultOpen}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <SideBar />
+          {!loginPath && <SideBar />}
           <div className="flex max-w-full flex-grow flex-col">
-            <Header />
+            {!loginPath && <Header />}
             <main className="from-primary-foreground flex w-full max-w-full flex-grow bg-gradient-to-b to-white p-9 sm:p-10 md:p-12">
               {children}
             </main>

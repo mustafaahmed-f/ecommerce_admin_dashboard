@@ -9,6 +9,9 @@ export function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME!,
   )?.value;
 
+  const headers = new Headers(request.headers);
+  headers.set("x-next-url", pathname);
+
   //TODO : uncomment this after finishing login page
 
   // if (!token && pathname !== "/login") {
@@ -23,21 +26,29 @@ export function middleware(request: NextRequest) {
       }) as any;
 
       if (decoded.role !== "admin") {
-        return NextResponse.redirect(new URL("/unauthorized", request.url));
+        return NextResponse.redirect(
+          new URL("/unauthorized", request.url),
+        ).headers.set("x-next-url", pathname);
       }
 
       if (pathname === "/login") {
-        return NextResponse.redirect(new URL("/", request.url));
+        return NextResponse.redirect(new URL("/", request.url)).headers.set(
+          "x-next-url",
+          pathname,
+        );
       }
 
-      return NextResponse.next();
+      return NextResponse.next({ headers });
     } catch (e) {
       console.log(e);
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url)).headers.set(
+        "x-next-url",
+        pathname,
+      );
     }
   }
 
-  return NextResponse.next();
+  return NextResponse.next({ headers });
 }
 
 export const config = {

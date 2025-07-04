@@ -33,10 +33,12 @@ function LoginUI({}: LoginUIProps) {
     getValues,
   } = methods;
 
-  async function onSubmit(data: InferFormValues<typeof validations>) {}
+  async function onSubmit(data: InferFormValues<typeof validations>) {
+    console.log(data);
+  }
 
   return (
-    <section className="h-full w-full">
+    <section className="bg-secondary-foreground m-auto rounded-2xl border-2 p-12">
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
         className={`${isLoading ? "pointer-events-none opacity-40" : ""} mx-auto my-auto max-w-md`}
@@ -49,15 +51,16 @@ function LoginUI({}: LoginUIProps) {
           register={register}
           errors={errors}
           control={methods.control}
+          className="space-y-3"
         />
-        <div className="mt-5 flex items-center justify-end px-1">
+        <div className="mt-5 flex items-center justify-center px-1">
           <Button
             variant="default"
             className="bg-primary hover:bg-primary/70 cursor-pointer"
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
           >
-            Login
+            {isLoading ? "Loading..." : "Login"}
           </Button>
         </div>
       </form>
