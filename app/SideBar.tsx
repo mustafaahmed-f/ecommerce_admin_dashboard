@@ -1,4 +1,6 @@
+import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import LogoutBtn from "./_components/general/LogoutBtn";
 import {
   Sidebar,
   SidebarContent,
@@ -11,48 +13,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./_components/ui/sidebar";
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  ShoppingBag,
-} from "lucide-react";
-import { Button } from "./_components/ui/button";
 import { mainConfig } from "./_utils/mainConfig";
 
-interface SideBarProps {}
-
-function SideBar({}: SideBarProps) {
-  const items = [
-    {
-      title: "Home",
-      url: "#",
-      icon: Home,
-    },
-    {
-      title: "Inbox",
-      url: "#",
-      icon: Inbox,
-    },
-    {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings,
-    },
-  ];
-
+function SideBar() {
   const config = mainConfig;
   const sideBarItems = config.sideBar;
 
@@ -91,12 +54,7 @@ function SideBar({}: SideBarProps) {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <Button
-          variant={"outline"}
-          className="bg-secondary cursor-pointer text-white"
-        >
-          Logout
-        </Button>
+        <LogoutBtn />
       </SidebarFooter>
     </Sidebar>
   );

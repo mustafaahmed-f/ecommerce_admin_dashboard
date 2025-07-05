@@ -44,7 +44,7 @@ function LoginUI({}: LoginUIProps) {
         showSuccessToast(response.message);
         //TODO: dispatch user to redux;
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        router.push("/");
+        window.location.href = "/";
       } else {
         setIsLoading(false);
         showErrorToast(response.message);
