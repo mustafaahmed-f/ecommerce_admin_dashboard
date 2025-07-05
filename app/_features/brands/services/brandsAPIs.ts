@@ -7,8 +7,8 @@ import {
 } from "@/app/_services/CRUD_Operations";
 const APIendPoint = "brands";
 
-export async function getAllRecords() {
-  return _getEveryRecord(APIendPoint);
+export async function getAllRecords({ cookieHeader }: { cookieHeader: any }) {
+  return _getEveryRecord(APIendPoint, cookieHeader);
 }
 
 export async function getSingleRecord(recordId: string) {

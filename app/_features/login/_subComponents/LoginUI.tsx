@@ -10,6 +10,8 @@ import { defaultValues } from "../utils/loginDefaultValues";
 import { Button } from "@/app/_components/ui/button";
 import FormRenderer from "@/app/_components/form/FormRenderer";
 import { formFields } from "../utils/loginFormFields";
+import { loginFn } from "../services/loginMethod";
+import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 
 interface LoginUIProps {}
 
@@ -34,7 +36,23 @@ function LoginUI({}: LoginUIProps) {
   } = methods;
 
   async function onSubmit(data: InferFormValues<typeof validations>) {
-    console.log(data);
+    setIsLoading(true);
+    try {
+      const response = await loginFn(data.email, data.password);
+      if (response.success) {
+        setIsLoading(false);
+        showSuccessToast(response.message);
+        //TODO: dispatch user to redux;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push("/");
+      } else {
+        setIsLoading(false);
+        showErrorToast(response.message);
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      showErrorToast(error.message || "Unknown error from login API");
+    }
   }
 
   return (

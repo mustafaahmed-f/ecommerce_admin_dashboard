@@ -31,6 +31,7 @@ function TextInputField<T extends FieldValues>({
   setValue,
   watch,
   errors,
+  register,
   isNumber = false,
   isNullable = false,
   isPassword = false,
@@ -51,6 +52,7 @@ function TextInputField<T extends FieldValues>({
       </label>
       <Input
         id={name}
+        {...register(name)}
         type={
           isNumber ? "number" : isPassword && !showPass ? "password" : "text"
         }

@@ -1,6 +1,8 @@
-import jwt from "jsonwebtoken";
+import { jwtVerify, SignJWT } from "jose";
 
-export const signToken = ({
+const encoder = new TextEncoder();
+
+export const signToken = async ({
   payload = {},
   signature = `${process.env.SIGNATURE}`,
   expiresIn = "1d",
@@ -9,20 +11,20 @@ export const signToken = ({
   signature?: string;
   expiresIn?: string | number;
 }) => {
-  if (!Object.keys(payload).length) {
-    throw new Error("payload is required to sign token !", { cause: 400 });
-  }
-  const token = jwt.sign(payload, signature, { expiresIn });
-  return token;
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(expiresIn)
+    .sign(encoder.encode(signature));
 };
 
-export const verifyToken = ({
+export const verifyToken = async ({
   token = "",
   signature = `${process.env.SIGNATURE}`,
 } = {}) => {
   if (!token) {
     throw new Error("Token is required to verify !", { cause: 400 });
   }
-  const data = jwt.verify(token, signature);
-  return data;
+  const { payload } = await jwtVerify(token, encoder.encode(signature));
+  return payload;
 };

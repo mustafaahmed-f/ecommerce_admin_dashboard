@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import BalanceHistoryChart from "./_components/DashBoard/BalanceHistoryChart";
 import ExpenseStatisticsChart from "./_components/DashBoard/ExpenseStatisticsChart";
 import MyCardsSection from "./_components/DashBoard/MyCardsSection";
@@ -7,7 +8,11 @@ import WeeklyActivityChart from "./_components/DashBoard/WeeklyActivityChart";
 import { getAllRecords } from "./_features/transactions/services/transactionsAPIs";
 
 export default async function Home() {
-  const transactions = await getAllRecords({});
+  const cookieStore = await cookies();
+  const cookieHeader = {
+    Cookie: cookieStore.toString(),
+  };
+  const transactions = await getAllRecords({ cookieHeader });
 
   return (
     <main className="w-full space-y-8 p-4 md:p-6 lg:p-8">

@@ -7,9 +7,11 @@ const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 export async function getAllRecords({
   starting_after = "",
   ending_before = "",
+  cookieHeader,
 }: {
   starting_after?: string;
   ending_before?: string;
+  cookieHeader?: any;
 }) {
   const res = await fetch(
     `${mainURL}/${APIendPoint}?starting_after=${starting_after}&ending_before=${ending_before}`,
@@ -19,6 +21,8 @@ export async function getAllRecords({
         revalidate: 60 * 60 * 0.5,
         tags: generateTags(APIendPoint, "allRecords"),
       },
+      credentials: "include",
+      headers: cookieHeader,
     },
   );
 

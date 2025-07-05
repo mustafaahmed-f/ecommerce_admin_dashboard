@@ -1,11 +1,7 @@
 "use client";
 import Spinner from "@/app/_components/general/Spinner";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import {
-  ColumnDef,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { getAllRecords } from "../services/transactionsAPIs";
 import { generalColumns } from "../table/columns";

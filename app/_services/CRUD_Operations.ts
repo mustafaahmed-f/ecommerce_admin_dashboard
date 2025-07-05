@@ -3,14 +3,19 @@ import { generateTags } from "../_utils/helperMethods/generateTags";
 
 const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
-export async function _getEveryRecord(_APIEndpointName: string) {
+export async function _getEveryRecord(
+  _APIEndpointName: string,
+  cookieHeader?: any,
+) {
   //// This method is used to get all records from table and apply api feature on the client side
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
+    credentials: "include",
     //// Cache for three hours
     next: {
       revalidate: 60 * 60 * 3,
       tags: generateTags(_APIEndpointName, "everyRecord"),
     },
+    headers: cookieHeader,
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -41,6 +46,7 @@ export async function _getAllRecords({
   sort = "",
   searchTerm = "",
   searchField = "",
+  cookieHeader,
 }: {
   _APIEndpointName: string;
   page?: number;
@@ -48,15 +54,18 @@ export async function _getAllRecords({
   sort?: string;
   searchTerm?: string;
   searchField?: string;
+  cookieHeader?: any;
 }): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}&sort=${sort}`,
     {
+      credentials: "include",
       //// Cache for three hours
       next: {
         revalidate: 60 * 60 * 3,
         tags: generateTags(_APIEndpointName, "allRecords"),
       },
+      headers: cookieHeader,
     },
   );
 
@@ -84,16 +93,20 @@ export async function _getAllRecords({
 export async function _getSingleRecord({
   _APIEndpointName,
   recordId,
+  cookieHeader,
 }: {
   _APIEndpointName: string;
   recordId: string;
+  cookieHeader?: any;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    credentials: "include",
     //// Cache for three hours
     next: {
       revalidate: 60 * 60 * 3,
       tags: generateTags(_APIEndpointName, "singleRecord", recordId),
     },
+    headers: cookieHeader,
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -120,12 +133,16 @@ export async function _getSingleRecord({
 export async function _deleteSingleRecord({
   _APIEndpointName,
   recordId,
+  cookieHeader,
 }: {
   _APIEndpointName: string;
   recordId: string;
+  cookieHeader?: any;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    credentials: "include",
     method: "DELETE",
+    headers: cookieHeader,
   });
 
   const jsonResponse: apiResponseType = await res.json(); // even if !res.ok, still need this
@@ -153,19 +170,25 @@ export async function _updateSingleRecord({
   _APIEndpointName,
   recordId,
   data,
+  cookieHeader,
 }: {
   _APIEndpointName: string;
   recordId: string;
   data: any;
+  cookieHeader?: any;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
+    credentials: "include",
     method: "PUT",
     body: data instanceof FormData ? data : JSON.stringify(data),
     headers:
       data instanceof FormData
-        ? undefined // let the browser set the correct multipart headers
+        ? {
+            ...(cookieHeader && { Cookie: cookieHeader }),
+          }
         : {
             "Content-Type": "application/json",
+            ...(cookieHeader && { Cookie: cookieHeader }),
           },
   });
 
@@ -196,18 +219,24 @@ export async function _updateSingleRecord({
 export async function _createSingleRecord({
   _APIEndpointName,
   data,
+  cookieHeader,
 }: {
   _APIEndpointName: string;
   data: any;
+  cookieHeader?: any;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
+    credentials: "include",
     method: "POST",
     body: data instanceof FormData ? data : JSON.stringify(data),
     headers:
       data instanceof FormData
-        ? undefined
+        ? {
+            ...(cookieHeader && { Cookie: cookieHeader }),
+          }
         : {
             "Content-Type": "application/json",
+            ...(cookieHeader && { Cookie: cookieHeader }),
           },
   });
 
