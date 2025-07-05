@@ -1,4 +1,7 @@
+"use client";
+
 import { StripeTransaction } from "@/app/_features/transactions/types/TransactionType";
+import { format } from "date-fns";
 
 export default function RecentTransactionsSection({
   className = "",
@@ -8,30 +11,6 @@ export default function RecentTransactionsSection({
   className?: string;
 }) {
   const transactions = fetchedTransactions.slice(0, 10);
-
-  // const transactions = [
-  //   {
-  //     icon: "🪙",
-  //     title: "Deposit from my Card",
-  //     date: "28 January 2021",
-  //     amount: "-$850",
-  //     color: "text-red-500",
-  //   },
-  //   {
-  //     icon: "💳",
-  //     title: "Deposit Paypal",
-  //     date: "25 January 2021",
-  //     amount: "+$2,500",
-  //     color: "text-green-500",
-  //   },
-  //   {
-  //     icon: "👤",
-  //     title: "Jemi Wilson",
-  //     date: "21 January 2021",
-  //     amount: "+$5,400",
-  //     color: "text-green-500",
-  //   },
-  // ];
 
   return (
     <div
@@ -46,7 +25,7 @@ export default function RecentTransactionsSection({
               <div>
                 <div className="text-sm font-semibold">{tx.id}</div>
                 <div className="text-xs text-gray-400">
-                  {new Date(tx.created * 1000).toLocaleDateString()}
+                  {format(new Date(tx.created * 1000), "MM/dd/yyyy")}
                 </div>
               </div>
             </div>
