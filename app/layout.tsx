@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
+import { RemoveDuplicatedDocumentsOFBrands } from "./_utils/helperMethods/RemoveDuplicatedDocuments";
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +35,8 @@ export default async function RootLayout({
   const headersObj = await headers();
   const pathName = headersObj.get("x-next-url") ?? "/";
   const loginPath = pathName === "/login";
+
+  // await RemoveDuplicatedDocumentsOFBrands();
 
   return (
     <html lang="en">
