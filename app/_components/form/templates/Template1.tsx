@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { AnyObjectSchema } from "yup";
 import { Button } from "../../ui/button";
 import FormRenderer from "../FormRenderer";
+import { FormDataCreator } from "@/app/_utils/helperMethods/FormDataCreator";
 
 interface Template1Props<T extends AnyObjectSchema> {
   defaultValues: InferFormValues<T>;
@@ -51,39 +52,39 @@ function Template1<T extends AnyObjectSchema>({
 
   async function onSubmit(data: InferFormValues<T>) {
     setIsLoading(true);
-    //TODO : check image type ( string or File ) in the api route
-    //TODO : use form data to send data to api route so it can handle mixed types ( type of image )
-    const formData = new FormData();
 
-    formData.append("title", data.title);
-    formData.append("image", data.image); // if image is a File object
+    // const formData = new FormData();
+    // formData.append("title", data.title);
+    // formData.append("image", data.image); // if image is a File object
 
-    formData.append("price", String(data.price));
-    formData.append("description", data.description);
-    formData.append("brand", data.brand);
-    formData.append("model", data.model);
+    // formData.append("price", String(data.price));
+    // formData.append("description", data.description);
+    // formData.append("brand", data.brand);
+    // formData.append("model", data.model);
 
-    if (data.color) formData.append("color", data.color);
-    if (data.size) formData.append("size", data.size);
+    // if (data.color) formData.append("color", data.color);
+    // if (data.size) formData.append("size", data.size);
 
-    if (data.ram) formData.append("ram", String(data.ram));
-    if (data.power) formData.append("power", String(data.power));
-    if (data.fps) formData.append("fps", String(data.fps));
-    if (data.soundOutput)
-      formData.append("soundOutput", String(data.soundOutput));
-    if (data.screenSize) formData.append("screenSize", String(data.screenSize));
+    // if (data.ram) formData.append("ram", String(data.ram));
+    // if (data.power) formData.append("power", String(data.power));
+    // if (data.fps) formData.append("fps", String(data.fps));
+    // if (data.soundOutput)
+    //   formData.append("soundOutput", String(data.soundOutput));
+    // if (data.screenSize) formData.append("screenSize", String(data.screenSize));
 
-    formData.append("category", data.category);
-    formData.append("discount", String(data.discount));
-    formData.append("stock", String(data.stock));
+    // formData.append("category", data.category);
+    // formData.append("discount", String(data.discount));
+    // formData.append("stock", String(data.stock));
+
+    const formData = FormDataCreator(data);
 
     try {
       const APIsFile = await import(
         `@/app/_features/${moduleName}/services/${moduleName}APIs`
       );
       const response = isEditMode
-        ? await APIsFile.updateSingleRecord(id, formData)
-        : await APIsFile.createSingleRecord(formData);
+        ? await APIsFile.updateSingleRecord(id, data.image ? formData : data)
+        : await APIsFile.createSingleRecord(data.image ? formData : data);
 
       if (response.success) {
         showSuccessToast(
@@ -92,6 +93,9 @@ function Template1<T extends AnyObjectSchema>({
 
         router.push(`/view/${moduleName}`);
       } else {
+        if (response.message === "Validation failed") {
+          showErrorToast(response.errors[0]);
+        }
         showErrorToast(
           response.error ||
             response.message ||
@@ -101,6 +105,9 @@ function Template1<T extends AnyObjectSchema>({
 
       setIsLoading(false);
     } catch (error: any) {
+      if (error.message === "Validation failed") {
+        showErrorToast(error.errors);
+      }
       showErrorToast(
         `Error submitting record : ${typeof error === "string" ? error : error.message ? error.message : "Unknown error"}`,
       );

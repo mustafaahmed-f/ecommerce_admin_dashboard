@@ -69,11 +69,18 @@ export async function PUT(request: NextRequest, props: any) {
       price: Number(fields.price),
       discount: Number(fields.discount),
       stock: Number(fields.stock),
-      ram: fields.ram ? Number(fields.ram) : null,
-      power: fields.power ? Number(fields.power) : null,
-      fps: fields.fps ? Number(fields.fps) : null,
-      soundOutput: fields.soundOutput ? Number(fields.soundOutput) : null,
-      screenSize: fields.screenSize ? Number(fields.screenSize) : null,
+      ram: fields.ram && fields.ram !== "null" ? Number(fields.ram) : null,
+      power:
+        fields.power && fields.power !== "null" ? Number(fields.power) : null,
+      fps: fields.fps && fields.fps !== "null" ? Number(fields.fps) : null,
+      soundOutput:
+        fields.soundOutput && fields.soundOutput !== "null"
+          ? Number(fields.soundOutput)
+          : null,
+      screenSize:
+        fields.screenSize && fields.screenSize !== "null"
+          ? Number(fields.screenSize)
+          : null,
     };
 
     // Validate

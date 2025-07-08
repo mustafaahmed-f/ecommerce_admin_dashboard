@@ -52,7 +52,7 @@ function TextInputField<T extends FieldValues>({
       </label>
       <Input
         id={name}
-        {...register(name)}
+        // {...register(name)}
         type={
           isNumber ? "number" : isPassword && !showPass ? "password" : "text"
         }

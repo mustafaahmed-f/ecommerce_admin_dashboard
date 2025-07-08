@@ -26,8 +26,9 @@ export const addNewProductSchema = z.object({
 
   price: z
     .number({ invalid_type_error: invalidNumberMsg("Price") })
-    .nonnegative(requiredFieldMsg("Price")),
-
+    .refine((val) => val >= 1, {
+      message: `${positiveNumberMsg("Price")} & min price 1`,
+    }),
   description: z.string().nonempty(requiredFieldMsg("Description")),
 
   brand: z.string().nonempty(requiredFieldMsg("Brand")),

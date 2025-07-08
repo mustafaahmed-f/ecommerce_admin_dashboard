@@ -9,4 +9,10 @@ const brandsSchema = new Schema(
   },
 );
 
+brandsSchema.virtual("products", {
+  ref: "Product",
+  localField: "title",
+  foreignField: "brand",
+});
+
 export default mongoose.models.Brand || mongoose.model("Brand", brandsSchema);

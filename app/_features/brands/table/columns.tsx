@@ -17,6 +17,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       enableSorting: true,
       sortingFn: "alphanumeric",
       sortDescFirst: false,
+      enablePinning: false,
     }),
     columnHelper.accessor((row) => row._id, {
       id: "_id",
@@ -24,6 +25,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
       cell: (info) => <span className="w-fit">{info.getValue()}</span>,
       meta: { className: " text-center" },
       enableColumnFilter: false,
+      enablePinning: false,
     }),
     columnHelper.accessor("title", {
       header: "Title",
@@ -38,6 +40,14 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         ) : (
           <span>{info.getValue()}</span>
         ),
+      enablePinning: false,
+    }),
+    columnHelper.accessor("createdAt", {
+      id: "createdAt",
+      header: "Created At",
+      cell: (info) => <span>{new Date(info.getValue()).toDateString()}</span>,
+      enableSorting: true,
+      enablePinning: false,
     }),
     columnHelper.display({
       id: "actions",
