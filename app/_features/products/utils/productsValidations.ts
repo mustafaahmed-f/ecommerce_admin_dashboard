@@ -35,7 +35,8 @@ export const validations = yup.object({
   price: yup
     .number()
     .typeError(invalidNumberMsg("Price"))
-    .required(requiredFieldMsg("Price")),
+    .required(requiredFieldMsg("Price"))
+    .test("minPrice", "Price should be at least 1", (val) => val >= 1),
 
   description: yup.string().required(requiredFieldMsg("Description")),
 

@@ -7,7 +7,15 @@ import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
-import { RemoveDuplicatedDocumentsOFBrands } from "./_utils/helperMethods/RemoveDuplicatedDocuments";
+import {
+  RemoveDuplicatedDocumentsOFBrands,
+  removeDuplicateProductsByProductId,
+  sortProducts,
+} from "./_utils/helperMethods/RemoveDuplicatedDocuments";
+import {
+  migrate,
+  moveProductsToOriginalCollection,
+} from "./_utils/helperMethods/ModifyCollection";
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +45,10 @@ export default async function RootLayout({
   const loginPath = pathName === "/login";
 
   // await RemoveDuplicatedDocumentsOFBrands();
+  // await migrate();
+  // await removeDuplicateProductsByProductId();
+  // await sortProducts();
+  // await moveProductsToOriginalCollection();
 
   return (
     <html lang="en">

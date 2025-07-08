@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const modelsSchema = new Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, unique: true },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
