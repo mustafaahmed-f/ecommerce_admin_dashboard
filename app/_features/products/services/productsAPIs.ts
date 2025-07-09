@@ -76,7 +76,9 @@ export async function createSingleRecord(data: any, cookieHeader?: any) {
   });
 }
 
-export async function getCategories(): Promise<string[]> {
+export async function getCategories(): Promise<
+  { value: string; lable: string }[]
+> {
   const res = await fetch(`${mainURL}/categories`, {
     //// Cache for three hours
     next: {
@@ -98,10 +100,12 @@ export async function getCategories(): Promise<string[]> {
     );
   }
 
-  return jsonResponse.result.map((category: any) => category.title);
+  return jsonResponse.result.map((category: any) => {
+    return { value: String(category._id), lable: category.title };
+  });
 }
 
-export async function getBrands(): Promise<string[]> {
+export async function getBrands(): Promise<{ value: string; lable: string }[]> {
   const res = await fetch(`${mainURL}/brands`, {
     //// Cache for three hours
     next: {
@@ -123,10 +127,12 @@ export async function getBrands(): Promise<string[]> {
     );
   }
 
-  return jsonResponse.result.map((brand: any) => brand.title);
+  return jsonResponse.result.map((brand: any) => {
+    return { value: String(brand._id), lable: brand.title };
+  });
 }
 
-export async function getModels(): Promise<string[]> {
+export async function getModels(): Promise<{ value: string; lable: string }[]> {
   const res = await fetch(`${mainURL}/models`, {
     //// Cache for three hours
     next: {
@@ -148,13 +154,15 @@ export async function getModels(): Promise<string[]> {
     );
   }
 
-  return jsonResponse.result.map((model: any) => model.title);
+  return jsonResponse.result.map((model: any) => {
+    return { value: String(model._id), lable: model.title };
+  });
 }
 
-export async function getColors(): Promise<string[]> {
-  return colors;
+export async function getColors(): Promise<{ value: string; lable: string }[]> {
+  return colors.map((color) => ({ value: color, lable: color }));
 }
 
-export async function getSizes(): Promise<string[]> {
-  return sizes;
+export async function getSizes(): Promise<{ value: string; lable: string }[]> {
+  return sizes.map((size) => ({ value: size, lable: size }));
 }

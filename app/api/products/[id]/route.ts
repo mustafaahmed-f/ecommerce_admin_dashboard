@@ -19,10 +19,16 @@ export async function GET(request: NextRequest, props: any) {
         { status: 404 },
       );
     }
+    let finalProduct = {
+      ...product.toObject(),
+      brand: product.brand._id,
+      category: product.category._id,
+      model: product.model._id,
+    };
     return NextResponse.json(
       {
         success: true,
-        result: product,
+        result: finalProduct,
         message: generateSuccessMsg(actions.fetched),
       },
       { status: 200 },

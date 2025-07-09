@@ -1,12 +1,12 @@
 "use client";
 
-import { Product } from "@/app/_features/products/types/productsType";
+import { productsType } from "@/app/_features/products/types/productsType";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
 interface DetailsClientWrapperProps {
-  product: Product;
+  product: productsType;
 }
 
 function DetailsClientWrapper({ product }: DetailsClientWrapperProps) {

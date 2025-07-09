@@ -48,10 +48,14 @@ function DropListField<T extends FieldValues>({
   setValue,
   trigger,
 }: DropListFieldProps<T>) {
-  const { 0: dropListOptions, 1: setDropListOptions } = useState<string[]>([]);
+  const { 0: dropListOptions, 1: setDropListOptions } = useState<
+    { lable: string; value: string }[]
+  >([]);
   const { 0: open, 1: setOpen } = useState<boolean>(false);
   const dependencyValue = dependency ? watch(dependency) : "";
   const fieldValue = watch(name);
+  const fieldLabel =
+    dropListOptions.find((item) => item.value === fieldValue)?.lable || "";
   const queryKey = dependency
     ? ["dependency dropListOptions", dependencyValue]
     : ["dropListOptions", name];
@@ -65,10 +69,12 @@ function DropListField<T extends FieldValues>({
       : () => optionsMethod!(),
   });
 
+  // console.log("dropListOptions", dropListOptions);
+
   useEffect(() => {
     if (data) {
       setDropListOptions(data);
-      if (!data.includes(fieldValue as string)) {
+      if (!data.some((item) => item.value === fieldValue)) {
         setValue(name, "" as PathValue<T, typeof name>); // reset to empty if the current value is invalid
         trigger(name);
       }
@@ -80,6 +86,12 @@ function DropListField<T extends FieldValues>({
     trigger(name);
     setOpen(false);
   };
+
+  if (name === "brand") {
+    console.log("dropListOptions", dropListOptions);
+    console.log("fieldValue", fieldValue);
+    console.log("fieldLabel", fieldLabel);
+  }
 
   return (
     <div
@@ -105,9 +117,7 @@ function DropListField<T extends FieldValues>({
             id={name}
           >
             {fieldValue
-              ? (dropListOptions.find((opt) => opt === fieldValue) ??
-                placeholder ??
-                "Select...")
+              ? (fieldLabel ?? placeholder ?? "Select...")
               : (placeholder ?? "Select...")}
             <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
@@ -125,11 +135,11 @@ function DropListField<T extends FieldValues>({
               <CommandGroup>
                 {dropListOptions.map((option) => (
                   <CommandItem
-                    key={option}
-                    value={option}
-                    onSelect={() => onSelect(option)}
+                    key={option.value}
+                    value={option.value}
+                    onSelect={() => onSelect(option.value)}
                   >
-                    {option}
+                    {option.lable}
                     <Check
                       className={cn(
                         "ml-auto h-4 w-4",

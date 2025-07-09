@@ -16,7 +16,9 @@ export interface inputFieldType<T extends FieldValues> {
   fullWidth: boolean;
   required: boolean;
   placeholder: string;
-  optionsMethod?: (dependency?: string) => Promise<string[]>;
+  optionsMethod?: (
+    dependency?: string,
+  ) => Promise<{ value: string; lable: string }[]>;
   dependency?: Path<T>;
   isNumber?: boolean;
   isNullable?: boolean; //// Used to allow empty fields for numerical input field ( as this is not allowed by default )

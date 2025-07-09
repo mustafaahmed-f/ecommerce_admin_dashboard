@@ -45,7 +45,7 @@ function Template1<T extends AnyObjectSchema>({
     getValues,
   } = methods;
 
-  // console.log("Form values : ", getValues());
+  console.log("Form values : ", getValues());
 
   const { module: moduleName, id } = useParams();
   const isEditMode = !!id;

@@ -62,7 +62,7 @@ export async function _getAllRecords({
       credentials: "include",
       //// Cache for three hours
       next: {
-        revalidate: 60 * 60 * 3,
+        revalidate: 0,
         tags: generateTags(_APIEndpointName, "allRecords"),
       },
       headers: cookieHeader,
@@ -103,7 +103,7 @@ export async function _getSingleRecord({
     credentials: "include",
     //// Cache for three hours
     next: {
-      revalidate: 60 * 60 * 3,
+      revalidate: 0,
       tags: generateTags(_APIEndpointName, "singleRecord", recordId),
     },
     headers: cookieHeader,
