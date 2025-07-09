@@ -15,6 +15,8 @@ export const config = {
   },
 };
 
+const nestedFields = ["brand", "category", "model"];
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -24,6 +26,29 @@ export async function GET(request: NextRequest) {
     const sort = searchParams.get("sort") ?? "";
     const searchTerm = searchParams.get("searchTerm") ?? "";
     const searchField = searchParams.get("searchField") ?? "";
+
+    let modifiedSort = sort;
+    if (modifiedSort) {
+      let sortArr = modifiedSort.split("/");
+      modifiedSort = sortArr
+        .map((sortItem) => {
+          if (sortItem.startsWith("-")) {
+            let currentSortItem = sortItem.slice(1);
+            if (nestedFields.includes(currentSortItem)) {
+              return `-${currentSortItem}.title`;
+            } else {
+              return `-${currentSortItem}`;
+            }
+          } else {
+            if (nestedFields.includes(sortItem)) {
+              return `${sortItem}.title`;
+            } else {
+              return `${sortItem}`;
+            }
+          }
+        })
+        .join("/");
+    }
 
     let filter: any = {};
     if (searchField && searchTerm) {
@@ -43,21 +68,21 @@ export async function GET(request: NextRequest) {
           );
         }
       } else {
-        switch (searchField) {
-          case "brand":
-            break;
-
-          default:
-            break;
+        if (nestedFields.includes(searchField))
+          filter[`${searchField}.title`] = {
+            $regex: searchTerm,
+            $options: "i",
+          };
+        else {
+          filter[searchField] = { $regex: searchTerm, $options: "i" };
         }
-        filter[searchField] = { $regex: searchTerm, $options: "i" };
       }
     }
 
     const queryObj = {
       page: parseInt(page),
       size: parseInt(size),
-      sort,
+      sort: modifiedSort,
     };
 
     const totalProducts = await productsModel.countDocuments(filter);
@@ -83,11 +108,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    let finalProducts = products.map((product: any) => {
+      product = product.toObject();
+      return {
+        ...product,
+        brand: product.brand.title,
+        category: product.category.title,
+        model: product.model.title,
+      };
+    });
+
     return NextResponse.json(
       {
         success: true,
         message: generateSuccessMsg(actions.fetched),
-        result: products as any[],
+        result: finalProducts as any[],
         additionalInfo: totalProducts,
       },
       {

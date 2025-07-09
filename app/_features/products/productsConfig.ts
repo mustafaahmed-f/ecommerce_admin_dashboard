@@ -13,6 +13,9 @@ const excludedColumns = [
   "discount",
   "stock",
   "_id",
+  "createdAt",
+  "updatedAt",
+  "sold",
 ];
 
 export const productsConfig: configType<InferFormValues<typeof validations>> = {

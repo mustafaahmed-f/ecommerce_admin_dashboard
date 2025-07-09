@@ -5,10 +5,6 @@ import modelsModel from "@/app/_mongoDB/models/modelsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import tempProductsModel from "@/app/_mongoDB/models/tempProductsModel";
 
-function escapeRegex(str: string) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
 export async function migrate() {
   await connectDB();
 
