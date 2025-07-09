@@ -11,26 +11,35 @@ const reviewSchema = new Schema({
 
 const productSchema = new Schema(
   {
-    productId: { type: Number, required: false },
+    productId: { type: Number, required: false, unique: true },
     title: { type: String, required: true },
     image: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String, required: true },
 
     brand: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Brand",
-      required: true,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Brand",
+        required: true,
+      },
+      title: { type: String, required: true },
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true,
+      },
+      title: { type: String, required: true },
     },
     model: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Model",
-      required: true,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Model",
+        required: true,
+      },
+      title: { type: String, required: true },
     },
 
     color: { type: String, default: null },

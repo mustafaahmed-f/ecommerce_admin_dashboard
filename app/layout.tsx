@@ -8,14 +8,10 @@ import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
 import {
-  RemoveDuplicatedDocumentsOFBrands,
-  removeDuplicateProductsByProductId,
-  sortProducts,
-} from "./_utils/helperMethods/RemoveDuplicatedDocuments";
-import {
   migrate,
   moveProductsToOriginalCollection,
 } from "./_utils/helperMethods/ModifyCollection";
+import { removeDuplicateProductsByProductId } from "./_utils/helperMethods/RemoveDuplicatedDocuments";
 
 export const metadata: Metadata = {
   title: {

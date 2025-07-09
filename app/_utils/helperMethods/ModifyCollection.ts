@@ -17,45 +17,30 @@ export async function migrate() {
   const modifyProductsPromise = products.map(async (product) => {
     const currentProduct = product.toObject();
     let brandDoc = null;
-    if (currentProduct.brand && currentProduct.brand.trim() !== "") {
-      brandDoc = await brandsModel.findOne({
-        title: new RegExp(`^${escapeRegex(currentProduct.brand.trim())}$`, "i"),
-      });
-      if (!brandDoc) {
-        brandDoc = await brandsModel.create({
-          title: currentProduct.brand.trim().toLowerCase(),
-        });
-      }
+    if (currentProduct.brand) {
+      brandDoc = await brandsModel.findById(currentProduct.brand);
     }
 
     let categoryDoc = null;
-    if (currentProduct.category && currentProduct.category.trim() !== "") {
-      categoryDoc = await categoriesModel.findOne({
-        title: currentProduct.category.trim(),
-      });
-      if (!categoryDoc) {
-        categoryDoc = await categoriesModel.create({
-          title: currentProduct.category.trim(),
-        });
-      }
+    if (currentProduct.category) {
+      categoryDoc = await categoriesModel.findById(currentProduct.category);
     }
 
     let modelDoc = null;
-    if (currentProduct.model && currentProduct.model.trim() !== "") {
-      modelDoc = await modelsModel.findOne({
-        title: currentProduct.model.trim(),
-      });
-      if (!modelDoc) {
-        modelDoc = await modelsModel.create({
-          title: currentProduct.model.trim(),
-        });
-      }
+    if (currentProduct.model) {
+      modelDoc = await modelsModel.findById(currentProduct.model);
     }
 
     // Update currentProduct only if we have found or created these references
-    if (brandDoc) currentProduct.brand = brandDoc._id;
-    if (categoryDoc) currentProduct.category = categoryDoc._id;
-    if (modelDoc) currentProduct.model = modelDoc._id;
+    if (brandDoc)
+      currentProduct.brand = { _id: brandDoc._id, title: brandDoc.title };
+    if (categoryDoc)
+      currentProduct.category = {
+        _id: categoryDoc._id,
+        title: categoryDoc.title,
+      };
+    if (modelDoc)
+      currentProduct.model = { _id: modelDoc._id, title: modelDoc.title };
 
     delete currentProduct._id;
 

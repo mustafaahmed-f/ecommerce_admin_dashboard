@@ -43,6 +43,13 @@ export async function GET(request: NextRequest) {
           );
         }
       } else {
+        switch (searchField) {
+          case "brand":
+            break;
+
+          default:
+            break;
+        }
         filter[searchField] = { $regex: searchTerm, $options: "i" };
       }
     }
