@@ -45,7 +45,8 @@ export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const brand = await brandsModel.findById(params.id);
+    const brandId = await params.id;
+    const brand = await brandsModel.findById(brandId);
     if (!brand) {
       return NextResponse.json(
         { success: false, message: "Brand not found" },
@@ -76,9 +77,12 @@ export async function PUT(request: NextRequest, props: any) {
     }
 
     //// update brand title in products first:
-    const products = await productsModel.find({ brand: brand.title });
+    const products = await productsModel.find({ "brand._id": brandId });
     if (products.length) {
-      await productsModel.updateMany({ brand: brand.title }, { brand: title });
+      await productsModel.updateMany(
+        { "brand._id": brandId },
+        { "brand.title": title },
+      );
     }
 
     const updatedBrand = await brandsModel.findByIdAndUpdate(
@@ -88,7 +92,7 @@ export async function PUT(request: NextRequest, props: any) {
     );
     if (!updatedBrand) throw new Error(generateErrMsg(actions.updated));
 
-    revalidateTag(generateTags("brands", "allRecords")[0]);
+    revalidateTag(generateTags("brands", "everyRecord")[0]);
     revalidateTag(generateTags("brands", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
@@ -112,7 +116,8 @@ export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const brand = await brandsModel.findById(params.id);
+    const brandId = await params.id;
+    const brand = await brandsModel.findById(brandId);
     if (!brand) {
       return NextResponse.json(
         { success: false, message: "Brand not found" },
@@ -121,17 +126,18 @@ export async function DELETE(request: NextRequest, props: any) {
     }
 
     //// Delete related products first:
-    const products = await productsModel.find({ brand: brand.title });
+    const products = await productsModel.find({ "brand._id": brandId });
     if (products.length) {
-      await productsModel.deleteMany({ brand: brand.title });
+      await productsModel.deleteMany({ "brand._id": brandId });
     }
 
     //// Delete brand:
-    const deletedBrand = await brandsModel.findByIdAndDelete(params.id);
+    const deletedBrand = await brandsModel.findByIdAndDelete(brandId);
     if (!deletedBrand) throw new Error(generateErrMsg(actions.deleted));
 
-    revalidateTag(generateTags("brands", "allRecords")[0]);
+    revalidateTag(generateTags("brands", "everyRecord")[0]);
     revalidateTag(generateTags("brands", "singleRecord", params.id)[0]);
+    revalidateTag(generateTags("products", "allRecords")[0]);
 
     return NextResponse.json(
       {
