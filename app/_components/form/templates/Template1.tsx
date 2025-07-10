@@ -53,29 +53,6 @@ function Template1<T extends AnyObjectSchema>({
   async function onSubmit(data: InferFormValues<T>) {
     setIsLoading(true);
 
-    // const formData = new FormData();
-    // formData.append("title", data.title);
-    // formData.append("image", data.image); // if image is a File object
-
-    // formData.append("price", String(data.price));
-    // formData.append("description", data.description);
-    // formData.append("brand", data.brand);
-    // formData.append("model", data.model);
-
-    // if (data.color) formData.append("color", data.color);
-    // if (data.size) formData.append("size", data.size);
-
-    // if (data.ram) formData.append("ram", String(data.ram));
-    // if (data.power) formData.append("power", String(data.power));
-    // if (data.fps) formData.append("fps", String(data.fps));
-    // if (data.soundOutput)
-    //   formData.append("soundOutput", String(data.soundOutput));
-    // if (data.screenSize) formData.append("screenSize", String(data.screenSize));
-
-    // formData.append("category", data.category);
-    // formData.append("discount", String(data.discount));
-    // formData.append("stock", String(data.stock));
-
     const formData = FormDataCreator(data);
 
     try {

@@ -6,6 +6,8 @@ import {
   positiveNumberMsg,
   requiredFieldMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
+import { objectIdRegex } from "@/app/_utils/constants/ObjectIdRegex";
+import { ValidObjectId } from "@/app/_utils/helperMethods/ValidObjectId";
 
 export const addNewProductSchema = z.object({
   title: z.string().min(3, minLengthMsg(3)).nonempty(requiredFieldMsg("Title")),
@@ -31,12 +33,27 @@ export const addNewProductSchema = z.object({
     }),
   description: z.string().nonempty(requiredFieldMsg("Description")),
 
-  brand: z.string().nonempty(requiredFieldMsg("Brand")),
-  model: z.string().nonempty(requiredFieldMsg("Model")),
+  brand: z
+    .string()
+    .nonempty(requiredFieldMsg("Brand"))
+    .regex(objectIdRegex, {
+      message: ValidObjectId("Brand"),
+    }),
+  model: z
+    .string()
+    .nonempty(requiredFieldMsg("Model"))
+    .regex(objectIdRegex, {
+      message: ValidObjectId("Model"),
+    }),
+  category: z
+    .string()
+    .nonempty(requiredFieldMsg("Category"))
+    .regex(objectIdRegex, {
+      message: ValidObjectId("Category"),
+    }),
 
   color: z.string().optional().nullable(),
   size: z.string().optional().nullable(),
-  category: z.string().nonempty(requiredFieldMsg("Category")),
 
   ram: z
     .number({ invalid_type_error: invalidNumberMsg("RAM") })

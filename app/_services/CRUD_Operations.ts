@@ -225,7 +225,6 @@ export async function _createSingleRecord({
   data: any;
   cookieHeader?: any;
 }): Promise<crudResponseType> {
-  console.log("Data to be sent: ", data);
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
     credentials: "include",
     method: "POST",

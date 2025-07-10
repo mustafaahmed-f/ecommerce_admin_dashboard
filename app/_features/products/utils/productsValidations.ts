@@ -44,6 +44,8 @@ export const validations = yup.object({
 
   model: yup.string().required(requiredFieldMsg("Model")),
 
+  category: yup.string().required(requiredFieldMsg("Category")),
+
   color: yup.string().nullable(),
 
   size: yup.string().nullable(),
@@ -57,8 +59,6 @@ export const validations = yup.object({
   soundOutput: yup.number().nullable().typeError(invalidNumberMsg("Sound")),
 
   screenSize: yup.number().nullable().typeError(invalidNumberMsg("Screen")),
-
-  category: yup.string().required(requiredFieldMsg("Category")),
 
   discount: yup.number().default(0).min(0, positiveNumberMsg("Discount")),
 

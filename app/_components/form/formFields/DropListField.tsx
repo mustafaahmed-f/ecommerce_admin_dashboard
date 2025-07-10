@@ -69,8 +69,6 @@ function DropListField<T extends FieldValues>({
       : () => optionsMethod!(),
   });
 
-  // console.log("dropListOptions", dropListOptions);
-
   useEffect(() => {
     if (data) {
       setDropListOptions(data);
@@ -86,12 +84,6 @@ function DropListField<T extends FieldValues>({
     trigger(name);
     setOpen(false);
   };
-
-  if (name === "brand") {
-    console.log("dropListOptions", dropListOptions);
-    console.log("fieldValue", fieldValue);
-    console.log("fieldLabel", fieldLabel);
-  }
 
   return (
     <div

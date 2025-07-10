@@ -20,6 +20,6 @@ export interface inputFieldType<T extends FieldValues> {
     dependency?: string,
   ) => Promise<{ value: string; lable: string }[]>;
   dependency?: Path<T>;
-  isNumber?: boolean;
+  isNumber?: boolean; //// Used to make text input of type number
   isNullable?: boolean; //// Used to allow empty fields for numerical input field ( as this is not allowed by default )
 }

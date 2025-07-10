@@ -1,5 +1,8 @@
 import { addNewProductSchema } from "@/app/_features/products/utils/productsBackendValidations";
 import connectDB from "@/app/_mongoDB/connectDB";
+import brandsModel from "@/app/_mongoDB/models/brandsModel";
+import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
+import modelsModel from "@/app/_mongoDB/models/modelsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
@@ -45,8 +48,8 @@ export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
 
-    const AwaitedProps = await props;
-    const productId = AwaitedProps.params.id;
+    const params = await props.params;
+    const productId = await params.id;
     const checkProductExistence = await productsModel.findOne({
       productId,
     });
@@ -60,7 +63,7 @@ export async function PUT(request: NextRequest, props: any) {
         ? (formData.get("image") as string)
         : (formData.get("image") as File);
 
-    console.log("image : ", image);
+    // console.log("image : ", image);
 
     const fields = Array.from(formData).reduce(
       (acc: { [key: string]: any }, [key, value]) => {
@@ -70,7 +73,7 @@ export async function PUT(request: NextRequest, props: any) {
       {},
     );
 
-    const finalFields = {
+    const finalFields: { [key: string]: any } = {
       ...fields,
       price: Number(fields.price),
       discount: Number(fields.discount),
@@ -113,6 +116,45 @@ export async function PUT(request: NextRequest, props: any) {
     } else if (typeof image === "string") {
       fakeImageUrl = image;
     }
+
+    //// Check brand :
+    const brandExists = await brandsModel.findById(fields.brand);
+    if (!brandExists) {
+      return NextResponse.json(
+        { success: false, message: "Brand not found" },
+        { status: 404 },
+      );
+    }
+    finalFields.brand = {
+      _id: fields.brand,
+      title: brandExists.title,
+    };
+
+    //// Check category  :
+    const categoryExists = await categoriesModel.findById(fields.category);
+    if (!categoryExists) {
+      return NextResponse.json(
+        { success: false, message: "Category not found" },
+        { status: 404 },
+      );
+    }
+    finalFields.category = {
+      _id: fields.category,
+      title: categoryExists.title,
+    };
+
+    //// Check model  :
+    const modelExists = await modelsModel.findById(fields.model);
+    if (!modelExists) {
+      return NextResponse.json(
+        { success: false, message: "Model not found" },
+        { status: 404 },
+      );
+    }
+    finalFields.model = {
+      _id: fields.model,
+      title: modelExists.title,
+    };
 
     const updatedProduct = await productsModel.findOneAndUpdate(
       { productId: productId },

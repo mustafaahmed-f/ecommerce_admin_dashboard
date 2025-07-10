@@ -1,5 +1,8 @@
 import { addNewProductSchema } from "@/app/_features/products/utils/productsBackendValidations";
 import connectDB from "@/app/_mongoDB/connectDB";
+import brandsModel from "@/app/_mongoDB/models/brandsModel";
+import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
+import modelsModel from "@/app/_mongoDB/models/modelsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { apiFeatures } from "@/app/_services/apiFeatures";
 import { actions } from "@/app/_utils/constants/Actions";
@@ -153,7 +156,7 @@ export async function POST(request: NextRequest) {
       {},
     );
 
-    const finalFields = {
+    const finalFields: { [key: string]: any } = {
       ...fields,
       price: Number(fields.price),
       discount: Number(fields.discount),
@@ -190,6 +193,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log("finalFields : ", finalFields);
+
+    let brand = await brandsModel.findById(finalFields.brand);
+    if (!brand) throw new Error("Brand not found", { cause: 400 });
+
+    let category = await categoriesModel.findById(finalFields.category);
+    if (!category) throw new Error("Category not found", { cause: 400 });
+
+    let model = await modelsModel.findById(finalFields.model);
+    if (!model) throw new Error("Model not found", { cause: 400 });
+
     // TODO: Replace this later with actual uploaded URL (Amazon S3)
     //TODO: check for model, brand and category in DB.
 
@@ -199,6 +213,18 @@ export async function POST(request: NextRequest) {
     const newProduct = new productsModel({
       ...finalFields,
       image: fakeImageUrl,
+      brand: {
+        title: brand.title,
+        _id: brand._id,
+      },
+      category: {
+        title: category.title,
+        _id: category._id,
+      },
+      model: {
+        title: model.title,
+        _id: model._id,
+      },
     });
 
     await newProduct.save();
