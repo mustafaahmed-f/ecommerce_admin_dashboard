@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     const newBrand = await brandsModel.create({ title });
     if (!newBrand) throw new Error("Failed creating record");
 
-    revalidateTag(generateTags("brands", "allRecords")[0]);
+    revalidateTag(generateTags("brands", "everyRecord")[0]);
 
     return NextResponse.json(
       {
