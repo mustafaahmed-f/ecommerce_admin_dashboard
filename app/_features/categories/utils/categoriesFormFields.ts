@@ -1,6 +1,6 @@
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
 import { inputFieldType } from "@/app/_types/inputFieldType";
-import { validations } from "./brandsValidations";
+import { validations } from "./categoriesValidations";
 
 export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
   [
@@ -10,6 +10,6 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       lable: "Title",
       fullWidth: false,
       required: true,
-      placeholder: "Enter brand title",
+      placeholder: "Enter category title",
     },
   ];

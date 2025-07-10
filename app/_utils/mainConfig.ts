@@ -15,6 +15,12 @@ export const mainConfig: mainConfigType = {
             icon: Home,
           },
           {
+            name: "categories",
+            label: "Categories",
+            href: "/view/categories",
+            icon: Home,
+          },
+          {
             name: "brands",
             label: "Brands",
             href: "/view/brands",
