@@ -128,7 +128,7 @@ function DropListField<T extends FieldValues>({
                 {dropListOptions.map((option) => (
                   <CommandItem
                     key={option.value}
-                    value={option.value}
+                    value={option.lable}
                     onSelect={() => onSelect(option.value)}
                   >
                     {option.lable}

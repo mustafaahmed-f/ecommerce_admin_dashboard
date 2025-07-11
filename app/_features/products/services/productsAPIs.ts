@@ -83,7 +83,7 @@ export async function getCategories(): Promise<
     //// Cache for three hours
     next: {
       revalidate: 60 * 60 * 3,
-      tags: generateTags("categories", "allRecords"),
+      tags: generateTags("categories", "everyRecord"),
     },
   });
 
@@ -110,7 +110,7 @@ export async function getBrands(): Promise<{ value: string; lable: string }[]> {
     //// Cache for three hours
     next: {
       revalidate: 60 * 60 * 3,
-      tags: generateTags("brands", "allRecords"),
+      tags: generateTags("brands", "everyRecord"),
     },
   });
 
@@ -137,7 +137,7 @@ export async function getModels(): Promise<{ value: string; lable: string }[]> {
     //// Cache for three hours
     next: {
       revalidate: 60 * 60 * 3,
-      tags: generateTags("models", "allRecords"),
+      tags: generateTags("models", "everyRecord"),
     },
   });
 
