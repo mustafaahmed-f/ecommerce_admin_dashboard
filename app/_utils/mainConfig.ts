@@ -1,4 +1,12 @@
-import { Home, MessagesSquare } from "lucide-react";
+import {
+  BadgeCheck,
+  Boxes,
+  Layers,
+  MessagesSquare,
+  ReceiptText,
+  Shapes,
+  ShoppingBag,
+} from "lucide-react";
 import { mainConfigType } from "../_types/mainConfig.type";
 
 export const mainConfig: mainConfigType = {
@@ -12,25 +20,31 @@ export const mainConfig: mainConfigType = {
             name: "products",
             label: "Products",
             href: "/view/products",
-            icon: Home,
+            icon: Boxes,
           },
           {
             name: "categories",
             label: "Categories",
             href: "/view/categories",
-            icon: Home,
+            icon: Layers,
           },
           {
             name: "brands",
             label: "Brands",
             href: "/view/brands",
-            icon: Home,
+            icon: BadgeCheck,
           },
           {
             name: "models",
             label: "Models",
             href: "/view/models",
-            icon: Home,
+            icon: Shapes,
+          },
+          {
+            name: "orders",
+            label: "Orders",
+            href: "/view/orders",
+            icon: ShoppingBag,
           },
         ],
       },
@@ -47,7 +61,7 @@ export const mainConfig: mainConfigType = {
             name: "transactions",
             label: "Transactions",
             href: "/transactions",
-            icon: MessagesSquare,
+            icon: ReceiptText,
           },
         ],
       },

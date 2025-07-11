@@ -3,4 +3,5 @@ export const ModulesSet: Set<string> = new Set([
   "brands",
   "categories",
   "models",
+  "orders",
 ]);
