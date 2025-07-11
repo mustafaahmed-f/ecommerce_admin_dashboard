@@ -1,5 +1,6 @@
 import connectDB from "@/app/_mongoDB/connectDB";
 import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
+import modelsModel from "@/app/_mongoDB/models/modelsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
@@ -18,17 +19,17 @@ export async function GET(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const category = await categoriesModel.findById(params.id);
-    if (!category) {
+    const model = await modelsModel.findById(params.id);
+    if (!model) {
       return NextResponse.json(
-        { success: false, message: "Category not found" },
+        { success: false, message: "Model not found" },
         { status: 404 },
       );
     }
     return NextResponse.json(
       {
         success: true,
-        result: category,
+        result: model,
         message: generateSuccessMsg(actions.fetched),
       },
       { status: 200 },
@@ -45,11 +46,11 @@ export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const categoryId = await params.id;
-    const category = await categoriesModel.findById(categoryId);
-    if (!category) {
+    const modelId = await params.id;
+    const model = await modelsModel.findById(modelId);
+    if (!model) {
       return NextResponse.json(
-        { success: false, message: "Category not found" },
+        { success: false, message: "Model not found" },
         { status: 404 },
       );
     }
@@ -76,31 +77,31 @@ export async function PUT(request: NextRequest, props: any) {
       );
     }
 
-    //// update category title in products first:
-    const products = await productsModel.find({ "category._id": categoryId });
+    //// update model title in products first:
+    const products = await productsModel.find({ "model._id": modelId });
     if (products.length) {
       await productsModel.updateMany(
-        { "category._id": categoryId },
-        { "category.title": title },
+        { "model._id": modelId },
+        { "model.title": title },
       );
     }
 
-    const updatedBrand = await categoriesModel.findByIdAndUpdate(
+    const udpatedModel = await categoriesModel.findByIdAndUpdate(
       params.id,
       { title },
       { new: true },
     );
-    if (!updatedBrand) throw new Error(generateErrMsg(actions.updated));
+    if (!udpatedModel) throw new Error(generateErrMsg(actions.updated));
 
-    revalidateTag(generateTags("categories", "everyRecord")[0]);
-    revalidateTag(generateTags("categories", "singleRecord", params.id)[0]);
+    revalidateTag(generateTags("models", "everyRecord")[0]);
+    revalidateTag(generateTags("models", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
     return NextResponse.json(
       {
         success: true,
         message: generateSuccessMsg(actions.updated),
-        result: updatedBrand,
+        result: udpatedModel,
       },
       { status: 200 },
     );
@@ -116,27 +117,27 @@ export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const categoryId = await params.id;
-    const category = await categoriesModel.findById(categoryId);
-    if (!category) {
+    const modelId = await params.id;
+    const model = await modelsModel.findById(modelId);
+    if (!model) {
       return NextResponse.json(
-        { success: false, message: "Category not found" },
+        { success: false, message: "Model not found" },
         { status: 404 },
       );
     }
 
     //// Delete related products first:
-    const products = await productsModel.find({ "category._id": categoryId });
+    const products = await productsModel.find({ "model._id": modelId });
     if (products.length) {
-      await productsModel.deleteMany({ "category._id": categoryId });
+      await productsModel.deleteMany({ "model._id": modelId });
     }
 
-    //// Delete brand:
-    const deletedCategory = await categoriesModel.findByIdAndDelete(categoryId);
-    if (!deletedCategory) throw new Error(generateErrMsg(actions.deleted));
+    //// Delete model:
+    const deletedModel = await modelsModel.findByIdAndDelete(modelId);
+    if (!deletedModel) throw new Error(generateErrMsg(actions.deleted));
 
-    revalidateTag(generateTags("categories", "everyRecord")[0]);
-    revalidateTag(generateTags("categories", "singleRecord", params.id)[0]);
+    revalidateTag(generateTags("models", "everyRecord")[0]);
+    revalidateTag(generateTags("models", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
     return NextResponse.json(
