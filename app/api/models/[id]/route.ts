@@ -86,7 +86,7 @@ export async function PUT(request: NextRequest, props: any) {
       );
     }
 
-    const udpatedModel = await categoriesModel.findByIdAndUpdate(
+    const udpatedModel = await modelsModel.findByIdAndUpdate(
       params.id,
       { title },
       { new: true },

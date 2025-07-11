@@ -26,6 +26,12 @@ export const mainConfig: mainConfigType = {
             href: "/view/brands",
             icon: Home,
           },
+          {
+            name: "models",
+            label: "Models",
+            href: "/view/models",
+            icon: Home,
+          },
         ],
       },
       {
