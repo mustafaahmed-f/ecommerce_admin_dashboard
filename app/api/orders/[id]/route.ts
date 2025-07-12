@@ -3,15 +3,20 @@ import ordersModel from "@/app/_mongoDB/models/ordersModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { NextRequest, NextResponse } from "next/server";
+import couponsModel from "@/app/_mongoDB/models/couponsModel";
 
 export async function GET(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const order = await ordersModel.findById(params.id).populate({
-      path: "couponId",
-      select: "discountType discount code",
-    });
+
+    //TODO : after finishing coupons , uncomment this and use populate.
+    // const order = await ordersModel.findById(params.id).populate({
+    //   path: "couponId",
+    //   select: "discountType discount code",
+    // });
+
+    const order = await ordersModel.findById(params.id);
 
     if (!order) {
       return NextResponse.json(
