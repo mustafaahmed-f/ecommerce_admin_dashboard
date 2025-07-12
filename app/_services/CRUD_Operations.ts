@@ -154,7 +154,9 @@ export async function _deleteSingleRecord({
 
   if (!res.ok)
     throw new Error(
-      jsonResponse.message || `Failed deleting record : ${res.statusText} `,
+      jsonResponse.error ||
+        jsonResponse.message ||
+        `Failed deleting record : ${res.statusText} `,
     );
 
   if (!jsonResponse.success) {
