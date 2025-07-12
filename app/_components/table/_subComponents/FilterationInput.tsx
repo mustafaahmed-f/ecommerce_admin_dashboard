@@ -1,6 +1,6 @@
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
 import { useTableContext } from "@/app/_context/TableProvider";
-import { TransitionStartFunction, useRef, useState } from "react";
+import { TransitionStartFunction, useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/button";
 import {
   DropdownMenu,
@@ -17,7 +17,9 @@ function FilterationInput({
 }) {
   const timerOut = useRef<NodeJS.Timeout | null>(null);
   const { router, searchParams, pathName } = useNextNavigation();
-  const { 0: inputValue, 1: setInputValue } = useState<string>("");
+  const { 0: inputValue, 1: setInputValue } = useState<string>(
+    searchParams.get("searchTerm") || "",
+  );
   const { config, setCurrentFilterColumn, currentFilterColumn, tableInstance } =
     useTableContext();
   const backendPagination = config?.backendPagination;
@@ -62,6 +64,12 @@ function FilterationInput({
       tableColumn?.setFilterValue("");
     }
   }
+
+  useEffect(() => {
+    setCurrentFilterColumn(
+      searchParams.get("searchField") || config?.defaultFiltrationColumn || "",
+    );
+  }, [searchParams, config?.defaultFiltrationColumn, setCurrentFilterColumn]);
 
   return (
     <div className="mb-4 flex w-full flex-col items-center justify-center max-sm:flex-wrap max-sm:gap-4 sm:flex-row sm:justify-between">
