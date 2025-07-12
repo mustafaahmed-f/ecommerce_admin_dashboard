@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./app/_utils/helperMethods/tokenMethods";
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
 
   const token = request.cookies.get(
     process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME!,
@@ -23,7 +23,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token && pathname !== "/login") {
-    const res = NextResponse.redirect(new URL("/login", request.url));
+    const redirectURL = new URL("/login", request.url);
+    //// add redirect url to query params
+    redirectURL.searchParams.set("redirectto", pathname);
+    //// add original search params before redirecting to login:
+    searchParams.forEach((value, key) =>
+      redirectURL.searchParams.set(key, value),
+    );
+    const res = NextResponse.redirect(redirectURL);
     res.headers.set("x-next-url", pathname);
     return res;
   }

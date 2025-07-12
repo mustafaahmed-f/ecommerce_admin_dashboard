@@ -16,8 +16,9 @@ import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 interface LoginUIProps {}
 
 function LoginUI({}: LoginUIProps) {
-  const { router } = useNextNavigation();
+  const { router, searchParams } = useNextNavigation();
   const { 0: isLoading, 1: setIsLoading } = useState<boolean>(false);
+  const redirectURL = searchParams.get("redirectto") || "/";
 
   const methods = useForm<InferFormValues<typeof validations>>({
     resolver: yupResolver(validations),
@@ -44,7 +45,14 @@ function LoginUI({}: LoginUIProps) {
         showSuccessToast(response.message);
         //TODO: dispatch user to redux;
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        window.location.href = "/";
+        //// Get search Params from url:
+        let finalURL = new URL(redirectURL, window.location.origin);
+        searchParams.forEach((value, key) => {
+          if (key !== "redirectto") {
+            finalURL.searchParams.set(key, value);
+          }
+        });
+        window.location.href = finalURL.pathname + finalURL.search;
       } else {
         setIsLoading(false);
         showErrorToast(response.message);
