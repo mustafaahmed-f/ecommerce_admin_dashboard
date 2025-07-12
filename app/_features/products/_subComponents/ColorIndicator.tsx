@@ -1,5 +1,6 @@
 import CheckIcon from "@/app/_icons/CheckIcon";
 import React from "react";
+import { colorsArray } from "../utils/colorsArray";
 
 interface ColorIndicatorProps {
   colorHex: string;
@@ -26,5 +27,9 @@ function ColorIndicator({
     </div>
   );
 }
+
+export const colorMap: Map<string | null, string | null> = new Map(
+  colorsArray.map((item) => [item.colorString, item.colorHex]),
+);
 
 export default ColorIndicator;

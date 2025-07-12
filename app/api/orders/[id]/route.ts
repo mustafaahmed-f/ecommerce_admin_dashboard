@@ -1,7 +1,6 @@
 import connectDB from "@/app/_mongoDB/connectDB";
 import ordersModel from "@/app/_mongoDB/models/ordersModel";
 import { actions } from "@/app/_utils/constants/Actions";
-import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,6 +9,7 @@ export async function GET(request: NextRequest, props: any) {
     await connectDB();
     const params = await props.params;
     const order = await ordersModel.findById(params.id);
+
     if (!order) {
       return NextResponse.json(
         { success: false, message: "Order not found" },

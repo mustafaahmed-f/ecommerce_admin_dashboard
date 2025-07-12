@@ -1,18 +1,10 @@
+import { CartProduct } from "./CartProductType";
+
 export type ordersType = {
   _id: string;
   orderNumber: number;
   userID: string;
-  products: {
-    productID: string;
-    title: string;
-    unitPaymentPrice: number;
-    discount: number;
-    quantity: number;
-    color: string;
-    category: string;
-    brand: string;
-    image?: string | null;
-  }[];
+  products: CartProduct[];
   couponId: string | null;
   subTotal: number;
   userInfo: {
