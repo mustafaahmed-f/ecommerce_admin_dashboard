@@ -28,7 +28,13 @@ interface OrderModel extends Document {
   finalPaidAmount: number;
   paymentMethod: "cash" | "card";
   orderStatus: {
-    status: "pending" | "shipped" | "delivered" | "returned" | "cancelled";
+    status:
+      | "pending"
+      | "shipped"
+      | "delivered"
+      | "returned"
+      | "cancelled"
+      | "returning";
     updatedAt: Date;
   };
   isFromCart: boolean;
@@ -108,6 +114,7 @@ const orderSchema: Schema = new Schema(
           "delivered",
           "returned",
           "cancelled",
+          "returning",
         ],
       },
       updatedAt: { type: Date, required: true, default: Date.now },

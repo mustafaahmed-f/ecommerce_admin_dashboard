@@ -32,7 +32,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
         hasDetails ? (
           <Link
             href={`/view/${module}/details/${info.row.original.productId}`}
-            className="hover:underline"
+            className="text-primary hover:underline"
           >
             {info.getValue()}
           </Link>
