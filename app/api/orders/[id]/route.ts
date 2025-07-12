@@ -8,7 +8,10 @@ export async function GET(request: NextRequest, props: any) {
   try {
     await connectDB();
     const params = await props.params;
-    const order = await ordersModel.findById(params.id);
+    const order = await ordersModel.findById(params.id).populate({
+      path: "couponId",
+      select: "discountType discount code",
+    });
 
     if (!order) {
       return NextResponse.json(
@@ -36,8 +39,8 @@ export async function GET(request: NextRequest, props: any) {
 export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
-    const AwaitedProps = await props;
-    const orderId = await AwaitedProps.params.id;
+    const AwaitedProps = await props.params;
+    const orderId = await AwaitedProps.id;
 
     const order = await ordersModel.findById(orderId);
     if (!order) {

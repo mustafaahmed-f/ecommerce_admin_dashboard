@@ -34,7 +34,9 @@ async function Page({ params }: PageProps) {
 
   const singleRecord = response.result;
 
-  return <DetailsClientWrapper product={singleRecord}></DetailsClientWrapper>;
+  return (
+    <DetailsClientWrapper singleRecord={singleRecord}></DetailsClientWrapper>
+  );
 }
 
 export default Page;

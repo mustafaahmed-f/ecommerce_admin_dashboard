@@ -9,10 +9,11 @@ import ProductInfo from "./ProductInfo";
 import ProductTabs from "./ProductTabs";
 
 interface DetailsUIProps {
-  product: productsType;
+  singleRecord: productsType;
 }
 
-function DetailsUI({ product }: DetailsUIProps) {
+function DetailsUI({ singleRecord }: DetailsUIProps) {
+  const product = singleRecord;
   const { title, image } = product;
   const { router } = useNextNavigation();
 

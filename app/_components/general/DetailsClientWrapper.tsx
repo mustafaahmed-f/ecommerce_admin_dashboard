@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
 interface DetailsClientWrapperProps {
-  product: productsType;
+  singleRecord: any;
 }
 
-function DetailsClientWrapper({ product }: DetailsClientWrapperProps) {
+function DetailsClientWrapper({ singleRecord }: DetailsClientWrapperProps) {
   const { module } = useParams();
   const [DetailsComponent, setDetailsComponent] =
     useState<React.ComponentType<any> | null>(null);
@@ -29,7 +29,7 @@ function DetailsClientWrapper({ product }: DetailsClientWrapperProps) {
   if (!DetailsComponent) {
     return <Spinner />;
   }
-  return <DetailsComponent product={product}></DetailsComponent>;
+  return <DetailsComponent singleRecord={singleRecord}></DetailsComponent>;
 }
 
 export default DetailsClientWrapper;

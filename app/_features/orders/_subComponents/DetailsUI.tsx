@@ -9,13 +9,15 @@ import CouponApplied from "./CouponApplied";
 import Chip from "./Chip";
 import dayjs from "dayjs";
 import { getChipColors } from "../utils/getChipColor";
+import ActionsSection from "@/app/_components/table/_subComponents/ActionsSection";
 
 interface DetailsUIProps {
-  order: ordersType;
+  singleRecord: ordersType;
 }
 
-function DetailsUI({ order }: DetailsUIProps) {
+function DetailsUI({ singleRecord }: DetailsUIProps) {
   const { router } = useNextNavigation();
+  const order = singleRecord;
   const orderStatus = order?.orderStatus.status || "";
 
   return (
@@ -35,7 +37,7 @@ function DetailsUI({ order }: DetailsUIProps) {
         <div className="mt-5 mb-14 flex flex-col justify-between gap-4 border-b pb-4 md:flex-row md:items-center">
           {/* Left Side: ID, Status Chip, and Dates */}
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-lg font-bold sm:text-2xl md:text-3xl">
                 Order ID: {order._id}
               </h2>
@@ -62,7 +64,13 @@ function DetailsUI({ order }: DetailsUIProps) {
           </div>
 
           {/* Right Side: Buttons */}
-          <div className="flex flex-row items-start gap-2 max-md:flex-wrap md:flex-col md:items-end"></div>
+          <div className="flex flex-row items-start gap-2 max-md:flex-wrap md:flex-col md:items-end">
+            <ActionsSection
+              canEdit={false}
+              useIcons={false}
+              recordId={order._id}
+            />
+          </div>
         </div>
 
         {/* Accordions */}
