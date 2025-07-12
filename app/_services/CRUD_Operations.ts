@@ -6,13 +6,14 @@ const mainURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 export async function _getEveryRecord(
   _APIEndpointName: string,
   cookieHeader?: any,
+  enableCache = true,
 ) {
   //// This method is used to get all records from table and apply api feature on the client side
   const res = await fetch(`${mainURL}/${_APIEndpointName}`, {
     credentials: "include",
     //// Cache for three hours
     next: {
-      revalidate: 60 * 60 * 3,
+      revalidate: enableCache ? 60 * 60 * 3 : 0,
       tags: generateTags(_APIEndpointName, "everyRecord"),
     },
     headers: cookieHeader,
@@ -47,6 +48,7 @@ export async function _getAllRecords({
   searchTerm = "",
   searchField = "",
   cookieHeader,
+  enableCache = true,
 }: {
   _APIEndpointName: string;
   page?: number;
@@ -55,6 +57,7 @@ export async function _getAllRecords({
   searchTerm?: string;
   searchField?: string;
   cookieHeader?: any;
+  enableCache?: boolean;
 }): Promise<crudResponseType> {
   const res = await fetch(
     `${mainURL}/${_APIEndpointName}?page=${page}&pageSize=${pageSize}&searchTerm=${searchTerm}&searchField=${searchField}&sort=${sort}`,
@@ -62,7 +65,7 @@ export async function _getAllRecords({
       credentials: "include",
       //// Cache for three hours
       next: {
-        revalidate: 0,
+        revalidate: enableCache ? 60 * 60 * 3 : 0,
         tags: generateTags(_APIEndpointName, "allRecords"),
       },
       headers: cookieHeader,
@@ -94,16 +97,18 @@ export async function _getSingleRecord({
   _APIEndpointName,
   recordId,
   cookieHeader,
+  enableCache = true,
 }: {
   _APIEndpointName: string;
   recordId: string;
   cookieHeader?: any;
+  enableCache?: boolean;
 }): Promise<crudResponseType> {
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
     credentials: "include",
     //// Cache for three hours
     next: {
-      revalidate: 0,
+      revalidate: enableCache ? 60 * 60 * 3 : 0,
       tags: generateTags(_APIEndpointName, "singleRecord", recordId),
     },
     headers: cookieHeader,

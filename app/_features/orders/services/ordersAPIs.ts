@@ -29,6 +29,7 @@ export async function getAllRecords({
     searchTerm,
     searchField,
     cookieHeader,
+    enableCache: false,
   });
 }
 
@@ -37,6 +38,7 @@ export async function getSingleRecord(recordId: string, cookieHeader?: any) {
     _APIEndpointName: APIendPoint,
     recordId,
     cookieHeader,
+    enableCache: false,
   });
 }
 
