@@ -23,9 +23,14 @@ import { Button } from "../../ui/button";
 interface ActionsSectionProps {
   recordId: string;
   useIcons?: boolean; //// If false, so it is used in details UI, else it is used in the table.
+  canEdit?: boolean;
 }
 
-function ActionsSection({ recordId, useIcons = true }: ActionsSectionProps) {
+function ActionsSection({
+  recordId,
+  useIcons = true,
+  canEdit = true,
+}: ActionsSectionProps) {
   const { module } = useParams();
   const [open, setOpen] = useState(false);
   const { router } = useNextNavigation();
@@ -59,20 +64,22 @@ function ActionsSection({ recordId, useIcons = true }: ActionsSectionProps) {
         deleteMutation.isPending ? "pointer-events-none opacity-65" : ""
       } `}
     >
-      {useIcons ? (
-        <Link
-          href={`/view/${module}/edit/${recordId}`}
-          className="hover:bg-muted-foreground cursor-pointer rounded-lg px-3 py-2"
-        >
-          <Pencil size={20} />
-        </Link>
-      ) : (
-        <Link href={`/view/${module}/edit/${recordId}`}>
-          <Button variant={"outline"} className="cursor-pointer">
-            Edit
-          </Button>
-        </Link>
-      )}
+      {canEdit ? (
+        useIcons ? (
+          <Link
+            href={`/view/${module}/edit/${recordId}`}
+            className="hover:bg-muted-foreground cursor-pointer rounded-lg px-3 py-2"
+          >
+            <Pencil size={20} />
+          </Link>
+        ) : (
+          <Link href={`/view/${module}/edit/${recordId}`}>
+            <Button variant={"outline"} className="cursor-pointer">
+              Edit
+            </Button>
+          </Link>
+        )
+      ) : null}
       <AlertDialog open={open} onOpenChange={setOpen} key={recordId}>
         <AlertDialogTrigger asChild>
           <Button

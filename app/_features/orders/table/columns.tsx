@@ -90,7 +90,9 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
     columnHelper.display({
       id: "actions",
       header: "Actions",
-      cell: ({ row }) => <ActionsSection recordId={String(row.original._id)} />,
+      cell: ({ row }) => (
+        <ActionsSection recordId={String(row.original._id)} canEdit={false} />
+      ),
       meta: { className: "max-w-[80px] text-center" },
       enablePinning: true,
     }),
