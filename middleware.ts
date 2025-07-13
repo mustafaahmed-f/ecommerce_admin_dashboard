@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./app/_utils/helperMethods/tokenMethods";
+import { APIRateLimit } from "./app/_utils/helperMethods/APIRateLimit";
 
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
@@ -33,6 +34,29 @@ export async function middleware(request: NextRequest) {
     const res = NextResponse.redirect(redirectURL);
     res.headers.set("x-next-url", pathname);
     return res;
+  }
+
+  const ip = (request.headers.get("x-forwarded-for") ?? "127.0.0.1")
+    .split(",")[0]
+    .trim();
+
+  const checkRequestsLimitReached = await APIRateLimit({
+    ip,
+    expiry: 60,
+    requestsLimit: 60,
+  });
+
+  if (checkRequestsLimitReached) {
+    if (isApi) {
+      return new NextResponse(
+        JSON.stringify({ success: false, message: "Rate limit exceeded" }),
+        { status: 429, headers: { "Content-Type": "application/json" } },
+      );
+    } else {
+      const res = NextResponse.redirect(new URL("/ratelimit", request.url));
+      res.headers.set("x-next-url", pathname);
+      return res;
+    }
   }
 
   if (token) {

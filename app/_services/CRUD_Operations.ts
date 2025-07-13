@@ -104,8 +104,6 @@ export async function _getSingleRecord({
   cookieHeader?: any;
   enableCache?: boolean;
 }): Promise<crudResponseType> {
-  console.log("_APIEndpointName", _APIEndpointName);
-  console.log("Record ID ", recordId);
   const res = await fetch(`${mainURL}/${_APIEndpointName}/${recordId}`, {
     credentials: "include",
     //// Cache for three hours
