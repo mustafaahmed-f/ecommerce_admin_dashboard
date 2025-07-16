@@ -3,4 +3,5 @@ export const actions = {
   created: "Created",
   updated: "Updated",
   deleted: "Deleted",
-};
+  placed: "Placed",
+} as const;
