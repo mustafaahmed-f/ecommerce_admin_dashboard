@@ -3,6 +3,7 @@ import { BellRingIcon } from "lucide-react";
 import { Button } from "../../../_components/ui/button";
 import NotificationsDropList from "./NotificationsDropList";
 import { useEffect, useRef, useState } from "react";
+import { showSuccessToast } from "@/app/_utils/toasts";
 
 interface NotificationsProps {}
 
@@ -28,6 +29,20 @@ function Notifications({}: NotificationsProps) {
       document.removeEventListener("mousedown", handler);
     };
   }, [setOpen]);
+
+  useEffect(() => {
+    const evtSource = new EventSource("/api/stream");
+    evtSource.onmessage = (event) => {
+      if (!event.data) return;
+      const data = JSON.parse(event.data);
+      showSuccessToast(data.message, {
+        icon: "📢",
+      });
+      console.log("New notification:", data);
+    };
+
+    return () => evtSource.close();
+  }, []);
 
   return (
     <>
