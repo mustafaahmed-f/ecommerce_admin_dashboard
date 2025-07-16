@@ -38,7 +38,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => {
             {info.getValue()}
           </Link>
         ) : (
-          <span>{info.getValue()}</span>
+          <span className="w-fit">{info.getValue()}</span>
         ),
       enablePinning: false,
     }),

@@ -252,3 +252,29 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* Notifications styles */
+
+.notifications-list {
+  width: clamp(20rem, 40vw, 30rem);
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 200;
+}
+.notifications-list.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.1s ease-in-out,
+    transform 0.1s ease-in-out;
+}
+.notifications-list.inactive {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    transform 0.2s ease-in-out,
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
