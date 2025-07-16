@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./app/_utils/helperMethods/tokenMethods";
-import { APIRateLimit } from "./app/_utils/helperMethods/APIRateLimit";
+import { rateLimit } from "./app/_utils/RateLimit";
 
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
@@ -42,22 +42,26 @@ export async function middleware(request: NextRequest) {
   //   .split(",")[0]
   //   .trim();
 
-  // const checkRequestsLimitReached = await APIRateLimit({
-  //   ip,
-  //   expiry: 60,
-  //   requestsLimit: 60,
-  // });
-
-  // if (isApi && checkRequestsLimitReached) {
-  //   const res = new NextResponse(
-  //     JSON.stringify({
-  //       success: false,
-  //       message: "Rate limit exceeded",
-  //     }),
-  //     { status: 429, headers: { "Content-Type": "application/json" } },
-  //   );
-  //   res.headers.set("x-next-url", pathname);
-  //   return res;
+  // if (isApi) {
+  //   console.log("isAPI");
+  //   const { success, limit, remaining, reset } = await rateLimit.limit(ip);
+  //   if (!success) {
+  //     return new NextResponse(
+  //       JSON.stringify({
+  //         success: false,
+  //         message: "Rate limit exceeded. Try again later.",
+  //       }),
+  //       {
+  //         status: 429,
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "X-RateLimit-Limit": limit.toString(),
+  //           "X-RateLimit-Remaining": remaining.toString(),
+  //           "X-RateLimit-Reset": reset.toString(),
+  //         },
+  //       },
+  //     );
+  //   }
   // }
 
   if (token) {
