@@ -49,10 +49,12 @@ function Notifications({}: NotificationsProps) {
 
   useEffect(() => {
     function handler(e: MouseEvent) {
+      const target = e.target as HTMLElement;
       if (dropList.current && btn.current) {
         if (
-          !dropList.current.contains(e.target as Node) &&
-          !btn.current.contains(e.target as Node)
+          !dropList.current.contains(target) &&
+          !btn.current.contains(target) &&
+          !target.closest("[data-inside-dropdown]")
         ) {
           setOpen(false);
         }
@@ -87,6 +89,7 @@ function Notifications({}: NotificationsProps) {
     <NotificationsProvider
       value={{
         open,
+        setOpen,
         isFetching,
         notifications,
         setNotifications,

@@ -8,6 +8,7 @@ interface NotificationsProviderProps {
 
 interface initialStateType {
   open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isFetching: boolean;
   notifications: notification[];
   setNotifications: React.Dispatch<React.SetStateAction<notification[]>>;
@@ -19,6 +20,7 @@ interface initialStateType {
 
 const intialState: initialStateType = {
   open: false,
+  setOpen: () => {},
   isFetching: false,
   notifications: [],
   setNotifications: () => {},

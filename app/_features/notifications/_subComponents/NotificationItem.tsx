@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useNotificationsContext } from "../context/NotificationsProvider";
 import { notification } from "../types/NotificationType";
 import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
+import NotificationActions from "./NotificationActions";
 
 interface NotificationItemProps {
   notificationObj: notification;
@@ -18,6 +19,8 @@ function NotificationItem({ notificationObj }: NotificationItemProps) {
   });
 
   async function handleRead() {
+    if (read) return;
+
     const res = await fetch(`/api/notifications/${_id}`, {
       method: "PUT",
       body: JSON.stringify({ read: true }),
@@ -68,15 +71,18 @@ function NotificationItem({ notificationObj }: NotificationItemProps) {
         )}
         <div className="mt-1 text-xs text-gray-500">{formattedTime}</div>
       </div>
-      {!read ? (
-        <Button
-          variant={"default"}
-          className="h-1 w-1 cursor-pointer rounded-full p-1"
-          onClick={handleRead}
-        ></Button>
-      ) : (
-        <span> </span>
-      )}
+      <div className="flex flex-col items-center justify-between gap-5">
+        <NotificationActions notificationObj={notificationObj} />
+        {!read ? (
+          <Button
+            variant={"default"}
+            className="h-1 w-1 cursor-pointer rounded-full p-1"
+            onClick={handleRead}
+          ></Button>
+        ) : (
+          <span> </span>
+        )}
+      </div>
     </div>
   );
 
