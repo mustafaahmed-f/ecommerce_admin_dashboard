@@ -1,7 +1,6 @@
-import { UIEventHandler, useEffect } from "react";
+import MiniSpinner from "@/app/_components/general/MiniSpinner";
 import { useNotificationsContext } from "../context/NotificationsProvider";
 import NotificationItem from "./NotificationItem";
-import MiniSpinner from "@/app/_components/general/MiniSpinner";
 
 interface NotificationsDropListProps {
   refElement: React.RefObject<HTMLUListElement | null>;

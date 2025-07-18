@@ -1,22 +1,51 @@
-import { formatDistanceToNow } from "date-fns";
-import { notification } from "../types/NotificationType";
-import Link from "next/link";
 import { Button } from "@/app/_components/ui/button";
+import { formatDistanceToNow } from "date-fns";
 import { Link2Icon } from "lucide-react";
+import Link from "next/link";
 import { useNotificationsContext } from "../context/NotificationsProvider";
+import { notification } from "../types/NotificationType";
+import { showErrorToast, showSuccessToast } from "@/app/_utils/toasts";
 
 interface NotificationItemProps {
   notificationObj: notification;
 }
 
 function NotificationItem({ notificationObj }: NotificationItemProps) {
-  const { message, url, read, createdAt } = notificationObj;
+  const { message, url, read, createdAt, _id } = notificationObj;
   const { setNotifications } = useNotificationsContext();
   const formattedTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
 
-  function handleRead() {}
+  async function handleRead() {
+    const res = await fetch(`/api/notifications/${_id}`, {
+      method: "PUT",
+      body: JSON.stringify({ read: true }),
+    });
+    const jsonResponse = await res.json(); // even if !res.ok, still need this
+
+    if (!res.ok) {
+      showErrorToast(
+        jsonResponse.error ||
+          jsonResponse.message ||
+          `Failed getting record : ${res.statusText} `,
+      );
+      return;
+    }
+
+    if (!jsonResponse.success) {
+      showErrorToast(
+        jsonResponse.error || jsonResponse.message || "Unknown error from API",
+      );
+      return;
+    }
+
+    showSuccessToast("Notification updated successfully !!");
+
+    setNotifications((prev) =>
+      prev.map((n) => (n._id === _id ? { ...n, read: true } : n)),
+    );
+  }
 
   const content = (
     <div

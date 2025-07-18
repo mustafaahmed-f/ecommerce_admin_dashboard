@@ -1,9 +1,53 @@
 import connectDB from "@/app/_mongoDB/connectDB";
+import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
+import { actions } from "@/app/_utils/constants/Actions";
+import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
+import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
+import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
-export async function PUT(request: NextRequest) {
+export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
+    const params = await props.params;
+    const notificationId = await params.id;
+    const body = await request.json();
+
+    console.log(body);
+
+    const validationResult = validateSchema(
+      z.object({
+        read: z.boolean(),
+      }),
+      body,
+    );
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Validation failed",
+          errors: validationResult.error,
+        },
+        { status: 400 },
+      );
+    }
+
+    const { read } = body;
+
+    const notification = await notificationsModel.findByIdAndUpdate(
+      notificationId,
+      { read: read },
+    );
+
+    if (!notification) throw new Error(generateErrMsg(actions.updated));
+    return NextResponse.json(
+      {
+        success: true,
+        message: generateSuccessMsg(actions.updated),
+      },
+      { status: 200 },
+    );
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error?.message },
