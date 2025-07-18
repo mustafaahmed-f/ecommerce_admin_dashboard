@@ -32,8 +32,9 @@ export async function GET(request: NextRequest) {
         { status: 404 },
       );
     }
+    const hasMore = notifications.length === parseInt(limit);
 
-    return NextResponse.json({ success: true, result: notifications });
+    return NextResponse.json({ success: true, result: notifications, hasMore });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error?.message },

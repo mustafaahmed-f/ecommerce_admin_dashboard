@@ -16,6 +16,7 @@ function Notifications({}: NotificationsProps) {
     [],
   );
   const { 0: page, 1: setPage } = useState<number>(1);
+  const { 0: hasMore, 1: setHasMore } = useState<boolean>(false);
   const dropList = useRef<HTMLUListElement | null>(null);
   const btn = useRef<HTMLButtonElement | null>(null);
   const lastCreatedAt = notifications.length
@@ -23,7 +24,12 @@ function Notifications({}: NotificationsProps) {
     : null;
   // const lastCreatedAt = new Date("2025-07-17T18:14:55.482+00:00").toISOString();
 
-  const { isFetching, data: fetchedData } = useQuery({
+  const {
+    isFetching,
+    data: fetchedData,
+    error,
+    isError,
+  } = useQuery({
     queryKey: ["notifications", page],
     queryFn: async () => {
       const res = await fetch(
@@ -37,8 +43,9 @@ function Notifications({}: NotificationsProps) {
   useEffect(() => {
     if (fetchedData && fetchedData.success) {
       setNotifications((prev) => [...prev, ...(fetchedData?.result ?? [])]);
+      setHasMore(fetchedData.hasMore);
     }
-  }, [fetchedData, setNotifications]);
+  }, [fetchedData, setNotifications, setHasMore]);
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -74,9 +81,20 @@ function Notifications({}: NotificationsProps) {
     return () => evtSource.close();
   }, [setNotifications]);
 
+  console.log("Notifications:", notifications);
+
   return (
     <NotificationsProvider
-      value={{ open, isFetching, notifications, setNotifications, setPage }}
+      value={{
+        open,
+        isFetching,
+        notifications,
+        setNotifications,
+        setPage,
+        error,
+        isError,
+        hasMore,
+      }}
     >
       <Button
         variant={"outline"}

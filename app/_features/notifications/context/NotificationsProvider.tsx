@@ -12,6 +12,9 @@ interface initialStateType {
   notifications: notification[];
   setNotifications: React.Dispatch<React.SetStateAction<notification[]>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  error: any;
+  isError: boolean;
+  hasMore: boolean;
 }
 
 const intialState: initialStateType = {
@@ -20,6 +23,9 @@ const intialState: initialStateType = {
   notifications: [],
   setNotifications: () => {},
   setPage: () => {},
+  error: null,
+  isError: false,
+  hasMore: true,
 };
 
 const notificationsContext = createContext<initialStateType>(intialState);
