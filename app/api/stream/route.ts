@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { channelName } from "@/app/_utils/constants/redisPublishChannel";
+import { channelName } from "@/app/_features/notifications/utils/redisPublishChannel";
 
 export const dynamic = "force-dynamic";
 

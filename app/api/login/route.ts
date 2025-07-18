@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     const token = await signToken({
       payload: {
-        id: user._id,
+        id: user._id.toString(),
         email: user.email,
         role: user.role,
       },

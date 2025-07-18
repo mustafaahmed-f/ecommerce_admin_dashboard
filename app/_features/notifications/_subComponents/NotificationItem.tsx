@@ -3,6 +3,7 @@ import { notification } from "../types/NotificationType";
 import Link from "next/link";
 import { Button } from "@/app/_components/ui/button";
 import { Link2Icon } from "lucide-react";
+import { useNotificationsContext } from "../context/NotificationsProvider";
 
 interface NotificationItemProps {
   notificationObj: notification;
@@ -10,6 +11,7 @@ interface NotificationItemProps {
 
 function NotificationItem({ notificationObj }: NotificationItemProps) {
   const { message, url, read, createdAt } = notificationObj;
+  const { setNotifications } = useNotificationsContext();
   const formattedTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
@@ -23,7 +25,7 @@ function NotificationItem({ notificationObj }: NotificationItemProps) {
       <div>
         {url ? (
           <Link
-            className="hover:text-foreground flex cursor-pointer flex-nowrap items-center gap-1 text-wrap whitespace-break-spaces underline"
+            className="hover:text-primary flex cursor-pointer flex-nowrap items-center gap-1 text-wrap whitespace-break-spaces underline"
             href={url}
           >
             <span>
