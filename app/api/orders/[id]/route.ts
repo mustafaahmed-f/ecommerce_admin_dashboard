@@ -1,11 +1,10 @@
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import ordersModel from "@/app/_mongoDB/models/ordersModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
-import { NextRequest, NextResponse } from "next/server";
-import couponsModel from "@/app/_mongoDB/models/couponsModel";
 import { getUserId } from "@/app/_utils/helperMethods/getUserId";
-import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, props: any) {
   try {

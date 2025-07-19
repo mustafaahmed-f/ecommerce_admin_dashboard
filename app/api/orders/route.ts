@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     const queryObj = {
       page: parseInt(page),
       size: parseInt(size),
-      sort,
+      sort: sort.length || sort ? sort : "-createdAt",
     };
 
     const totalOrders = await ordersModel.countDocuments(filter);

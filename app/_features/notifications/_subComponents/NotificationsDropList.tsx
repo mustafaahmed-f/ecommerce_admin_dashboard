@@ -36,7 +36,7 @@ function NotificationsDropList({ refElement }: NotificationsDropListProps) {
       ref={refElement}
       onScroll={handleScroll}
     >
-      <p className="p-2 text-sm font-semibold">Notifications</p>
+      <p className="p-2 text-xl font-semibold">Notifications</p>
       {notifications.map((notification) => (
         <NotificationItem
           key={notification._id}
