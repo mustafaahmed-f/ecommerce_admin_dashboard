@@ -70,16 +70,25 @@ function ProductInfo({ product }: ProductInfoProps) {
             case "mobile":
               return <ProductProperty label="ram" value={`${ram} GB`} />;
             default:
-              return <ProductProperty label="size" value={size} />;
+              return size ? (
+                <ProductProperty label="size" value={size} />
+              ) : (
+                <span>N/A</span>
+              );
           }
         })()}
+
         {/* Color */}
         <p className="my-auto">Color</p>
-        <ColorIndicator
-          isSelected={false}
-          colorHex={colorMap.get(color!)!}
-          colorString={color!}
-        />
+        {color ? (
+          <ColorIndicator
+            isSelected={false}
+            colorHex={colorMap.get(color!)!}
+            colorString={color!}
+          />
+        ) : (
+          <span>N/A</span>
+        )}
       </div>
     </div>
   );
