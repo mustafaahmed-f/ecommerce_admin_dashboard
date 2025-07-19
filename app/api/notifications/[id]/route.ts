@@ -16,8 +16,6 @@ export async function PUT(request: NextRequest, props: any) {
     const userId = await getUserId();
     const body = await request.json();
 
-    console.log(body);
-
     const validationResult = validateSchema(
       z.object({
         read: z.boolean(),
