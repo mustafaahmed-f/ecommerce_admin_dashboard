@@ -1,7 +1,10 @@
 import { notification } from "@/app/_features/notifications/types/NotificationType";
 import { GenerateEvents } from "@/app/_features/notifications/utils/GenerateEvents";
+import { GenerateNotificationMessage } from "@/app/_features/notifications/utils/GenerateNotificationMessage";
+import { channelName } from "@/app/_features/notifications/utils/redisPublishChannel";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
+import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
@@ -11,6 +14,7 @@ import {
   minLengthMsg,
   requiredFieldMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
+import { redis } from "@/app/_utils/redisClient";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -80,7 +84,21 @@ export async function POST(request: NextRequest) {
     //// Generate notification , add it to database and publish it to redis channel:
     const notificationObj: Omit<notification, "_id"> = {
       event: GenerateEvents("brands", "Created"),
+      message: GenerateNotificationMessage("brands", title, "created"),
+      url: "",
+      audience: "admin",
+      userId: adminId,
+      read: false,
+      createdAt: new Date(),
     };
+
+    const newNotification = await notificationsModel.create(notificationObj);
+    if (!newNotification) throw new Error("Failed creating notification");
+
+    await redis.publish(
+      channelName,
+      JSON.stringify(newNotification.toObject()),
+    );
 
     return NextResponse.json(
       {
