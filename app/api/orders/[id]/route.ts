@@ -4,6 +4,8 @@ import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { NextRequest, NextResponse } from "next/server";
 import couponsModel from "@/app/_mongoDB/models/couponsModel";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 
 export async function GET(request: NextRequest, props: any) {
   try {
@@ -66,6 +68,16 @@ export async function DELETE(request: NextRequest, props: any) {
     if (!deletedOrder) {
       throw new Error("Failed deleting order", { cause: 404 });
     }
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "orders",
+      "Deleted",
+      "deleted",
+      `# ${orderId}`,
+    );
 
     return NextResponse.json(
       {

@@ -1,9 +1,11 @@
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import modelsModel from "@/app/_mongoDB/models/modelsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import {
   minLengthMsg,
@@ -73,6 +75,10 @@ export async function POST(request: NextRequest) {
     if (!newModel) throw new Error(generateErrMsg(actions.created));
 
     revalidateTag(generateTags("models", "everyRecord")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(adminId, "models", "Created", "created", title);
 
     return NextResponse.json(
       {

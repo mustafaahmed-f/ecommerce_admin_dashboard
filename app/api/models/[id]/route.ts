@@ -1,3 +1,4 @@
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
 import modelsModel from "@/app/_mongoDB/models/modelsModel";
@@ -6,6 +7,7 @@ import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import {
   minLengthMsg,
@@ -97,6 +99,10 @@ export async function PUT(request: NextRequest, props: any) {
     revalidateTag(generateTags("models", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(adminId, "models", "Updated", "updated", title);
+
     return NextResponse.json(
       {
         success: true,
@@ -139,6 +145,16 @@ export async function DELETE(request: NextRequest, props: any) {
     revalidateTag(generateTags("models", "everyRecord")[0]);
     revalidateTag(generateTags("models", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "models",
+      "Deleted",
+      "deleted",
+      model.title,
+    );
 
     return NextResponse.json(
       {

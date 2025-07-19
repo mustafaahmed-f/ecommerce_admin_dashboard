@@ -1,10 +1,10 @@
-import { Product } from "../types/productsType";
+import { productsType } from "../types/productsType";
 import { colorMap } from "../utils/colorsArray";
 import ColorIndicator from "./ColorIndicator";
 import ProductProperty from "./ProductProperty";
 
 interface ProductInfoProps {
-  product: Product;
+  product: productsType;
 }
 
 function ProductInfo({ product }: ProductInfoProps) {

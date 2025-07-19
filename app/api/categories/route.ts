@@ -1,8 +1,10 @@
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import {
   minLengthMsg,
@@ -72,6 +74,10 @@ export async function POST(request: NextRequest) {
     if (!newCategory) throw new Error("Failed creating record");
 
     revalidateTag(generateTags("categories", "everyRecord")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(adminId, "categories", "Created", "created", title);
 
     return NextResponse.json(
       {

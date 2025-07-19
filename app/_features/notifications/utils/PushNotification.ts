@@ -13,11 +13,15 @@ export async function PushNotification(
   eventAction: (typeof actions)[keyof typeof actions],
   messageAction: keyof typeof actions,
   title: string,
+  url?: string,
 ) {
   const notificationObj: Omit<notification, "_id"> = {
     event: GenerateEvents(module, eventAction),
     message: GenerateNotificationMessage(module, title, messageAction),
-    url: "",
+    url:
+      messageAction === "deleted" && eventAction === "Deleted"
+        ? ""
+        : (url ?? ""),
     audience: "admin",
     userId: adminId,
     read: false,

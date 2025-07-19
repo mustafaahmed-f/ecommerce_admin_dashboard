@@ -1,3 +1,5 @@
+import { GenerateNotificationsURL } from "@/app/_features/notifications/utils/GenerateNotificationsURL";
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import { addNewProductSchema } from "@/app/_features/products/utils/productsBackendValidations";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
@@ -8,6 +10,7 @@ import { apiFeatures } from "@/app/_services/apiFeatures";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -230,6 +233,17 @@ export async function POST(request: NextRequest) {
     await newProduct.save();
 
     revalidateTag(generateTags("products", "allRecords")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "products",
+      "Created",
+      "created",
+      finalFields.title,
+      GenerateNotificationsURL("products", newProduct.productId),
+    );
 
     return NextResponse.json(
       {

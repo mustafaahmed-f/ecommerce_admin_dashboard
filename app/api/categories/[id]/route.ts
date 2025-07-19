@@ -1,3 +1,4 @@
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import categoriesModel from "@/app/_mongoDB/models/categoriesModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
@@ -5,6 +6,7 @@ import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import {
   minLengthMsg,
@@ -96,6 +98,9 @@ export async function PUT(request: NextRequest, props: any) {
     revalidateTag(generateTags("categories", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
+    const adminId = await getUserId();
+    await PushNotification(adminId, "categories", "Updated", "updated", title);
+
     return NextResponse.json(
       {
         success: true,
@@ -138,6 +143,15 @@ export async function DELETE(request: NextRequest, props: any) {
     revalidateTag(generateTags("categories", "everyRecord")[0]);
     revalidateTag(generateTags("categories", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
+
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "categories",
+      "Deleted",
+      "deleted",
+      category.title,
+    );
 
     return NextResponse.json(
       {

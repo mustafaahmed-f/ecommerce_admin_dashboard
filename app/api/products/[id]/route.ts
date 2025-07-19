@@ -1,3 +1,5 @@
+import { GenerateNotificationsURL } from "@/app/_features/notifications/utils/GenerateNotificationsURL";
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import { addNewProductSchema } from "@/app/_features/products/utils/productsBackendValidations";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
@@ -7,6 +9,7 @@ import productsModel from "@/app/_mongoDB/models/productsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -172,6 +175,17 @@ export async function PUT(request: NextRequest, props: any) {
     revalidateTag(generateTags("products", "singleRecord", productId)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "products",
+      "Updated",
+      "updated",
+      finalFields.title,
+      GenerateNotificationsURL("products", finalFields.productId),
+    );
+
     return NextResponse.json(
       {
         success: true,
@@ -196,6 +210,14 @@ export async function DELETE(request: NextRequest, props: any) {
     const AwaitedProps = await props;
     const productId = AwaitedProps.params.id;
 
+    const product = await productsModel.findOne({ productId: productId });
+    if (!product) {
+      return NextResponse.json(
+        { success: false, message: "Product not found" },
+        { status: 404 },
+      );
+    }
+
     const deletedProduct = await productsModel.findOneAndDelete({
       productId,
     });
@@ -206,6 +228,16 @@ export async function DELETE(request: NextRequest, props: any) {
 
     revalidateTag(generateTags("products", "singleRecord", productId)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    const adminId = await getUserId();
+    await PushNotification(
+      adminId,
+      "products",
+      "Deleted",
+      "deleted",
+      product.title,
+    );
 
     return NextResponse.json(
       {
