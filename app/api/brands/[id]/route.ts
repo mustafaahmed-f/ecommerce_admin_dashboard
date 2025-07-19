@@ -1,15 +1,23 @@
+import { notification } from "@/app/_features/notifications/types/NotificationType";
+import { GenerateEvents } from "@/app/_features/notifications/utils/GenerateEvents";
+import { GenerateNotificationMessage } from "@/app/_features/notifications/utils/GenerateNotificationMessage";
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
+import { channelName } from "@/app/_features/notifications/utils/redisPublishChannel";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
+import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { generateTags } from "@/app/_utils/helperMethods/generateTags";
+import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import {
   minLengthMsg,
   requiredFieldMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
+import { redis } from "@/app/_utils/redisClient";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -44,6 +52,7 @@ export async function GET(request: NextRequest, props: any) {
 export async function PUT(request: NextRequest, props: any) {
   try {
     await connectDB();
+    const adminId = await getUserId();
     const params = await props.params;
     const brandId = await params.id;
     const brand = await brandsModel.findById(brandId);
@@ -96,6 +105,9 @@ export async function PUT(request: NextRequest, props: any) {
     revalidateTag(generateTags("brands", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
 
+    //// Generate notification , add it to database and publish it to redis channel:
+    await PushNotification(adminId, "brands", "Updated", "updated", title);
+
     return NextResponse.json(
       {
         success: true,
@@ -115,6 +127,7 @@ export async function PUT(request: NextRequest, props: any) {
 export async function DELETE(request: NextRequest, props: any) {
   try {
     await connectDB();
+    const adminId = await getUserId();
     const params = await props.params;
     const brandId = await params.id;
     const brand = await brandsModel.findById(brandId);
@@ -138,6 +151,15 @@ export async function DELETE(request: NextRequest, props: any) {
     revalidateTag(generateTags("brands", "everyRecord")[0]);
     revalidateTag(generateTags("brands", "singleRecord", params.id)[0]);
     revalidateTag(generateTags("products", "allRecords")[0]);
+
+    //// Generate notification , add it to database and publish it to redis channel:
+    await PushNotification(
+      adminId,
+      "brands",
+      "Deleted",
+      "deleted",
+      brand.title,
+    );
 
     return NextResponse.json(
       {
