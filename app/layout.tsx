@@ -7,7 +7,6 @@ import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
-import { AddNotificationsToDB } from "./_features/notifications/utils/AddNotificationsToDB";
 
 export const metadata: Metadata = {
   title: {
@@ -32,6 +31,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   const headersObj = await headers();
   const pathName = headersObj.get("x-next-url") ?? "/";
   const loginPath = pathName === "/login";
@@ -42,6 +42,7 @@ export default async function RootLayout({
   // await sortProducts();
   // await moveProductsToOriginalCollection();
   // await AddNotificationsToDB();
+  // await RemoveDuplicatedNotifications();
 
   return (
     <html lang="en">

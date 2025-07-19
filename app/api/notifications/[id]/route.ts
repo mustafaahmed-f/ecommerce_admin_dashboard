@@ -37,8 +37,6 @@ export async function PUT(request: NextRequest, props: any) {
 
     const { read } = body;
 
-    console.log("read", read);
-
     const notification = await notificationsModel.findOneAndUpdate(
       {
         _id: notificationId,

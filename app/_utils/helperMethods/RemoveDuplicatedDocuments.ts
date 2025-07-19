@@ -1,4 +1,5 @@
 import connectDB from "@/app/_mongoDB/connectDB";
+import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
 import tempProductsModel from "@/app/_mongoDB/models/tempProductsModel";
 
 export async function removeDuplicateProductsByProductId() {
@@ -34,4 +35,27 @@ export async function removeDuplicateProductsByProductId() {
   }
 
   console.log("✅ Duplicate product removal complete.");
+}
+
+export async function RemoveDuplicatedNotifications() {
+  const notifications = await notificationsModel.find();
+
+  const notificationsGroup: { [key: string]: any } = notifications.reduce(
+    (acc, n) => {
+      acc[n.event] = acc[n.event] || [];
+      acc[n.event].push(n);
+      return acc;
+    },
+    {},
+  );
+
+  for (let [event, notificationGroup] of Object.entries(notificationsGroup)) {
+    if (notificationGroup.length > 1) {
+      for (let i = 1; i < notificationGroup.length; i++) {
+        await notificationsModel.deleteOne({ _id: notificationGroup[i]._id });
+      }
+    }
+  }
+
+  console.log("✅ Duplicate notification removal complete.");
 }

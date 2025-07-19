@@ -7,8 +7,16 @@ interface NotificationsDropListProps {
 }
 
 function NotificationsDropList({ refElement }: NotificationsDropListProps) {
-  const { open, notifications, isFetching, setPage, isError, error, hasMore } =
-    useNotificationsContext();
+  const {
+    open,
+    notifications,
+    isFetching,
+    setPage,
+    isError,
+    error,
+    hasMore,
+    loading,
+  } = useNotificationsContext();
 
   function handleScroll(e: React.UIEvent<HTMLUListElement>) {
     const element = e.currentTarget as HTMLUListElement;
@@ -24,7 +32,7 @@ function NotificationsDropList({ refElement }: NotificationsDropListProps) {
 
   return (
     <ul
-      className={`notifications-list ${open ? "active" : "inactive"} absolute top-[86px] right-2 flex flex-col rounded-2xl border border-gray-200 bg-white py-2`}
+      className={`notifications-list ${open ? "active" : "inactive"} ${loading && "pointer-events-none opacity-65"} absolute top-[86px] right-2 flex flex-col rounded-2xl border border-gray-200 bg-white py-2`}
       ref={refElement}
       onScroll={handleScroll}
     >

@@ -13,41 +13,50 @@ interface NotificationItemProps {
 
 function NotificationItem({ notificationObj }: NotificationItemProps) {
   const { message, url, read, createdAt, _id } = notificationObj;
-  const { setNotifications } = useNotificationsContext();
+  const { setNotifications, setLoading } = useNotificationsContext();
   const formattedTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
 
   async function handleRead() {
     if (read) return;
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/notifications/${_id}`, {
+        method: "PUT",
+        body: JSON.stringify({ read: true }),
+      });
+      const jsonResponse = await res.json(); // even if !res.ok, still need this
 
-    const res = await fetch(`/api/notifications/${_id}`, {
-      method: "PUT",
-      body: JSON.stringify({ read: true }),
-    });
-    const jsonResponse = await res.json(); // even if !res.ok, still need this
+      if (!res.ok) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            `Failed getting record : ${res.statusText} `,
+        );
+        return;
+      }
 
-    if (!res.ok) {
-      showErrorToast(
-        jsonResponse.error ||
-          jsonResponse.message ||
-          `Failed getting record : ${res.statusText} `,
+      if (!jsonResponse.success) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            "Unknown error from API",
+        );
+        return;
+      }
+
+      setLoading(false);
+
+      showSuccessToast("Notification updated successfully !!");
+
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === _id ? { ...n, read: true } : n)),
       );
-      return;
+    } catch (error: any) {
+      setLoading(false);
+      showErrorToast(error.message);
     }
-
-    if (!jsonResponse.success) {
-      showErrorToast(
-        jsonResponse.error || jsonResponse.message || "Unknown error from API",
-      );
-      return;
-    }
-
-    showSuccessToast("Notification updated successfully !!");
-
-    setNotifications((prev) =>
-      prev.map((n) => (n._id === _id ? { ...n, read: true } : n)),
-    );
   }
 
   const content = (

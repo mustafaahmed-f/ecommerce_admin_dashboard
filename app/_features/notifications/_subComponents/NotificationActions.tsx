@@ -14,65 +14,86 @@ interface NotificationActionsProps {
 }
 
 function NotificationActions({ notificationObj }: NotificationActionsProps) {
-  const { setNotifications, setOpen } = useNotificationsContext();
+  const { setNotifications, setLoading } = useNotificationsContext();
   const { read, _id } = notificationObj;
+
   async function handleUnread() {
     if (!read) return;
 
-    const res = await fetch(`/api/notifications/${_id}`, {
-      method: "PUT",
-      body: JSON.stringify({ read: false }),
-    });
-    const jsonResponse = await res.json(); // even if !res.ok, still need this
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/notifications/${_id}`, {
+        method: "PUT",
+        body: JSON.stringify({ read: false }),
+      });
+      const jsonResponse = await res.json(); // even if !res.ok, still need this
 
-    if (!res.ok) {
-      showErrorToast(
-        jsonResponse.error ||
-          jsonResponse.message ||
-          `Failed getting record : ${res.statusText} `,
+      if (!res.ok) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            `Failed getting record : ${res.statusText} `,
+        );
+        return;
+      }
+
+      if (!jsonResponse.success) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            "Unknown error from API",
+        );
+        return;
+      }
+
+      setLoading(false);
+
+      showSuccessToast("Notification updated successfully !!");
+
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === _id ? { ...n, read: false } : n)),
       );
-      return;
+    } catch (error: any) {
+      console.log(error);
+      setLoading(false);
+      showErrorToast(error.message || "Error updating notification");
     }
-
-    if (!jsonResponse.success) {
-      showErrorToast(
-        jsonResponse.error || jsonResponse.message || "Unknown error from API",
-      );
-      return;
-    }
-
-    showSuccessToast("Notification updated successfully !!");
-
-    setNotifications((prev) =>
-      prev.map((n) => (n._id === _id ? { ...n, read: false } : n)),
-    );
   }
 
   async function handleDelete() {
-    const res = await fetch(`/api/notifications/${_id}`, {
-      method: "DELETE",
-    });
-    const jsonResponse = await res.json(); // even if !res.ok, still need this
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/notifications/${_id}`, {
+        method: "DELETE",
+      });
+      const jsonResponse = await res.json(); // even if !res.ok, still need this
 
-    if (!res.ok) {
-      showErrorToast(
-        jsonResponse.error ||
-          jsonResponse.message ||
-          `Failed getting record : ${res.statusText} `,
-      );
-      return;
+      if (!res.ok) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            `Failed getting record : ${res.statusText} `,
+        );
+        return;
+      }
+
+      if (!jsonResponse.success) {
+        showErrorToast(
+          jsonResponse.error ||
+            jsonResponse.message ||
+            "Unknown error from API",
+        );
+        return;
+      }
+      setLoading(false);
+      showSuccessToast("Notification deleted successfully !!");
+
+      setNotifications((prev) => prev.filter((n) => n._id !== _id));
+    } catch (error: any) {
+      console.log(error);
+      setLoading(false);
+      showErrorToast(error.message || "Error deleting notification");
     }
-
-    if (!jsonResponse.success) {
-      showErrorToast(
-        jsonResponse.error || jsonResponse.message || "Unknown error from API",
-      );
-      return;
-    }
-
-    showSuccessToast("Notification deleted successfully !!");
-
-    setNotifications((prev) => prev.filter((n) => n._id !== _id));
   }
   return (
     <DropdownMenu data-inside-dropdown>

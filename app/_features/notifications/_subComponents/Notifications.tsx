@@ -17,6 +17,7 @@ function Notifications({}: NotificationsProps) {
   );
   const { 0: page, 1: setPage } = useState<number>(1);
   const { 0: hasMore, 1: setHasMore } = useState<boolean>(false);
+  const { 0: loading, 1: setLoading } = useState<boolean>(false);
   const dropList = useRef<HTMLUListElement | null>(null);
   const btn = useRef<HTMLButtonElement | null>(null);
   const lastCreatedAt = notifications.length
@@ -83,13 +84,13 @@ function Notifications({}: NotificationsProps) {
     return () => evtSource.close();
   }, [setNotifications]);
 
-  console.log("Notifications:", notifications);
-
   return (
     <NotificationsProvider
       value={{
         open,
         setOpen,
+        loading,
+        setLoading,
         isFetching,
         notifications,
         setNotifications,
