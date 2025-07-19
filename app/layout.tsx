@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
+import { GenerateNotificationMessage } from "./_features/notifications/utils/GenerateNotificationMessage";
 
 export const metadata: Metadata = {
   title: {

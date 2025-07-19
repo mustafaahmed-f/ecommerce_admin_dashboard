@@ -1,3 +1,5 @@
+import { notification } from "@/app/_features/notifications/types/NotificationType";
+import { GenerateEvents } from "@/app/_features/notifications/utils/GenerateEvents";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
 import { actions } from "@/app/_utils/constants/Actions";
@@ -76,6 +78,9 @@ export async function POST(request: NextRequest) {
     revalidateTag(generateTags("brands", "everyRecord")[0]);
 
     //// Generate notification , add it to database and publish it to redis channel:
+    const notificationObj: Omit<notification, "_id"> = {
+      event: GenerateEvents("brands", "Created"),
+    };
 
     return NextResponse.json(
       {
