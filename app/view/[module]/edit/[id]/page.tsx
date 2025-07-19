@@ -17,7 +17,7 @@ async function Page({ params }: PageProps) {
   );
   const config: configType<any> = configModule[`${module}Config`];
 
-  if (!config.canAddNewRecord) throw new Error("Can't edit module !!");
+  if (!config.canEditRecord) throw new Error("Can't edit module !!");
 
   const cookieStore = await cookies();
   const cookieHeader = {

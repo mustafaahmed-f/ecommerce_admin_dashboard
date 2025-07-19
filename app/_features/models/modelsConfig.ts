@@ -13,6 +13,7 @@ export const modelsConfig: configType<InferFormValues<typeof validations>> = {
   formValidations: validations,
   pageSize: 10,
   canAddNewRecord: true,
+  canEditRecord: true,
   backendPagination: false,
   hasDetails: false,
   hasFiltration: true,

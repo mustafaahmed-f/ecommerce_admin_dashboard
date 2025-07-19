@@ -13,6 +13,7 @@ export const ordersConfig: configType<InferFormValues<typeof validations>> = {
   formValidations: validations,
   pageSize: 10,
   canAddNewRecord: false,
+  canEditRecord: true,
   backendPagination: true,
   hasDetails: true,
   hasFiltration: true,

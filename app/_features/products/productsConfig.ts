@@ -27,6 +27,7 @@ export const productsConfig: configType<InferFormValues<typeof validations>> = {
   formValidations: validations,
   pageSize: 10,
   canAddNewRecord: true,
+  canEditRecord: true,
   backendPagination: true,
   hasDetails: true,
   hasFiltration: true,

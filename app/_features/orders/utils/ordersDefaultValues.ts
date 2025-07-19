@@ -4,7 +4,19 @@ export const defaultValues: ordersType = {
   _id: "",
   orderNumber: 0,
   userID: "",
-  products: [],
+  products: [
+    {
+      productID: "",
+      title: "",
+      unitPaymentPrice: 0,
+      discount: 0,
+      quantity: 0,
+      color: "",
+      category: "",
+      brand: "",
+      image: "",
+    },
+  ],
   couponId: null,
   subTotal: 0,
   userInfo: {
