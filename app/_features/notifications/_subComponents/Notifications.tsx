@@ -33,6 +33,7 @@ function Notifications({}: NotificationsProps) {
   } = useQuery({
     queryKey: ["notifications", page],
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await fetch(
         `/api/notifications?lastCreatedAt=${encodeURIComponent(lastCreatedAt ?? "")}&limit=8`,
       );

@@ -23,6 +23,7 @@ export async function PushNotification(
         ? ""
         : (url ?? ""),
     audience: "admin",
+    module: module,
     userId: adminId,
     read: false,
     createdAt: new Date(),

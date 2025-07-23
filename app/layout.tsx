@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./Header";
 import Providers from "./Providers";
 import SideBar from "./SideBar";
+import AuthHandler from "./_context/AuthHandler";
 
 export const metadata: Metadata = {
   title: {
@@ -49,7 +50,7 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} flex min-h-screen max-w-screen flex-col antialiased`}
       >
-        <Providers defaultOpen={defaultOpen}>
+        <AuthHandler defaultOpen={defaultOpen} cookieStore={cookieStore}>
           <ReactQueryDevtools initialIsOpen={false} />
           {!loginPath && <SideBar />}
           <div className="flex max-w-full flex-grow flex-col">
@@ -59,7 +60,7 @@ export default async function RootLayout({
             </main>
           </div>
           <Toaster position="bottom-right" richColors expand={true} />
-        </Providers>
+        </AuthHandler>
       </body>
     </html>
   );

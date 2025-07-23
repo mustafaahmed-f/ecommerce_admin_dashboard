@@ -1,11 +1,6 @@
-import { notification } from "@/app/_features/notifications/types/NotificationType";
-import { GenerateEvents } from "@/app/_features/notifications/utils/GenerateEvents";
-import { GenerateNotificationMessage } from "@/app/_features/notifications/utils/GenerateNotificationMessage";
 import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
-import { channelName } from "@/app/_features/notifications/utils/redisPublishChannel";
 import connectDB from "@/app/_mongoDB/connectDB";
 import brandsModel from "@/app/_mongoDB/models/brandsModel";
-import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
 import productsModel from "@/app/_mongoDB/models/productsModel";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateErrMsg } from "@/app/_utils/helperMethods/generateErrMsg";
@@ -17,7 +12,6 @@ import {
   minLengthMsg,
   requiredFieldMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
-import { redis } from "@/app/_utils/redisClient";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

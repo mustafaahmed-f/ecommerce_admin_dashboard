@@ -21,6 +21,9 @@ export async function POST(request: NextRequest) {
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword) throw new Error("Invalid password", { cause: 400 });
 
+    if (user.role !== "admin")
+      throw new Error("You are not an admin", { cause: 400 });
+
     const token = await signToken({
       payload: {
         id: user._id.toString(),

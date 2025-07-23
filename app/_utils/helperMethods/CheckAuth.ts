@@ -4,19 +4,23 @@ import { verifyToken } from "./tokenMethods";
 export async function CheckAuth(
   request: NextRequest,
   checkAuthorization?: boolean,
-): Promise<boolean> {
+): Promise<any> {
   const cookie = request.cookies.get(
     process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME as string,
   );
-  if (!cookie) return false;
-  if (checkAuthorization) {
+  if (!cookie) return null;
+  let decoded;
+  try {
     const cookieValue = cookie.value;
-    const decoded: any = verifyToken({
+    decoded = await verifyToken({
       token: cookieValue,
       signature: process.env.SIGNATURE,
     });
-    if (!decoded) return false;
-    if (decoded.role !== "admin") return false;
+    if (!decoded) return null;
+  } catch (error: any) {
+    console.log(error);
+    return null;
   }
-  return true;
+  if (checkAuthorization && decoded.role !== "admin") return null;
+  return decoded;
 }

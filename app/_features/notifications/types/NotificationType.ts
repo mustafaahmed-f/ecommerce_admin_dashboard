@@ -4,6 +4,7 @@ export interface notification {
   message: string;
   userId: string;
   audience: string;
+  module: string;
   read: boolean;
   url: string;
   createdAt: Date;

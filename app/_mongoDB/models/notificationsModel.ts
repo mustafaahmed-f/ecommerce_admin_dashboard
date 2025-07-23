@@ -18,6 +18,7 @@ const NotificationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    //// The user created the notification
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -27,6 +28,10 @@ const NotificationSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ["user", "admin"],
+    },
+    module: {
+      type: String,
+      required: true,
     },
     read: {
       type: Boolean,

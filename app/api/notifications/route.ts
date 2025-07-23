@@ -1,6 +1,5 @@
 import connectDB from "@/app/_mongoDB/connectDB";
 import notificationsModel from "@/app/_mongoDB/models/notificationsModel";
-import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -9,9 +8,9 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const lastCreatedAt = searchParams.get("lastCreatedAt") ?? null;
     const limit = searchParams.get("limit") ?? "8";
-    const userId = await getUserId();
+    // const userId = await getUserId();
 
-    const query: any = { userId };
+    const query: any = { audience: "admin" };
 
     if (lastCreatedAt) {
       query.createdAt = { $lt: lastCreatedAt };
