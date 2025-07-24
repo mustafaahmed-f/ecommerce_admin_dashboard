@@ -1,5 +1,3 @@
-import { Review } from "./reviewType";
-
 export type productsType = {
   _id: string;
   productId: number;
@@ -17,7 +15,6 @@ export type productsType = {
   createdAt: string;
   updatedAt: string;
   rating: number;
-  reviews: Review[];
   sold: number;
   ram?: string | null;
   power?: number | null;

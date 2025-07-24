@@ -5,7 +5,7 @@ import {
   positiveNumberMsg,
 } from "@/app/_utils/helperMethods/validationErrorMessages";
 
-export const couponValidations = yup.object({
+export const validations = yup.object({
   code: yup
     .string()
     .required(requiredFieldMsg("Code"))
@@ -20,9 +20,12 @@ export const couponValidations = yup.object({
     .required(requiredFieldMsg("Discount Type"))
     .oneOf(["percentage", "amount"], "Must be either percentage or amount"),
   expirationDate: yup
-    .date()
+    .string()
     .required(requiredFieldMsg("Expiration Date"))
-    .min(new Date(), "Expiration date must be in the future"),
+    .test("isFutureDate", "Expiration date must be in the future", (value) => {
+      const date = new Date(value);
+      return date > new Date();
+    }),
   usageLimit: yup
     .number()
     .typeError(invalidNumberMsg("Usage Limit"))
@@ -32,6 +35,4 @@ export const couponValidations = yup.object({
       if (val < 1) return false;
       return true;
     }),
-
-  isActive: yup.boolean().required("Status is required"),
 });

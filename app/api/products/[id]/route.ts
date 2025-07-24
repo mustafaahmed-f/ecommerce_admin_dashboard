@@ -161,7 +161,11 @@ export async function PUT(request: NextRequest, props: any) {
 
     const updatedProduct = await productsModel.findOneAndUpdate(
       { productId: productId },
-      { ...finalFields, image: fakeImageUrl },
+      {
+        ...finalFields,
+        image: fakeImageUrl,
+        reviews: checkProductExistence.reviews,
+      },
       { new: true },
     );
 

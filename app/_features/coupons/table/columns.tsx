@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const columnHelper = createColumnHelper<couponType>();
 
-export const couponColumns = (hasDetails?: boolean, module?: string) => [
+export const generalColumns = (hasDetails?: boolean, module?: string) => [
   columnHelper.accessor("code", {
     header: "Code",
     cell: (info) =>

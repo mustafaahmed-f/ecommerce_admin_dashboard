@@ -196,8 +196,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("finalFields : ", finalFields);
-
     let brand = await brandsModel.findById(finalFields.brand);
     if (!brand) throw new Error("Brand not found", { cause: 400 });
 
@@ -228,6 +226,7 @@ export async function POST(request: NextRequest) {
         title: model.title,
         _id: model._id,
       },
+      reviews: [],
     });
 
     await newProduct.save();
