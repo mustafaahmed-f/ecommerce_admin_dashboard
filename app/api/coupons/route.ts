@@ -1,4 +1,5 @@
 import { addNewCouponSchema } from "@/app/_features/coupons/utils/couponsBackendValidations";
+import { GenerateNotificationsURL } from "@/app/_features/notifications/utils/GenerateNotificationsURL";
 import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import couponsModel from "@/app/_mongoDB/models/couponsModel";
@@ -146,6 +147,7 @@ export const POST = async (request: NextRequest) => {
       "Created",
       "created",
       newCoupon.code,
+      GenerateNotificationsURL("coupons", newCoupon._id.toString()),
     );
 
     return NextResponse.json(

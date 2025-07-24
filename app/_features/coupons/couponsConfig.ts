@@ -19,7 +19,7 @@ const excludedColumns = [
 ];
 
 export const couponsConfig: configType<InferFormValues<typeof validations>> = {
-  title: "Products",
+  title: "Coupons",
   tableTemplate: 1,
   formTemplate: 1,
   formFields: formFields,

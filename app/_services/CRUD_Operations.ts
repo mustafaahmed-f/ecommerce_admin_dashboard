@@ -205,7 +205,9 @@ export async function _updateSingleRecord({
 
   if (!res.ok)
     throw new Error(
-      jsonResponse.message || `Failed updating record : ${res.statusText} `,
+      jsonResponse.error ||
+        jsonResponse.message ||
+        `Failed updating record : ${res.statusText} `,
     );
 
   if (!jsonResponse.success) {
