@@ -15,22 +15,30 @@ export async function PushNotification(
   title: string,
   url?: string,
 ) {
-  const notificationObj: Omit<notification, "_id"> = {
-    event: GenerateEvents(module, eventAction),
-    message: GenerateNotificationMessage(module, title, messageAction),
-    url:
-      messageAction === "deleted" && eventAction === "Deleted"
-        ? ""
-        : (url ?? ""),
-    audience: "admin",
-    module: module,
-    userId: adminId,
-    read: false,
-    createdAt: new Date(),
-  };
+  try {
+    const notificationObj: Omit<notification, "_id"> = {
+      event: GenerateEvents(module, eventAction),
+      message: GenerateNotificationMessage(module, title, messageAction),
+      url:
+        messageAction === "deleted" && eventAction === "Deleted"
+          ? ""
+          : (url ?? ""),
+      audience: "admin",
+      module: module,
+      userId: adminId,
+      read: false,
+      createdAt: new Date(),
+    };
 
-  const newNotification = await notificationsModel.create(notificationObj);
-  if (!newNotification) throw new Error("Failed creating notification");
+    const newNotification = await notificationsModel.create(notificationObj);
+    if (!newNotification) throw new Error("Failed creating notification");
 
-  await redis.publish(channelName, JSON.stringify(newNotification.toObject()));
+    await redis.publish(
+      channelName,
+      JSON.stringify(newNotification.toObject()),
+    );
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
 }

@@ -1,4 +1,5 @@
 import { addNewCouponSchema } from "@/app/_features/coupons/utils/couponsBackendValidations";
+import { PushNotification } from "@/app/_features/notifications/utils/PushNotification";
 import connectDB from "@/app/_mongoDB/connectDB";
 import couponsModel from "@/app/_mongoDB/models/couponsModel";
 import { apiFeatures } from "@/app/_services/apiFeatures";
@@ -138,6 +139,14 @@ export const POST = async (request: NextRequest) => {
     if (!newCoupon) throw new Error("Coupon not created", { cause: 400 });
 
     revalidateTag(generateTags("coupons", "allRecords")[0]);
+
+    await PushNotification(
+      userId,
+      "coupons",
+      "Created",
+      "created",
+      newCoupon.code,
+    );
 
     return NextResponse.json(
       {
