@@ -1,10 +1,76 @@
 import { addNewCouponSchema } from "@/app/_features/coupons/utils/couponsBackendValidations";
 import connectDB from "@/app/_mongoDB/connectDB";
 import couponsModel from "@/app/_mongoDB/models/couponsModel";
+import { apiFeatures } from "@/app/_services/apiFeatures";
+import { actions } from "@/app/_utils/constants/Actions";
+import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
 import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import { stripe } from "@/app/_utils/stripe";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  try {
+    await connectDB();
+    const searchParams = request.nextUrl.searchParams;
+    const page = searchParams.get("page") ?? "1";
+    const size = searchParams.get("size") ?? "10";
+    const sort = searchParams.get("sort") ?? "";
+    const searchTerm = searchParams.get("searchTerm") ?? "";
+    const searchField = searchParams.get("searchField") ?? "";
+
+    let filter: any = {};
+    if (searchField && searchTerm) {
+      filter[searchField] = { $regex: searchTerm, $options: "i" };
+    }
+
+    const queryObj = {
+      page: parseInt(page),
+      size: parseInt(size),
+      sort,
+    };
+
+    const totalCoupons = await couponsModel.countDocuments(filter);
+
+    const apiFeatureInstance = new apiFeatures(
+      couponsModel.find(filter),
+      queryObj,
+    )
+      .pagination()
+      .sort();
+
+    const coupons = await apiFeatureInstance.query;
+
+    if (!coupons.length) {
+      return NextResponse.json(
+        {
+          success: true,
+          result: [],
+          additionalInfo: 0,
+          message: "No coupons found",
+        },
+        { status: 200 },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: generateSuccessMsg(actions.fetched),
+        result: coupons,
+        additionalInfo: totalCoupons,
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, error: error?.message },
+      { status: error.cause ?? 500 },
+    );
+  }
+}
 
 export const POST = async (request: NextRequest) => {
   await connectDB();
@@ -72,8 +138,8 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: true,
-        message: "Coupon has been created successfully !!",
-        coupon: newCoupon,
+        message: generateSuccessMsg(actions.updated),
+        result: newCoupon,
       },
       { status: 200 },
     );
