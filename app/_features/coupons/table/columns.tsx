@@ -50,6 +50,7 @@ export const generalColumns = (hasDetails?: boolean, module?: string) => [
         {info.getValue() ? "Yes" : "No"}
       </span>
     ),
+    enableSorting: false,
   }),
   columnHelper.accessor("createdAt", {
     header: "Created At",

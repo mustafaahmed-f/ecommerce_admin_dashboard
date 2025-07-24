@@ -4,9 +4,11 @@ import couponsModel from "@/app/_mongoDB/models/couponsModel";
 import { apiFeatures } from "@/app/_services/apiFeatures";
 import { actions } from "@/app/_utils/constants/Actions";
 import { generateSuccessMsg } from "@/app/_utils/helperMethods/generateSuccessMsg";
+import { generateTags } from "@/app/_utils/helperMethods/generateTags";
 import { getUserId } from "@/app/_utils/helperMethods/getUserId";
 import { validateSchema } from "@/app/_utils/helperMethods/validateBackendSchema";
 import { stripe } from "@/app/_utils/stripe";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -134,6 +136,8 @@ export const POST = async (request: NextRequest) => {
     });
 
     if (!newCoupon) throw new Error("Coupon not created", { cause: 400 });
+
+    revalidateTag(generateTags("coupons", "allRecords")[0]);
 
     return NextResponse.json(
       {

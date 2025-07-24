@@ -11,10 +11,10 @@ import {
 import Detail from "./Detail";
 
 type Props = {
-  coupon: couponType;
+  singleRecord: couponType;
 };
 
-export default function DetailsUI({ coupon }: Props) {
+export default function DetailsUI({ singleRecord }: Props) {
   const {
     code,
     discount,
@@ -29,22 +29,19 @@ export default function DetailsUI({ coupon }: Props) {
     stipePromotionCodeId,
     createdAt,
     updatedAt,
-  } = coupon;
+  } = singleRecord;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6 sm:p-10">
       <div className="flex items-center justify-between border-b pb-4">
         <h1 className="text-2xl font-bold">Coupon Details</h1>
-        <Link
-          href="/view/coupons"
-          className="bg-primary hover:bg-primary/90 rounded px-4 py-2 text-white"
-        >
+        <Link href="/view/coupons" className="rounded px-4 py-2 underline">
           ← Back
         </Link>
       </div>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2 sm:text-base">
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 gap-x-10 gap-y-8 text-sm sm:grid-cols-2 sm:text-base">
           <Detail label="Code" value={code} />
           <Detail
             label="Discount"
@@ -57,11 +54,7 @@ export default function DetailsUI({ coupon }: Props) {
           <Detail label="Usage Limit" value={String(usageLimit)} />
           <Detail label="Usage Count" value={String(usageCount)} />
           <Detail label="Active" value={isActive ? "Yes" : "No"} />
-          <Detail label="Stripe Coupon ID" value={stripeCouponId || "—"} />
-          <Detail
-            label="Stripe Promotion Code ID"
-            value={stipePromotionCodeId || "—"}
-          />
+
           <Detail
             label="Created At"
             value={new Date(createdAt).toLocaleString()}
@@ -74,10 +67,12 @@ export default function DetailsUI({ coupon }: Props) {
 
         <Accordion
           type="multiple"
-          className="bg-background rounded-md border text-sm"
+          className="bg-background flex flex-col gap-5 rounded-md text-sm"
         >
           <AccordionItem value="products">
-            <AccordionTrigger>Applicable Products</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Applicable Products
+            </AccordionTrigger>
             <AccordionContent>
               {applicableProducts.length > 0 ? (
                 <ul className="list-disc pl-6">
@@ -92,7 +87,9 @@ export default function DetailsUI({ coupon }: Props) {
           </AccordionItem>
 
           <AccordionItem value="categories">
-            <AccordionTrigger>Applicable Categories</AccordionTrigger>
+            <AccordionTrigger className="cursor-pointer">
+              Applicable Categories
+            </AccordionTrigger>
             <AccordionContent>
               {applicableCategories.length > 0 ? (
                 <ul className="list-disc pl-6">
