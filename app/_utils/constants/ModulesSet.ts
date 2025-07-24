@@ -4,6 +4,7 @@ export const ModulesSet: Set<string> = new Set([
   "categories",
   "models",
   "orders",
+  "coupons",
 ]);
 
 export const ModulesArray = [
@@ -12,4 +13,5 @@ export const ModulesArray = [
   "categories",
   "models",
   "orders",
+  "coupons",
 ] as const;

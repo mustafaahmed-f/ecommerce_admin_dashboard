@@ -14,7 +14,7 @@ async function AuthHandler({
   cookieStore,
   children,
 }: AuthHandlerProps) {
-  let user;
+  let user = {};
   try {
     const cookieHeader = {
       Cookie: cookieStore.toString(),
@@ -55,8 +55,7 @@ async function AuthHandler({
 
     user = jsonResponse.result;
   } catch (error: any) {
-    console.error(error);
-    throw new Error(`Failed to get user : ${error.message}`, { cause: 500 });
+    console.log(error);
   }
   return (
     <UserProvider user={user}>

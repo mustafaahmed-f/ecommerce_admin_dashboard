@@ -46,6 +46,12 @@ export const mainConfig: mainConfigType = {
             href: "/view/orders",
             icon: ShoppingBag,
           },
+          {
+            name: "coupons",
+            label: "Coupons",
+            href: "/view/coupons",
+            icon: ReceiptText,
+          },
         ],
       },
       {

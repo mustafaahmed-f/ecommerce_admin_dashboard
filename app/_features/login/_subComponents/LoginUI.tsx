@@ -1,7 +1,7 @@
 "use client";
 
 import { useNextNavigation } from "@/app/_context/NextNavigationProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { validations } from "../utils/loginValidations";
 import { InferFormValues } from "@/app/_types/InferFormValuesType";
@@ -19,6 +19,14 @@ function LoginUI({}: LoginUIProps) {
   const { router, searchParams } = useNextNavigation();
   const { 0: isLoading, 1: setIsLoading } = useState<boolean>(false);
   const redirectURL = searchParams.get("redirectto") || "/";
+
+  useEffect(() => {
+    // force reload layout and app shell
+    if (window.location.pathname.includes("/login")) {
+      router.refresh();
+      console.log("Called once");
+    }
+  }, []);
 
   const methods = useForm<InferFormValues<typeof validations>>({
     resolver: yupResolver(validations),
