@@ -81,8 +81,6 @@ export async function PUT(request: NextRequest, props: any) {
       );
     }
 
-    if (coupon.code === code) throw new Error("Coupon code cannot be the same");
-
     // Delete the old Stripe coupon
     await stripe.coupons.del(coupon.stripeCouponId);
 
@@ -102,18 +100,23 @@ export async function PUT(request: NextRequest, props: any) {
       max_redemptions: usageLimit,
     });
 
+    const editedCouponObj: any = {
+      discount,
+      discountType,
+      expirationDate,
+      usageLimit,
+      stripeCouponId: newStripeCoupon.id,
+      stipePromotionCodeId: newStripePromotionCode.id,
+    };
+
+    if (coupon.code !== code) {
+      editedCouponObj.code = code;
+    }
+
     // update local DB with new stripe IDs
     const updatedCoupon = await couponsModel.findByIdAndUpdate(
       params.id,
-      {
-        code,
-        discount,
-        discountType,
-        expirationDate,
-        usageLimit,
-        stripeCouponId: newStripeCoupon.id,
-        stipePromotionCodeId: newStripePromotionCode.id,
-      },
+      editedCouponObj,
       { new: true },
     );
 
