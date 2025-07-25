@@ -15,13 +15,13 @@ export const generalColumns = (
     header: "No.",
     cell: (info) => <span>{info.row.index + 1}</span>,
     enableColumnFilter: false,
-    enableSorting: false,
   }),
   columnHelper.accessor("_id", {
     id: "_id",
     header: "User ID",
     cell: (info) => <span>{info.getValue()}</span>,
     enableColumnFilter: false,
+    enableSorting: false,
   }),
   columnHelper.accessor("userName", {
     id: "userName",
@@ -54,11 +54,13 @@ export const generalColumns = (
     id: "role",
     header: "Role",
     cell: (info) => <span>{info.getValue()}</span>,
+    enableSorting: false,
   }),
   columnHelper.accessor("provider", {
     id: "provider",
     header: "Provider",
     cell: (info) => <span>{info.getValue()}</span>,
+    enableSorting: false,
   }),
   columnHelper.accessor("profileImage", {
     id: "profileImage",
@@ -75,6 +77,7 @@ export const generalColumns = (
       ) : (
         <span>N/A</span>
       ),
+    enableSorting: false,
   }),
   columnHelper.display({
     id: "actions",
