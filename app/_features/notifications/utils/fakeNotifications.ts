@@ -1,6 +1,4 @@
-import { notification } from "../types/NotificationType";
-
-export const fakeNotifications: notification[] = [
+export const fakeNotifications: any[] = [
   {
     _id: "1",
     event: "order_created",

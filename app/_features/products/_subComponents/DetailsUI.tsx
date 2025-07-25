@@ -54,7 +54,7 @@ function DetailsUI({ singleRecord }: DetailsUIProps) {
           </div>
         </div>
       </div>
-      <ProductTabs product={product} />
+      <ProductTabs product={product as any} />
     </section>
   );
 }

@@ -1,8 +1,7 @@
-import { Review } from "../types/reviewType";
 import SingleReview from "./SingleReview";
 
 interface ProductReviewsSectionProps {
-  reviews: Review[];
+  reviews: any[];
 }
 
 function ProductReviewsSection({ reviews }: ProductReviewsSectionProps) {
