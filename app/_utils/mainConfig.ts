@@ -6,6 +6,7 @@ import {
   ReceiptText,
   Shapes,
   ShoppingBag,
+  Tags,
   User,
 } from "lucide-react";
 import { mainConfigType } from "../_types/mainConfig.type";
@@ -51,7 +52,7 @@ export const mainConfig: mainConfigType = {
             name: "coupons",
             label: "Coupons",
             href: "/view/coupons",
-            icon: ReceiptText,
+            icon: Tags,
           },
           {
             name: "users",
