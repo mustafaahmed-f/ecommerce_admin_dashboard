@@ -9,6 +9,7 @@ export interface inputFieldType<T extends FieldValues> {
     | "quantity"
     | "number"
     | "TextArea"
+    | "date"
     | "image"
     | "password";
   name: Path<T>;

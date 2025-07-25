@@ -14,6 +14,7 @@ import QuantityControl from "./formFields/QuantityControl";
 import TextArea from "./formFields/TextArea";
 import ImageUploadField from "./formFields/ImageUploadField";
 import clsx from "clsx";
+import DateField from "./formFields/DateField";
 
 interface FormRendererProps<T extends FieldValues> {
   fields: inputFieldType<T>[];
@@ -96,6 +97,19 @@ function FormRenderer<T extends FieldValues>({
           case "image":
             return (
               <ImageUploadField<T>
+                {...field}
+                key={field.name}
+                watch={watch}
+                setValue={setValue}
+                trigger={trigger}
+                register={register}
+                errors={errors}
+              />
+            );
+
+          case "date":
+            return (
+              <DateField<T>
                 {...field}
                 key={field.name}
                 watch={watch}

@@ -15,6 +15,15 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
     },
     {
       type: "text",
+      name: "usageLimit",
+      lable: "Usage Limit",
+      required: true,
+      isNumber: true,
+      fullWidth: false,
+      placeholder: "Enter maximum usage limit",
+    },
+    {
+      type: "text",
       name: "discount",
       lable: "Discount",
       required: true,
@@ -31,17 +40,9 @@ export const formFields: inputFieldType<InferFormValues<typeof validations>>[] =
       placeholder: "Select type",
       optionsMethod: getDiscountTypes,
     },
+
     {
-      type: "text",
-      name: "usageLimit",
-      lable: "Usage Limit",
-      required: true,
-      isNumber: true,
-      fullWidth: false,
-      placeholder: "Enter maximum usage limit",
-    },
-    {
-      type: "text",
+      type: "date",
       name: "expirationDate",
       lable: "Expiration Date",
       required: true,

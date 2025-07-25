@@ -1,7 +1,7 @@
 export const defaultValues = {
   code: "",
   discount: 0,
-  discountType: "",
+  discountType: "percentage",
   expirationDate: "",
   usageLimit: 0,
 };
