@@ -176,3 +176,5 @@ npm run dev
 6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment
+
+Live demo: [Admin Dashboard](https://ecommerce-admin-dashboard-mustafa.vercel.app/)
