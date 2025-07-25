@@ -1,6 +1,31 @@
-# Reusable Admin Dashboard Template
+# 🛒 E-Commerce admin dashboard
 
-A highly customizable and reusable admin dashboard template built with Next.js, perfect for creating admin interfaces for various projects.
+<div align="center">
+
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white&style=for-the-badge" />
+  <img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge" />
+  <img alt="TailwindCSS" src="https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white&style=for-the-badge" />
+  <img alt="TanStack Table" src="https://img.shields.io/badge/TanStack_Table-FF4154?logo=react&logoColor=white&style=for-the-badge" />
+  <img alt="shadcn/ui" src="https://img.shields.io/badge/shadcn/ui-black?logo=radixui&logoColor=white&style=for-the-badge" />
+
+</div>
+
+A **modern and modular admin dashboard** for managing e-commerce operations — including products, coupons, users, and more.  
+Built with **Next.js App Router**, **MongoDB**, **TailwindCSS**, and **TypeScript**, this project follows a **feature-based architecture** with support for scalable UI components, validation, and server-side interactions.
+
+> Designed to connect seamlessly with a separate e-commerce frontend — with support for RabbitMQ ( will be added soon ), REST APIs, and modular expansion.
+
+# Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Notification System](#notification-system)
+- [UI Components](#ui-components)
+- [Project Structure](#project-structure)
+- [Main Routes](#main-routes)
+- [Getting Started](#getting-started)
+- [Deployment](#deployment)
 
 ## Features
 
@@ -14,6 +39,7 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 - Modular and maintainable architecture
 - Authentication system ready
 - Configurable sidebar and main title
+- Notifications system discussed below.
 
 ## Tech Stack
 
@@ -33,10 +59,31 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
   - React dropzone
 
 - **Backend**:
+
   - MongoDB
   - Mongoose
   - Zod (Backend validations)
   - Stripe
+
+## Notification System
+
+The dashboard implements a real-time notification system that integrates with Redis Pub/Sub and Server-Sent Events (SSE). Key features include:
+
+- Real-time updates from external services (e.g., e-commerce orders)
+- Stream API integration for efficient data handling
+- Automatic cleanup of old notifications
+- Customizable notification types and priorities
+
+## UI Components (shadcn/ui)
+
+The dashboard utilizes several components from shadcn/ui:
+
+- Dialogs and modals
+- Form components (inputs, selects, textareas)
+- Table components
+- Alert and toast notifications
+- Buttons and icons
+- Custom form fields
 
 ## Project Structure
 
@@ -93,7 +140,7 @@ A highly customizable and reusable admin dashboard template built with Next.js, 
 - `/messages` - Messages
 - `/transactions` - Transactions
 
-## How to Use This Template
+## Getting Started
 
 1. Clone the repository:
 
@@ -107,70 +154,25 @@ git clone https://github.com/your-username/your-project.git
 cd your-project
 ```
 
-3. Remove the template remote:
-
-```bash
-git remote remove origin
-```
-
-4. Add your new remote:
-
-```bash
-git remote add origin https://github.com/your-username/your-project.git
-```
-
-5. Verify the remote:
-
-```bash
-git remote -v
-```
-
-## Getting Started
-
-1. Install dependencies:
+3. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Create a `.env.local` file and add your environment variables:
+4. Create a `.env.local` file and add your environment variables:
 
 ```
 MONGODB_URI=your_mongodb_uri
 NEXT_PUBLIC_API_URL=your_api_url
 ```
 
-3. Run the development server:
+5. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-5. Use main config to add your sidebar items and main title.
-
-6. Follow the structure to add your new modules.
-
-## Adding New Modules
-
-1. Add your module to `utils/mainConfig.ts`
-2. Add validation schemas in `mongoDB/validationSchemas`
-3. Create the Mongoose model in `mongoDB/models`
-4. Create the necessary sub components in `features/[module]/components`
-5. Add business logic in `features/[module]/services`
-6. Add types in `features/[module]/types`
-7. Add utils in `features/[module]/utils`
-8. Add table columns in `features/[module]/components`
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is open source and available for free, but if you find it useful, please consider giving it a star on GitHub.
+## Deployment
