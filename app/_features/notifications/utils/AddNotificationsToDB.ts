@@ -15,6 +15,7 @@ export async function AddNotificationsToDB() {
         message: `Test notification message #${i + 1}`,
         userId,
         audience,
+        module: "notifications",
         read: false,
         url: `/notifications/${i}`,
         createdAt,
