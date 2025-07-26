@@ -38,31 +38,31 @@ export async function middleware(request: NextRequest) {
 
   //TODO : after finishing the project , uncomment this code to allow using of api rate limit
 
-  // const ip = (request.headers.get("x-forwarded-for") ?? "127.0.0.1")
-  //   .split(",")[0]
-  //   .trim();
+  const ip = (request.headers.get("x-forwarded-for") ?? "127.0.0.1")
+    .split(",")[0]
+    .trim();
 
-  // if (isApi) {
-  //   console.log("isAPI");
-  //   const { success, limit, remaining, reset } = await rateLimit.limit(ip);
-  //   if (!success) {
-  //     return new NextResponse(
-  //       JSON.stringify({
-  //         success: false,
-  //         message: "Rate limit exceeded. Try again later.",
-  //       }),
-  //       {
-  //         status: 429,
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-RateLimit-Limit": limit.toString(),
-  //           "X-RateLimit-Remaining": remaining.toString(),
-  //           "X-RateLimit-Reset": reset.toString(),
-  //         },
-  //       },
-  //     );
-  //   }
-  // }
+  if (isApi) {
+    console.log("isAPI");
+    const { success, limit, remaining, reset } = await rateLimit.limit(ip);
+    if (!success) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          message: "Rate limit exceeded. Try again later.",
+        }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+            "X-RateLimit-Reset": reset.toString(),
+          },
+        },
+      );
+    }
+  }
 
   if (token) {
     try {

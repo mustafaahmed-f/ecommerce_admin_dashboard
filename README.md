@@ -40,6 +40,7 @@ Built with **Next.js App Router**, **MongoDB**, **TailwindCSS**, and **TypeScrip
 - Authentication system ready
 - Configurable sidebar and main title
 - Notifications system discussed below.
+- Added rate limiting middleware with Upstash Redis to protect public routes from excessive requests.
 
 ## Tech Stack
 
